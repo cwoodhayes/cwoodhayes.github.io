@@ -4,10 +4,10 @@ description         : >-
                       Hands on robotics & embedded systems engineer, 
                       working on robotic manipulation + embodied AI/ML, with deep experience 
                       building embedded systems for spacecraft and consumer medical devices.
-baseurl             : "/projects"            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
+baseurl             : ""            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : cwoodhayes/cwoodhayes.github.io
 remote_theme        : yousinix/portfolYOU
-open_new_tab        : false                    # Opens external URLs in new tab (works for posts, projects and navbar only)
+open_new_tab        : true                     # Opens external URLs in new tab (works for posts, projects and navbar only)
 
 
 ### Plugins ###
@@ -20,8 +20,8 @@ nav_exclude:                                            # The following paths ar
   - pages/tags.html
   - pages/404.html
   - pages/index.md
+  - pages/about.md
   - pages/blog.html
-  - pages/about.html
 
 
 ### Author Info ###
@@ -78,3 +78,4 @@ exclude:
   - CONTRIBUTING.md
   - LICENSE
   - "*.log"
+  - .vscode
