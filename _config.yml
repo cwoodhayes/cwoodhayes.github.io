@@ -1,8 +1,9 @@
 ### Site Settings ###
 title               : Conor Wood Hayes
 description         : >-
-                      Hands on robotics & embedded systems engineer.
-                      Robotic manipulation and embodied intelligence, spacecraft avionics, consumer medical devices.
+                      Hands on robotics & embedded systems engineer, 
+                      working on robotic manipulation + embodied AI/ML, with deep experience 
+                      building embedded systems for spacecraft and consumer medical devices.
 baseurl             : ""            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : cwoodhayes/cwoodhayes.github.io
 remote_theme        : yousinix/portfolYOU
@@ -24,7 +25,7 @@ nav_exclude:                                            # The following paths ar
 ### Author Info ###
 author:
   name              : Conor Hayes
-  image             : https://private-user-images.githubusercontent.com/16562476/531806512-d1a9e713-43b0-4814-8978-4b229b7b4367.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njc1ODc2MjgsIm5iZiI6MTc2NzU4NzMyOCwicGF0aCI6Ii8xNjU2MjQ3Ni81MzE4MDY1MTItZDFhOWU3MTMtNDNiMC00ODE0LTg5NzgtNGIyMjliN2I0MzY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAxMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMTA1VDA0Mjg0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiYzJkMTdhNmU1MjYzMmVhYTNmZTkzMWE4NTcxODE0YzM3NmE0NmYwZDkyYTJmZjU0Njk5NWIxNjgxYzAzOWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9iVSqTN5I6CP27HIpWvUDFUvCkv6poCN9up-RyN9YNs
+  image             : https://private-user-images.githubusercontent.com/16562476/531806512-d1a9e713-43b0-4814-8978-4b229b7b4367.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njc1ODg3NjQsIm5iZiI6MTc2NzU4ODQ2NCwicGF0aCI6Ii8xNjU2MjQ3Ni81MzE4MDY1MTItZDFhOWU3MTMtNDNiMC00ODE0LTg5NzgtNGIyMjliN2I0MzY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAxMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMTA1VDA0NDc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWE0Yzg1YTllNjY5YWZhYzg4MzM4NzIyZGU2MTc5ZjcyYTg5N2RkODg0M2QxM2U3NDAwYmI0ZTJhZjYxY2Q3NjgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TYPUbwy-a_OZ-hQ9wK2cYgwUc6g8od7IRpC6UCssbnU
   email             : cwoodhayes@gmail.com
   github            : cwoodhayes
 # gitlab            : your_username
