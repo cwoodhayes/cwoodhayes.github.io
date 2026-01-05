@@ -1,11 +1,10 @@
 ### Site Settings ###
-title               : portfolYOU
+title               : Conor Wood Hayes
 description         : >-
-                      I turn coffee :coffee: into code,
-                      use tabs over spaces
-                      and never broke production.
-baseurl             : "/portfolYOU"            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
-repository          : yousinix/portfolYOU      # Change to <your-username>/<your-username>.github.io (or remove it if you don't need remote projects)
+                      Hands on robotics & embedded systems engineer.
+                      Robotic manipulation and embodied intelligence, spacecraft avionics, consumer medical devices.
+baseurl             : ""            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
+repository          : cwoodhayes/cwoodhayes.github.io
 remote_theme        : yousinix/portfolYOU
 open_new_tab        : false                    # Opens external URLs in new tab (works for posts, projects and navbar only)
 
@@ -24,27 +23,18 @@ nav_exclude:                                            # The following paths ar
 
 ### Author Info ###
 author:
-  name              : John Doe
-  image             : https://i.imgur.com/uyDNQnn.jpg
-  behance           : your_username
-# dribbble          : your_username
-  email             : username@domain.com
-  facebook          : your_username
-  github            : your_username
+  name              : Conor Hayes
+  image             : https://private-user-images.githubusercontent.com/16562476/531806512-d1a9e713-43b0-4814-8978-4b229b7b4367.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njc1ODc2MjgsIm5iZiI6MTc2NzU4NzMyOCwicGF0aCI6Ii8xNjU2MjQ3Ni81MzE4MDY1MTItZDFhOWU3MTMtNDNiMC00ODE0LTg5NzgtNGIyMjliN2I0MzY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAxMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMTA1VDA0Mjg0OFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWZiYzJkMTdhNmU1MjYzMmVhYTNmZTkzMWE4NTcxODE0YzM3NmE0NmYwZDkyYTJmZjU0Njk5NWIxNjgxYzAzOWQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.9iVSqTN5I6CP27HIpWvUDFUvCkv6poCN9up-RyN9YNs
+  email             : cwoodhayes@gmail.com
+  github            : cwoodhayes
 # gitlab            : your_username
 # instagram         : your_username
 # kaggle            : your_username
-  linkedin          : your_username
-  medium            : your_username
-# soundcloud        : your_username
-# spotify           : your_username
-# stackoverflow     : your_user_id
-# tumblr            : your_username.tumblr.com
-# twitch            : your_username
+  linkedin          : cwoodhayes
+  # medium            : your_username
+  spotify           : 13DmASWA762GpdaSAAR90l
   twitter           : your_username
-# vimeo             : your_username
 # youtube           : your_channel_name
-# keybase           : your_username
 
 
 ### Posts ###
@@ -58,26 +48,11 @@ collections:
     permalink: /projects/:name
 
 
-### Disqus ###
-disqus:
-  shortname: your-short-name-disqus                     # Your website Shortname on disqus
-
-
 ### Analytics ###
 analytics:
   enabled: false                                        # Set true to enable analytics
   google:
     tracking_id: your-google-tracking-id
-
-
-### Buy me a coffee ###
-# See https://www.buymeacoffee.com/
-buymeacoffee:
-  enabled: false
-  username: your_username
-  color: "#007bff"
-  message: "Thank you for visiting."                    # Message to be displayed aside from the button for a few seconds.
-  description: "Support me on Buy me a coffee!"
 
 
 ### Defaults for collections ###
