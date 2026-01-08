@@ -1,3 +1,6 @@
 [submodule "pages/resume"]
 	path = pages/cv/resume
 	url = git@github.com:cwoodhayes/resume.git
+[submodule "pages/1pg-resume/resume"]
+	path = pages/1pg-resume/resume
+	url = git@github.com:cwoodhayes/resume.git
