@@ -1,2 +1,10 @@
 _site
 .vscode
+
+.DS_Store
+
+# don't pollute the repo with videos.
+*.MOV
+*.mov
+*.mp4
+
