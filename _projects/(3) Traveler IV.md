@@ -2,7 +2,7 @@
 name: Traveler IV - USC Rocket Propulsion Lab
 tools: [Avionics, Electronics, Embedded Systems, Rocket Engineering, Launch Operations]
 image: /media/rpl/t4_launch_wide.jpg
-description: Avionics Lead for the first entirely student-designed, built, and launched rocket to fly to space. 
+description: The first entirely student-designed, built, and launched rocket to fly to space. 
 ---
 
 ![Traveler IV Launch](/media/rpl/t4_launch_wide.jpg)
@@ -19,7 +19,7 @@ Finally, after the launch, I supervised the effort to determine a flight path fr
 
 ### Traveler IV Quick Facts
 
-- **Max altitude:** 339,800 ft (± 16,500 ft)
+- **Max altitude:** 339,800 ft (± 16,500 ft) ; 103.6km
 - **Max acceleration:** 18.8g (184 m/s²)
 - **Max speed:** 1514 m/s (Mach 5.1)
 - **Total flight time:** ~11 minutes
@@ -34,9 +34,15 @@ Documentary about the vehicle and team (start at 22:58 for the launch):
 
 <iframe width="100%" height="400" src="https://www.youtube.com/embed/72VkAoYt8mk?start=1378" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-Additional launch footage:
+
+In-flight footage from the flight to space
 
 <iframe width="100%" height="400" src="https://www.youtube.com/embed/-6E7mFwsqUU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+Whitepaper describing the performance of the vehicle:
+
+<iframe src="https://drive.google.com/viewerng/viewer?url=http%3A//static1.squarespace.com/static/549ce89be4b0cddb26c4894b/t/5ce58210e4966b7fc63fbe10/1558544951210/Traveler-IV-Whitepaper&embedded=true" width="600" height="780" style="border: none;"></iframe>
 
 ### Additional Resources
 
