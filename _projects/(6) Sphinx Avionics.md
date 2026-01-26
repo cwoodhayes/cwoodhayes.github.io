@@ -6,7 +6,7 @@ description: 1U avionics board for deep space missions. Created automated board 
 permalink: /projects/sphinx-avionics/
 ---
 
-![Sphinx](/assets/space work/sphinx_lores.png)
+<img src="/assets/space work/sphinx_lores.png" alt="Sphinx Avionics Board" style="width: 100%; max-width: 500px; margin: 0 auto 2rem; display: block;">
 
 # Sphinx - Novel 1U Avionics Board for Deep Space Missions
 
@@ -17,7 +17,7 @@ I helped bring up the [Sphinx Command & Data Handling Avionics Board](https://ie
 ### My Contributions
 
 - **Created the automated board validation test suite** (still in use) — due to this, listed as inventor for *NASA Copyright of Invention NPO 51462-CP*
-- **As part of the above, wrote firmware & Python test harnesses** for:
+- **As part of the above, wrote firmware (for the [Gaisler GR712](https://www.gaisler.com/products/gr712rc) rad-hardened SPARC microprocessor) & Python test harnesses** for:
   - NOR & NAND flash memory controllers with EDAC
   - SPI, I2C, CAN, and SpaceWire buses
 
@@ -35,6 +35,9 @@ Sphinx has since traveled around the solar system on NASA's:
 - Detailed knowledge of board bring-up, common components & protocols, and use of FPGAs in real-world systems
 - General hardware debugging skills on high-cost equipment
 - Specific knowledge of how the deep space environment (radiation, vacuum) affects electronics, and mitigation strategies for the issues involved (i.e. error detection & correction codes, triple fault mitigation, bus design, etc.)
+
+NEA scout mission concept art, which flew with Sphinx as its primary compute hardware.
+![NASA Lunar Flashlight](/assets/space%20work/Lunar_Flashlight_spaceprobe.jpeg)
 
 ### Links
 
