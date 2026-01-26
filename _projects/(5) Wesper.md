@@ -1,7 +1,7 @@
 ---
 name: Wesper - Sleep Lab at Home
 tools: [Firmware, Cloud Architecture, Backend Development, Python, AWS, BLE, Embedded Systems, FDA Medical Device]
-image: 
+image: /assets/wesper/IMG_6207.jpeg
 description: Firmware, cloud architecture, and backend development for a consumer sleep monitoring device. Led FDA clearance for sleep apnea diagnosis and enabled mass production.
 permalink: /projects/wesper/
 ---
