@@ -1,12 +1,12 @@
 ---
 name: Traveler IV - USC Rocket Propulsion Lab
 tools: [Avionics, Electronics, Embedded Systems, Rocket Engineering, Launch Operations]
-image: /media/rpl/t4_launch_wide.jpg
+image: /assets/rpl/t4_launch_wide.jpg
 description: The first entirely student-designed, built, and launched rocket to fly to space.
 permalink: /projects/traveler-iv/
 ---
 
-![Traveler IV Launch](/media/rpl/t4_launch_wide.jpg)
+![Traveler IV Launch](/assets/rpl/t4_launch_wide.jpg)
 
 # USCRPL's Traveler IV
 
@@ -51,19 +51,19 @@ Launch procedures document I wrote & used during the launch to precisely coordin
 <iframe class="embedly-embed" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1QwrFheadJeyUGvTcWwMZGDiPuXN5oWXEvow9g05874s%2Fpreview%3Fembedded%3Dtrue&display_name=Google+Docs&url=http%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1QwrFheadJeyUGvTcWwMZGDiPuXN5oWXEvow9g05874s%2Fedit%3Fusp%3Dsharing&image=https%3A%2F%2Flh7-us.googleusercontent.com%2Fdocs%2FAHkbwyIL6LdZAdqd0SMczaxiRbDBhjO9Z5joukw-RXN1cZM8Yq6-0I0p9DQgs4ZMahn66xAzvykkFZDLDDTZLLFS_6fSRGAlVPtbbGbVVjI3YVD3sTWXmBBu%3Dw1200-h630-p&type=text%2Fhtml&scroll=auto&schema=google" width="700" height="530" scrolling="auto" title="Google Docs embed" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
 
 Overview flowchart I designed describing the full launch procedure for all lab members on the day of the launch; printed & kept in-hand by all team leads on day of launch.
-![TIV Launch Flow](/media/rpl/Traveler%20IV%20Launch%20Flow.png)
+![TIV Launch Flow](/assets/rpl/Traveler%20IV%20Launch%20Flow.png)
 
 Traveler IV after landing; the craft is black due to the paint + outer sacrificial material layers on the nosecone + fins ablating off during flight.
-![TIV after landing](/media/rpl/t4_after_landing.jpg)
+![TIV after landing](/assets/rpl/t4_after_landing.jpg)
 
 Launch-critical members of the avionics team saying goodbye to the avionics system on the morning of the launch, prior to its integration into the nosecone.
-![Avionics team morning-of](/media/rpl/avionics_team_morning_of.jpeg)
+![Avionics team morning-of](/assets/rpl/avionics_team_morning_of.jpeg)
 
 Traveler IV hanging from the ceiling of lab after its successful mission:
-![Rocket graveyard](/media/rpl/rpl_lab_pic.jpeg)
+![Rocket graveyard](/assets/rpl/rpl_lab_pic.jpeg)
 
 All USCRPL members posing with the rocket the night before launch:
-![All lab with TIV](/media/rpl/all_lab_photo.webp)
+![All lab with TIV](/assets/rpl/all_lab_photo.webp)
 ### Additional Resources
 
 - [RPL Official Website](https://www.uscrpl.com/traveler-iv)

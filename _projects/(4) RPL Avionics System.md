@@ -1,12 +1,12 @@
 ---
 name: RPL Avionics System
 tools: [Avionics, Electronics, Flight Software, Embedded Systems, Real-time Systems]
-image: /media/rpl/avionics_system.jpeg
+image: /assets/rpl/avionics_system.jpeg
 description: Technical deep-dive into the avionics systems designed and implemented for the Traveler IV rocket launch.
 permalink: /projects/rpl-avionics/
 ---
 
-<img src="/media/rpl/avionics_system.jpeg" alt="HAMSTER Avionics System" style="width: 100%; max-width: 600px; margin: 0 auto 2rem; display: block;">
+<img src="/assets/rpl/avionics_system.jpeg" alt="HAMSTER Avionics System" style="width: 100%; max-width: 600px; margin: 0 auto 2rem; display: block;">
 
 ## HAMSTER Avionics System
 
