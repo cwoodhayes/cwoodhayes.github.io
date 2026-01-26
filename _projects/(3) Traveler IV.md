@@ -2,20 +2,21 @@
 name: Traveler IV - USC Rocket Propulsion Lab
 tools: [Avionics, Electronics, Embedded Systems, Rocket Engineering, Launch Operations]
 image: /media/rpl/t4_launch_wide.jpg
-description: The first entirely student-designed, built, and launched rocket to fly to space. 
+description: The first entirely student-designed, built, and launched rocket to fly to space.
+permalink: /projects/traveler-iv/
 ---
 
 ![Traveler IV Launch](/media/rpl/t4_launch_wide.jpg)
 
-# Traveler IV - USC Rocket Propulsion Lab
+# USCRPL's Traveler IV
 
 ## The first entirely student-designed, built, and launched rocket to fly to space
 
-I helped lead RPL through this launch as the head of avionics, leading the development of all electronics and software used to manufacture & fly the vehicle, including our custom-built avionics system.
+I helped lead University of Southern California's undergrad-run Rocket Propulsion Laboratory through this launch as the head of avionics. In this capacity I led the development of all electronics and software used to manufacture & fly the vehicle, including our custom-built avionics system.
 
 I also led the effort to design the launch procedures, after procedural problems led to the failure of the [Traveler III](https://www.uscrpl.com/traveler-iii) rocket launch in 2018, and sat at the terminal as mission control officer for the flight.
 
-Finally, after the launch, I supervised the effort to determine a flight path from the avionics data, and subsequently publish a [whitepaper](https://static1.squarespace.com/static/549ce89be4b0cddb26c4894b/t/5ce58210e4966b7fc63fbe10/1558544951210/Traveler-IV-Whitepaper) explaining our methodology.
+Finally, after the launch, I supervised the effort to determine a flight path from the avionics data, and subsequently publish a [whitepaper](https://static1.squarespace.com/static/549ce89be4b0cddb26c4894b/t/5ce58210e4966b7fc63fbe10/1558544951210/Traveler-IV-Whitepaper) explaining our methodology, to which I contributed several sections and was the final editor.
 
 The avionics system performed well in-flight, aside from a few sensor glitches detailed in the [whitepaper](https://static1.squarespace.com/static/549ce89be4b0cddb26c4894b/t/5ce58210e4966b7fc63fbe10/1558544951210/Traveler-IV-Whitepaper); in particular, our COTS GPS unit lost lock during most of the flight due to the altitude and high speed of the craft. The system successfully deployed the parachutes & recorded high-speed flight data from all sensors, and transferred it over radio link during the descent to the avionics base station. The rocket and avionics system both survived the flight & landing intact and functional, and were recovered ~20mi from the launch point.  
 
