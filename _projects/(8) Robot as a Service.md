@@ -6,7 +6,11 @@ description: Browser-based robotic teleoperation platform using WebRTC and AWS K
 permalink: /projects/raas/
 ---
 
-![RaaS Client Screenshot](/assets/raas-demo.jpg)
+<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
+	<img src="/assets/raas-demo.jpg" alt="RaaS Client Screenshot" width="320" />
+	<img src="/assets/elegoo%20car.jpeg" alt="ELEGOO Rover" width="320" />
+</div>
+
 
 # Robot as a Service (RaaS)
 
@@ -25,8 +29,6 @@ Future research directions include exploring adaptive latency compensation techn
 ## Hardware Testbed
 
 Initial testbed platform: the [ELEGOO rover](https://www.elegoo.com/blogs/arduino-projects/elegoo-smart-robot-car-kit-v4-0-tutorial)
-
-![ELEGOO Rover](/assets/elegoo%20car.jpeg)
 
 ## Architecture
 
