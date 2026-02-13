@@ -18,7 +18,7 @@ I write, perform, and produce music & visual art under the stage name [Wise John
 - Musical contributions: songwriter, producer, vocals, piano, organ, synth, guitar, bass, drums. 
 - Other contributions: bandleader, video editor, graphic designer, show booker, my own manager, etc etc
 
-Sonically I'm most often compared to Father John Misty, Phoebe Bridgers, Radiohead, and Rufus Wainwright.
+Sonically I'm most often compared to Father John Misty, Phoebe Bridgers, Radiohead, and Rufus Wainwright. Lyrically, I've explored themes of love, loss, technology, and the decline of the American empire.
 
 ---
 
