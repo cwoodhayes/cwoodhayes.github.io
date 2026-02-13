@@ -28,12 +28,12 @@ Music is & has always been a big part of my life, which exists in a complimentar
 
 ## Some pieces I'm proud of:
 
-<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/RtO7LeaEBBY?si=OK3jS-QnNMwCLRKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/S6O-gWxELzc?si=MGVNMeIciIoav2a_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; justify-content: flex-start;">
+    <iframe width="560" height="315" style="flex: 1 1 320px; min-width: 280px;" src="https://www.youtube.com/embed/RtO7LeaEBBY?si=OK3jS-QnNMwCLRKQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div style="display: flex; flex-direction: column; gap: 8px; flex: 1 1 320px; min-width: 280px;">
+        <iframe width="560" height="315" style="width: 100%;" src="https://www.youtube.com/embed/S6O-gWxELzc?si=MGVNMeIciIoav2a_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         <div style="font-size: 0.9rem; color: #666;">I generated this visual accompaniment to my song Fall of Rome using a GAN video generation script I wrote (see <a href="/projects/dreamgan">DreamGAN</a> for more).</div>
     </div>
-    <iframe id="disco-track-129175256" name="disco-track-129175256" allowfullscreen frameborder="0" class="disco-embed" src="https://wise-john.disco.ac/e/t/129175256?download=true&s=NjCZKvYDVtYuFvabQ7QFtMldZ9Q%3AR9PjlGlP&artwork=true&color=%2332B57C&theme=white" width="480" height="235"></iframe>
-    <iframe id="disco-playlist-18366670" name="disco-playlist-18366670" allowfullscreen frameborder="0" class="disco-embed" src="https://wise-john.disco.ac/e/p/18366670?download=true&s=2trDRvbNR9k1gP6TMhHMom1PkVA%3A8BwLSXKB&artwork=true&color=%2332B57C&theme=white" width="480" height="395"></iframe>
+    <iframe id="disco-track-129175256" name="disco-track-129175256" style="flex: 1 1 320px; min-width: 280px;" allowfullscreen frameborder="0" class="disco-embed" src="https://wise-john.disco.ac/e/t/129175256?download=true&s=NjCZKvYDVtYuFvabQ7QFtMldZ9Q%3AR9PjlGlP&artwork=true&color=%2332B57C&theme=dark" width="480" height="235"></iframe>
+    <iframe id="disco-playlist-18366670" name="disco-playlist-18366670" style="flex: 1 1 320px; min-width: 280px;" allowfullscreen frameborder="0" class="disco-embed" src="https://wise-john.disco.ac/e/p/18366670?download=true&s=2trDRvbNR9k1gP6TMhHMom1PkVA%3A8BwLSXKB&artwork=true&color=%2332B57C&theme=dark" width="480" height="395"></iframe>
 </div>
