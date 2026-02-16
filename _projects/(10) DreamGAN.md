@@ -2,10 +2,10 @@
 name: DreamGAN
 tools: [Visual Art, Python, Machine Learning, Video Generation, Prompt Engineering]
 category: art
-image: /assets/wj/dreamgan/FOR_cover.jpg
 description: Narrative video generation from prompt sequences, inspired by dream journals.
 permalink: /projects/dreamgan/
 date: 2021-01-01
+preview_gif: /assets/wj/dreamgan/for_cover.mp4
 ---
 
 # DreamGAN
