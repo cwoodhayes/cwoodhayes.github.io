@@ -185,8 +185,8 @@ a:focus {
   font-size: 1.15rem;
   font-weight: 500;
   border-left: 1px solid var(--color-gray-border);
-  padding-left: 0.75rem;
-  margin-left: 0.75rem;
+  padding-left: 0.65rem;
+  margin-left: 1.8rem;
 }
 
 .nav-links-and-icons {
