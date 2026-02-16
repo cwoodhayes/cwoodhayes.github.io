@@ -17,6 +17,14 @@
         {% endfor %}
       </div>
       {% endif %}
+
+      {% if project.tools %}
+      <div class="card-tags">
+        {% for tool in project.tools %}
+        <span class="tag">{{ tool }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
 
     <div class="card-image-container">
