@@ -9,8 +9,8 @@ date: 2025-01-01
 ---
 
 <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
-	<img src="/assets/raas-demo.jpg" alt="RaaS Client Screenshot" width="320" />
-	<img src="/assets/elegoo%20car.jpeg" alt="ELEGOO Rover" width="320" />
+	<img src="/assets/raas-demo.jpg" alt="RaaS Client Screenshot" style="width: 240px !important;" />
+	<img src="/assets/elegoo%20car.jpeg" alt="ELEGOO Rover" style="width: 240px !important;" />
 </div>
 
 
