@@ -5,7 +5,7 @@ category: personal
 image: /assets/rpl/t4_launch_wide.jpg
 description: The first entirely student-designed, built, and launched rocket to fly to space.
 permalink: /projects/traveler-iv/
-date: 2019-01-01
+date: 2019-05-01
 ---
 
 ![Traveler IV Launch](/assets/rpl/t4_launch_wide.jpg)
