@@ -6,6 +6,7 @@ description: My independent consulting business. Device firmware, cloud software
 image: /assets/CHSC_logo_small.png
 permalink: /projects/chsc/
 date: 2024-01-01
+preview_gif: /assets/terminal.mp4
 ---
 
 # I ran a consulting business for 2 years.
