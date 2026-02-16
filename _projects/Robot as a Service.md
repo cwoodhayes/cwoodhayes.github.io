@@ -8,9 +8,14 @@ permalink: /projects/raas/
 date: 2025-01-01
 ---
 
-<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
-	<img src="/assets/raas-demo.jpg" alt="RaaS Client Screenshot" style="width: 240px !important;" />
-	<img src="/assets/elegoo%20car.jpeg" alt="ELEGOO Rover" style="width: 240px !important;" />
+<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 2rem;">
+	<figure class="project-figure" style="width: 300px; margin: 0;">
+		<img src="/assets/raas-demo.jpg" alt="RaaS Client Screenshot">
+	</figure>
+	<figure class="project-figure" style="width: 300px; margin: 0;">
+		<img src="/assets/elegoo%20car.jpeg" alt="ELEGOO Rover">
+		<figcaption>Left: The RaaS user client streaming video from the ELEGOO Rover. Right: The ELEGOO Rover.</figcaption>
+	</figure>
 </div>
 
 
@@ -27,7 +32,7 @@ The platform consists of two browser-based WebRTC clients: the Lab Client, which
 
 Expanding support for control of the first testbed platform (the ELEGOO rover) was planned, but I set the project aside to focus on my MS in Robotics at Northwestern. 
 
-Future research directions include exploring adaptive latency compensation techniques, such as command forecasting, to improve the teleoperation experience under varying network conditions.
+Planned research directions based on the platform included exploring adaptive latency compensation techniques, such as command forecasting, to improve the teleoperation experience under varying network conditions.
 
 ## Hardware Testbed
 
@@ -35,8 +40,14 @@ Initial testbed platform: the [ELEGOO rover](https://www.elegoo.com/blogs/arduin
 
 ## Architecture
 
-![RaaS Rough Block Diagram](/assets/raas_networks_sketch.drawio.png)
-![RaaS Class Diagram](/assets/raas_classdiagram.drawio.png)
+<figure class="project-figure">
+	<img src="/assets/raas_networks_sketch.drawio.png" alt="RaaS Rough Block Diagram">
+	<figcaption>Network block diagram for RAAS.</figcaption>
+</figure>
+<figure class="project-figure">
+	<img src="/assets/raas_classdiagram.drawio.png" alt="RaaS Class Diagram">
+	<figcaption>Class diagram for RAAS User & Lab clients.</figcaption>
+</figure>
 
 ## Stuff I Learned
 
