@@ -25,12 +25,11 @@ My clients were all sourced through word-of-mouth and direct referral.
 
 ---
 
-## Problems I solve:
-- you're a start-up in early growth stages and want help conceptualizing your tech stack & establishing the scrappy engineering culture you need to keep up with rapid product & business changes
-- you're short of senior engineers & need some quick help on design, code reviews, and mentorship
-- you want to create a complex hardware-software product, but are having trouble estimating scope, creating a timeline, or kicking off design & development
-- your engineering team is struggling to deliver due to a technical or cultural gap between electrical, firmware, and software engineers, and you need someone to span the gap
-- you're experiencing engineering churn due to frequent changes in product direction, or you're taking on significant technical risk without enough confidence that the end product will generate value
+## I can help you if...
+- you are struggling to estimate scope, create a timeline, or kick off design & development for a mixed hardware-software product.
+- you are short on senior engineers & need occasional help on design, code reviews, and mentorship.
+- your engineering team is struggling to deliver due to a technical or cultural gap between electrical, firmware, and software engineers.
+- you are experiencing engineering churn due to frequent changes in product direction, or you're taking on significant technical risk without enough confidence that the end product will generate value.
 - you need experienced software help in these 3 areas: firmware development & bring-up; middleware for robotics & medical devices; cloud architecture, devops, and backend software development
 
 ![CHSC Logo](/assets/CHSC_logo_small.png)
