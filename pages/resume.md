@@ -1,7 +1,13 @@
 ---
-# layout: default
+layout: page
 title: Resume
 permalink: /resume/
-weight: 2
-external_url: /pages/1pg-resume/resume/index.html
 ---
+
+<div class="resume-container">
+	<iframe
+		src="/pages/1pg-resume/resume/index.html"
+		class="pdf-embed"
+		title="Resume"
+	></iframe>
+</div>

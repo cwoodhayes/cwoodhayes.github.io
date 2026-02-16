@@ -41,5 +41,5 @@ Initial testbed platform: the [ELEGOO rover](https://www.elegoo.com/blogs/arduin
 - TypeScript monorepo architecture - this project uses a monorepo structure to manage the Lab Client and User Client codebases, which share some common utilities and types. I'm not typically making web apps, but I like to check in on best practices for web development from time-to-time for stuff like this, where the web is the most convenient interface/platform for something interesting in robotics/embedded systems.
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/raas-hybrid-lab/raas-web" text="View GitHub Repo" %}
+<a class="project-link" href="https://github.com/raas-hybrid-lab/raas-web" target="_blank" rel="noopener noreferrer">View GitHub Repo</a>
 </p>

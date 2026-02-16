@@ -71,5 +71,5 @@ All USCRPL members posing with the rocket the night before launch:
 - [RPL Avionics Technical Details](https://www.uscrpl.com/)
 
 <p class="text-center">
-{% include elements/button.html link="https://www.uscrpl.com/traveler-iv" text="Learn More at RPL" %}
+<a class="project-link" href="https://www.uscrpl.com/traveler-iv" target="_blank" rel="noopener noreferrer">Learn More at RPL</a>
 </p>

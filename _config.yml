@@ -6,13 +6,22 @@ description         : >-
                       building embedded systems for spacecraft and consumer medical devices.
 baseurl             : ""            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : cwoodhayes/cwoodhayes.github.io
-remote_theme        : yousinix/portfolYOU
+theme               : null
 open_new_tab        : true                     # Opens external URLs in new tab (works for posts, projects and navbar only)
+
+nav_subtitle        : Robotics + Embedded Systems
+
+about:
+  paragraph_1       : Hands on robotics and embedded systems engineer focused on robotic manipulation, embodied AI/ML, and spacecraft-grade hardware.
+  paragraph_2       : Deep experience delivering embedded systems for spacecraft and consumer medical devices.
 
 
 ### Plugins ###
 plugins:
   - jemoji
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
 
 ### Navbar Settings ###
@@ -65,7 +74,7 @@ defaults:
       path: ""
       type: "projects"
     values:
-      layout: "page"
+      layout: "project"
   - scope:
       path: ""
       type: "posts"

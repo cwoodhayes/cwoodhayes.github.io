@@ -7,8 +7,8 @@ description: Vision-guided robotic system which reads & writes text on a whitebo
 
 # PenPal: Vision-Guided Conversational Writing Robot
 
-UNDER CONSTRUCTION.
+PenPal uses a vision-guided robotic system to detect a whiteboard in the environment, read handwritten questions from the board using the Gemini vision-language model, generate concise answers, and physically writes responses back onto the board using a Franka Emika arm.
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/cwoodhayes/final-project-penpal" text="Learn More" %}
+	<a class="project-link" href="https://github.com/cwoodhayes/final-project-penpal" target="_blank" rel="noopener noreferrer">Learn More</a>
 </p>

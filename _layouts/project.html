@@ -1,0 +1,106 @@
+---
+layout: default
+---
+
+<article class="project-page">
+  <div class="project-container">
+    <header class="project-header">
+      <div class="project-links">
+        {% if page.paper %}
+        <a href="{{ page.paper }}" class="project-link" target="_blank" rel="noopener noreferrer">Paper</a>
+        {% endif %}
+        {% if page.code %}
+        <a href="{{ page.code }}" class="project-link" target="_blank" rel="noopener noreferrer">Code</a>
+        {% endif %}
+        {% if page.data %}
+        <a href="{{ page.data }}" class="project-link" target="_blank" rel="noopener noreferrer">Data</a>
+        {% endif %}
+      </div>
+
+      {% if page.tags %}
+      <div class="project-tags">
+        {% for tag in page.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </header>
+
+    {% if page.carousel_images %}
+    <div class="project-carousel">
+      <div class="carousel-wrapper">
+        <div class="carousel-inner" {% if page.carousel_height %}style="height: {{ page.carousel_height }};"{% endif %}>
+          {% for image in page.carousel_images %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ image }}" alt="Project image {{ forloop.index }}">
+          </div>
+          {% endfor %}
+          <button class="carousel-nav carousel-prev" aria-label="Previous">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="carousel-nav carousel-next" aria-label="Next">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+        <div class="carousel-indicators">
+          {% for image in page.carousel_images %}
+          <button class="carousel-dot {% if forloop.first %}active{% endif %}" data-slide="{{ forloop.index0 }}"></button>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="project-content">
+      {{ content }}
+    </div>
+
+    <div class="project-footer">
+      <a href="/" class="back-link">Back to Projects</a>
+    </div>
+  </div>
+</article>
+
+<script>
+(function() {
+  if (!document.querySelector('.carousel-wrapper')) return;
+
+  let currentIndex = 0;
+  const items = document.querySelectorAll('.carousel-item');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const prevBtn = document.querySelector('.carousel-prev');
+  const nextBtn = document.querySelector('.carousel-next');
+
+  function showSlide(index) {
+    items.forEach(item => item.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    currentIndex = (index + items.length) % items.length;
+    items[currentIndex].classList.add('active');
+    dots[currentIndex].classList.add('active');
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => showSlide(currentIndex - 1));
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => showSlide(currentIndex + 1));
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      showSlide(parseInt(dot.getAttribute('data-slide'), 10));
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') showSlide(currentIndex - 1);
+    if (e.key === 'ArrowRight') showSlide(currentIndex + 1);
+  });
+})();
+</script>

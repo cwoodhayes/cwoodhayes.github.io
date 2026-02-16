@@ -10,5 +10,5 @@ description: Collection of AI/ML algorithms for robotic navigation and perceptio
 UNDER CONSTRUCTION.
 
 <p class="text-center">
-{% include elements/button.html link="https://github.com/cwoodhayes/final-project-penpal" text="Learn More" %}
+<a class="project-link" href="https://github.com/cwoodhayes/final-project-penpal" target="_blank" rel="noopener noreferrer">Learn More</a>
 </p>
