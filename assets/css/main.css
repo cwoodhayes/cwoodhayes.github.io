@@ -27,12 +27,12 @@ nav a,
 }
 
 :root {
-  --color-black: #0b0b0c;
-  --color-white: #ffffff;
-  --color-gray-light: #f5f5f5;
-  --color-gray-medium: #666666;
-  --color-gray-dark: #333333;
-  --color-gray-border: #cccccc;
+  --color-black: #ffffff;
+  --color-white: #0b0b0c;
+  --color-gray-light: #222326;
+  --color-gray-medium: #bbbbbb;
+  --color-gray-dark: #e0e0e0;
+  --color-gray-border: #222326;
   --color-accent: #e22d2d;
   --font-main: "Source Sans 3", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --font-nav: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
