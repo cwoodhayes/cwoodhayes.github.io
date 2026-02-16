@@ -112,7 +112,7 @@ a:focus {
   background-color: var(--color-white);
   border-bottom: 1px solid var(--color-gray-border);
   z-index: 1000;
-  padding: 0.9rem 0;
+  padding: 0.4rem 0;
 }
 
 .nav-container {
@@ -128,20 +128,20 @@ a:focus {
   display: flex;
   align-items: center;
   font-family: var(--font-nav);
-  font-size: 1.25rem;
+  font-size: 1.05rem;
   font-weight: 700;
   color: var(--color-black);
 }
 
 .nav-logo .nav-name {
   font-weight: 700;
-  font-size: 1.5em;
+  font-size: 1.45em;
 }
 
 .nav-logo .nav-subtitle {
   font-family: var(--font-nav);
   color: var(--color-gray-dark);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 500;
   border-left: 1px solid var(--color-gray-border);
   padding-left: 0.75rem;
@@ -176,8 +176,8 @@ a:focus {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   transition: all var(--transition-speed);
   background-color: var(--color-gray-light);
@@ -190,8 +190,8 @@ a:focus {
 }
 
 .nav-icon-link .nav-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   color: var(--color-black);
 }
 
@@ -393,8 +393,8 @@ a:focus {
 }
 
 .contact-icon-link .contact-icon {
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   color: var(--color-black);
 }
 
