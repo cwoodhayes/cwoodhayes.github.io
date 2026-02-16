@@ -4,6 +4,7 @@ tools: [Firmware, Cloud, Robotics, Product Management, DevOps, Entrepreneurship,
 description: My independent consulting business. Device firmware, cloud software, robotics, and product management.
 image: /assets/CHSC_logo_small.png
 permalink: /projects/chsc/
+date: 2024-01-01
 ---
 
 # I ran a consulting business for 2 years.

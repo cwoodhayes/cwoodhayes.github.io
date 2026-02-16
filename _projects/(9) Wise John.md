@@ -4,6 +4,7 @@ tools: [Logic Pro X, DaVinci Resolve, Piano, Guitar, Bass, Drums, Vocals, GANs]
 image: /assets/onstage_cover_photo.png
 description: 800k+ streams on Spotify for the songs I've written, performed, produced, and released.
 permalink: /projects/wise-john/
+date: 01-01-2025
 ---
 
 ![Wise John on Stage](/assets/onstage_cover_photo.png)

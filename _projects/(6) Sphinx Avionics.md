@@ -4,6 +4,7 @@ tools: [Avionics, FPGA, Board Bring-up, Embedded Systems, Deep Space, NASA, Hard
 image: /assets/space work/sphinx_lores.png
 description: 1U avionics board for deep space missions. Created automated board validation test suite and firmware for memory controllers and communication buses. Flew on NASA's NEA Scout, Lunar Flashlight, and MarCO cubesat missions.
 permalink: /projects/sphinx-avionics/
+date: 2017-01-01
 ---
 
 <img src="/assets/space work/sphinx_lores.png" alt="Sphinx Avionics Board" style="width: 100%; max-width: 500px; margin: 0 auto 2rem; display: block;">

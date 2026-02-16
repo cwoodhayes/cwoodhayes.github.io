@@ -4,6 +4,7 @@ tools: [Firmware, Cloud Architecture, Backend Development, Python, AWS, BLE, Emb
 image: /assets/wesper/IMG_6207.jpeg
 description: Firmware, cloud architecture, and backend development for a consumer sleep monitoring device. Led FDA clearance for sleep apnea diagnosis and enabled mass production.
 permalink: /projects/wesper/
+date: 2022-01-01
 ---
 
 ![Wesper branding](/assets/wesper/patches.jpeg)

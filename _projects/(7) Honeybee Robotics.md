@@ -4,6 +4,7 @@ tools: [ROS, Robotics, Software Engineering, Electrical Engineering, Motor Contr
 image: /assets/space work/europa_drill.jpeg
 description: Software & electrical engineering for exploration robotics systems. Contributed to NASA missions including Europa Lander drilling system, Venus Drill, and PlanetVac regolith sampling system.
 permalink: /projects/honeybee-robotics/
+date: 2018-01-01
 ---
 
 <div style="display: flex; gap: 1rem; justify-content: center;">

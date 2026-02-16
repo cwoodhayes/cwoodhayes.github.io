@@ -4,6 +4,7 @@ tools: [Avionics, Electronics, Flight Software, Embedded Systems, Real-time Syst
 image: /assets/rpl/avionics_system.jpeg
 description: Technical deep-dive into the avionics systems designed and implemented for the Traveler IV rocket launch.
 permalink: /projects/rpl-avionics/
+date: 2019-01-01
 ---
 
 <img src="/assets/rpl/avionics_system.jpeg" alt="HAMSTER Avionics System" style="width: 100%; max-width: 600px; margin: 0 auto 2rem; display: block;">

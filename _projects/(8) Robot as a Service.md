@@ -4,6 +4,7 @@ tools: [Robotics, Teleoperation, WebRTC, AWS Kinesis Video, Browser App, Latency
 image: /assets/raas-demo.jpg
 description: Browser-based robotic teleoperation platform using WebRTC and AWS Kinesis Video, with research plans for adaptive latency compensation via command forecasting.
 permalink: /projects/raas/
+date: 2025-01-01
 ---
 
 <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">

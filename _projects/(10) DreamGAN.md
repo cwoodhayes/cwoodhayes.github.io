@@ -4,6 +4,7 @@ tools: [Python, VQGAN-CLIP, GANs, CLIP]
 image: /assets/wj/dreamgan/FOR_cover.jpg
 description: Narrative video generation from prompt sequences, inspired by dream journals.
 permalink: /projects/dreamgan/
+date: 2021-01-01
 ---
 
 # DreamGAN
