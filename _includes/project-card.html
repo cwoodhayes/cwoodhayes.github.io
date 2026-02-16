@@ -21,12 +21,20 @@
 
     <div class="card-image-container">
       {% if project.preview_gif %}
-      <img
-        src="{{ project.preview_gif | relative_url }}"
-          alt="{{ card_title }}"
-        class="card-gif"
-        loading="lazy"
-      >
+        {% assign ext = project.preview_gif | split: '.' | last | downcase %}
+        {% if ext == 'mp4' %}
+          <video class="card-gif" autoplay loop muted playsinline preload="metadata" style="width:100%;height:auto;">
+            <source src="{{ project.preview_gif | relative_url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        {% else %}
+          <img
+            src="{{ project.preview_gif | relative_url }}"
+            alt="{{ card_title }}"
+            class="card-gif"
+            loading="lazy"
+          >
+        {% endif %}
       {% endif %}
 
       <div class="card-overlay">
