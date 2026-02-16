@@ -157,7 +157,7 @@ a:focus {
 }
 
 .nav-container {
-  max-width: var(--max-width);
+  /* max-width: var(--max-width); */
   margin: 0 auto;
   padding: 0 2rem;
   display: flex;
