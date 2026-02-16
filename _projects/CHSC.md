@@ -9,7 +9,7 @@ date: 2024-01-01
 preview_gif: /assets/terminal.mp4
 ---
 
-# I ran a consulting business for 2 years.
+# I ran a consulting business for 3 years.
 
 I supported 5 clients on 7 projects from 2022-2025, ranging from 1 to 7 months long, operating under my company *Conor Hayes Software Consulting Inc* (an S-Corp I registered in Indiana).
 
