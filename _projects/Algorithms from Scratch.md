@@ -9,8 +9,8 @@ date: 2025-12-01
 
 # Algorithms from Scratch: AI/ML for Robotics
 
-UNDER CONSTRUCTION.
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/final-project-penpal" %}
+</div>
 
-<p class="text-center">
-<a class="project-link" href="https://github.com/cwoodhayes/final-project-penpal" target="_blank" rel="noopener noreferrer">Learn More</a>
-</p>
+UNDER CONSTRUCTION.

@@ -9,9 +9,8 @@ preview_gif: /assets/msr/penpal-cover.mp4
 ---
 
 # PenPal: Vision-Guided Conversational Writing Robot
+<div class="project-button-row">
+  {% include github-button.html url="https://github.com/cwoodhayes/final-project-penpal" %}
+</div>
 
 PenPal uses a vision-guided robotic system to detect a whiteboard in the environment, read handwritten questions from the board using the Gemini vision-language model, generate concise answers, and physically writes responses back onto the board using a Franka Emika arm.
-
-<p class="text-center">
-	<a class="project-link" href="https://github.com/cwoodhayes/final-project-penpal" target="_blank" rel="noopener noreferrer">Learn More</a>
-</p>

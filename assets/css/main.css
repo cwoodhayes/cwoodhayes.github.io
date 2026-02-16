@@ -527,6 +527,13 @@ a:focus {
   flex-wrap: wrap;
 }
 
+.project-button-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 0.75rem 0 1.25rem;
+}
+
 .project-link {
   display: inline-flex;
   align-items: center;
@@ -536,6 +543,13 @@ a:focus {
   font-size: 0.9rem;
   font-weight: 600;
   font-family: var(--font-nav);
+}
+
+.project-link .link-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 0.45rem;
+  display: inline-block;
 }
 
 .project-link:hover {

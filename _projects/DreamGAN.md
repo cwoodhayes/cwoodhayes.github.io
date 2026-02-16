@@ -10,6 +10,10 @@ preview_gif: /assets/wj/dreamgan/for_cover.mp4
 
 # DreamGAN
 
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/DreamGAN" %}
+</div>
+
 TODO put main video
 
 In late 2021, I became curious about the GAN-generated images I had seen bouncing around online, and wondered if the same technique could produce narrative videos instead.
@@ -17,8 +21,6 @@ In late 2021, I became curious about the GAN-generated images I had seen bouncin
 After a night or two spent hacking around, I managed to adjust an existing VQGAN-CLIP implementation to produce narrative videos based on a series of prompts. The paper is here: https://arxiv.org/abs/2204.08583
 
 Inspired by the dream journal I was keeping at the time, I called it DreamGAN, and used it to make a number of renderings of my and others' dreams, as well as video accompaniments for my songs.
-
-The (messy) repo is here: https://github.com/cwoodhayes/DreamGAN
 
 ## Videos
 

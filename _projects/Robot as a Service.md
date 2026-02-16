@@ -16,9 +16,10 @@ date: 2025-01-01
 
 # Robot as a Service (RaaS)
 
-GitHub Repos:
-- [Web Clients](https://github.com/raas-hybrid-lab/raas-web)
-- [ELEGOO Rover Firmware](https://github.com/raas-hybrid-lab/elegoo-raas)
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/raas-hybrid-lab/raas-web" label="Web Clients" %}
+	{% include github-button.html url="https://github.com/raas-hybrid-lab/elegoo-raas" label="ELEGOO Rover Firmware" %}
+</div>
 
 I prototyped a robotic tele-operation platform that enables remote control of a simple robot from a browser app, using WebRTC peer-to-peer streaming and AWS Kinesis Video.
 
@@ -42,6 +43,3 @@ Initial testbed platform: the [ELEGOO rover](https://www.elegoo.com/blogs/arduin
 - Details of the WebRTC protocol and how to implement it in a browser app + the cloud + navigate the various networks involved properly. I anticipate using it more in the future.
 - TypeScript monorepo architecture - this project uses a monorepo structure to manage the Lab Client and User Client codebases, which share some common utilities and types. I'm not typically making web apps, but I like to check in on best practices for web development from time-to-time for stuff like this, where the web is the most convenient interface/platform for something interesting in robotics/embedded systems.
 
-<p class="text-center">
-<a class="project-link" href="https://github.com/raas-hybrid-lab/raas-web" target="_blank" rel="noopener noreferrer">View GitHub Repo</a>
-</p>
