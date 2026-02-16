@@ -5,6 +5,7 @@ category: personal
 image: https://github.com/user-attachments/assets/f5e6d137-fe92-4fc8-8cc6-306117b42d30
 description: Vision-guided robotic system which reads & writes text on a whiteboard held by a user. Built with a Franka Emika 7dof arm and a RealSense camera.
 date: 2025-12-02
+preview_gif: /assets/msr/penpal-cover.mp4
 ---
 
 # PenPal: Vision-Guided Conversational Writing Robot
