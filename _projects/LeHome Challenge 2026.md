@@ -1,6 +1,6 @@
 ---
 name: LeHome Challenge 2026
-tools: [NVIDIA IsaacSim, SmolVLA, LeRobot, Vision-Language-Action, VLA, Robotics, Deep Learning]
+tools: [NVIDIA IsaacSim, SmolVLA, LeRobot, VLA, Robotics, Deep Learning, python]
 category: personal
 image: 
 description: Fine-tuned vision-language-action (VLA) model for bimanual garment folding.
