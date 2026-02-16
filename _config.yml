@@ -6,13 +6,22 @@ description         : >-
                       building embedded systems for spacecraft and consumer medical devices.
 baseurl             : ""            # Change to empty quotes if you are hosting your site at <your-username>.github.io directly
 repository          : cwoodhayes/cwoodhayes.github.io
-remote_theme        : yousinix/portfolYOU
+theme               : null
 open_new_tab        : true                     # Opens external URLs in new tab (works for posts, projects and navbar only)
+
+nav_subtitle        : Robotics + Embedded Systems
+
+about:
+  paragraph_1       : Hands on robotics and embedded systems engineer focused on robotic manipulation, embodied AI/ML, and spacecraft-grade hardware.
+  paragraph_2       : Deep experience delivering embedded systems for spacecraft and consumer medical devices.
 
 
 ### Plugins ###
 plugins:
   - jemoji
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-feed
 
 
 ### Navbar Settings ###
@@ -29,7 +38,7 @@ nav_exclude:                                            # The following paths ar
 author:
   name              : Conor Hayes
   image             : https://private-user-images.githubusercontent.com/16562476/531806512-d1a9e713-43b0-4814-8978-4b229b7b4367.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njc1ODg3NjQsIm5iZiI6MTc2NzU4ODQ2NCwicGF0aCI6Ii8xNjU2MjQ3Ni81MzE4MDY1MTItZDFhOWU3MTMtNDNiMC00ODE0LTg5NzgtNGIyMjliN2I0MzY3LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAxMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMTA1VDA0NDc0NFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWE0Yzg1YTllNjY5YWZhYzg4MzM4NzIyZGU2MTc5ZjcyYTg5N2RkODg0M2QxM2U3NDAwYmI0ZTJhZjYxY2Q3NjgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.TYPUbwy-a_OZ-hQ9wK2cYgwUc6g8od7IRpC6UCssbnU
-  email             : cwoodhayes@gmail.com
+  email             : cwhayes@u.northwestern.edu
   github            : cwoodhayes
 # gitlab            : your_username
 # instagram         : your_username
@@ -65,7 +74,7 @@ defaults:
       path: ""
       type: "projects"
     values:
-      layout: "page"
+      layout: "project"
   - scope:
       path: ""
       type: "posts"

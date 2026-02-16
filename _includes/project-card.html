@@ -1,0 +1,60 @@
+<div class="project-card">
+  <a href="{{ project.url }}" class="card-link">
+    {% assign card_title = project.name | default: project.title %}
+    <div class="card-image-container">
+      {% if project.preview_gif %}
+        {% assign ext = project.preview_gif | split: '.' | last | downcase %}
+        {% if ext == 'mp4' %}
+          <video class="card-gif" autoplay loop muted playsinline preload="metadata" style="width:100%;height:auto;">
+            <source src="{{ project.preview_gif | relative_url }}" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        {% else %}
+          <img
+            src="{{ project.preview_gif | relative_url }}"
+            alt="{{ card_title }}"
+            class="card-gif"
+            loading="lazy"
+          >
+        {% endif %}
+      {% elsif project.image %}
+        <img
+          src="{{ project.image | relative_url }}"
+          alt="{{ card_title }}"
+          class="card-gif"
+          loading="lazy"
+        >
+      {% endif %}
+
+      <div class="card-overlay">
+        <span class="view-project-text">View Project</span>
+      </div>
+    </div>
+
+    <div class="card-content">
+      <h3 class="card-title">{{ card_title }}</h3>
+
+      {% if project.description %}
+      <div class="project-overview">
+        {{ project.description }}
+      </div>
+      {% endif %}
+
+      {% if project.tags %}
+      <div class="card-tags">
+        {% for tag in project.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if project.tools %}
+      <div class="card-tags">
+        {% for tool in project.tools %}
+        <span class="tag">{{ tool }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+  </a>
+</div>
