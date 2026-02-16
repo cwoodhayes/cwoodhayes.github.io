@@ -1,6 +1,7 @@
 ---
 name: CHSC - Consulting
-tools: [Firmware, Cloud, Robotics, Product Management, DevOps, Entrepreneurship, Client Management, Sales, Business Formation]
+tools: [Firmware, Cloud Architecture, Backend Development, Python, AWS, BLE, Embedded Systems, FDA Medical Device]
+category: professional
 description: My independent consulting business. Device firmware, cloud software, robotics, and product management.
 image: /assets/CHSC_logo_small.png
 permalink: /projects/chsc/

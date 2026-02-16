@@ -1,6 +1,7 @@
 ---
 name: Wise John - Music
-tools: [Logic Pro X, DaVinci Resolve, Piano, Guitar, Bass, Drums, Vocals, GANs]
+tools: [Music Production, Songwriting, Performance, Visual Art]
+category: art
 image: /assets/onstage_cover_photo.png
 description: 800k+ streams on Spotify for the songs I've written, performed, produced, and released.
 permalink: /projects/wise-john/

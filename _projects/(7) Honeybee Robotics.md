@@ -1,6 +1,7 @@
 ---
 name: Honeybee Robotics - Space Drills
 tools: [ROS, Robotics, Software Engineering, Electrical Engineering, Motor Control, Altium, Board Design]
+category: professional
 image: /assets/space work/europa_drill.jpeg
 description: Software & electrical engineering for exploration robotics systems. Contributed to NASA missions including Europa Lander drilling system, Venus Drill, and PlanetVac regolith sampling system.
 permalink: /projects/honeybee-robotics/

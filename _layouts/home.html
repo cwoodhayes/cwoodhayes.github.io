@@ -3,16 +3,47 @@ layout: default
 ---
 
 <div class="home-page">
-  <section id="projects" class="projects-section">
-    <div class="container">
-      <div class="projects-grid">
-        {% assign sorted_projects = site.projects | sort: 'date' | reverse %}
-        {% for project in sorted_projects %}
-          {% include project-card.html project=project %}
-        {% endfor %}
-      </div>
+
+  <div class="main-sections-layout">
+    <aside class="left-nav">
+      <nav>
+        <ul>
+          <li><a href="#personal-projects">Personal Projects</a></li>
+          <li><a href="#art">Art</a></li>
+          <li><a href="#professional-work">Professional Work</a></li>
+        </ul>
+      </nav>
+    </aside>
+    <div class="sections-content">
+      <section id="personal-projects" class="projects-section">
+        <h2>Personal Projects</h2>
+        <div class="projects-grid">
+          {% assign personal_projects = site.projects | where: "category", "personal" | sort: 'date' | reverse %}
+          {% for project in personal_projects %}
+            {% include project-card.html project=project %}
+          {% endfor %}
+        </div>
+      </section>
+      <section id="professional-work" class="projects-section">
+        <h2>Professional Work</h2>
+        <div class="projects-grid">
+          {% assign professional_projects = site.projects | where: "category", "professional" | sort: 'date' | reverse %}
+          {% for project in professional_projects %}
+            {% include project-card.html project=project %}
+          {% endfor %}
+        </div>
+      </section>
+      <section id="art" class="projects-section">
+        <h2>Art</h2>
+        <div class="projects-grid">
+          {% assign art_projects = site.projects | where: "category", "art" | sort: 'date' | reverse %}
+          {% for project in art_projects %}
+            {% include project-card.html project=project %}
+          {% endfor %}
+        </div>
+      </section>
     </div>
-  </section>
+  </div>
 
   <section id="about" class="about-section">
     <div class="container">

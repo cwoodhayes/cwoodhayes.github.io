@@ -1,6 +1,7 @@
 ---
 name: Robot as a Service (RaaS)
-tools: [Robotics, Teleoperation, WebRTC, AWS Kinesis Video, Browser App, Latency Compensation]
+tools: [WebRTC, AWS Kinesis Video, TypeScript, ROS, Robotics]
+category: personal
 image: /assets/raas-demo.jpg
 description: Browser-based robotic teleoperation platform using WebRTC and AWS Kinesis Video, with research plans for adaptive latency compensation via command forecasting.
 permalink: /projects/raas/

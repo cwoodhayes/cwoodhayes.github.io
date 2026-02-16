@@ -1,6 +1,7 @@
 ---
 name: DreamGAN
-tools: [Python, VQGAN-CLIP, GANs, CLIP]
+tools: [Visual Art, Python, Machine Learning, Video Generation, Prompt Engineering]
+category: art
 image: /assets/wj/dreamgan/FOR_cover.jpg
 description: Narrative video generation from prompt sequences, inspired by dream journals.
 permalink: /projects/dreamgan/
