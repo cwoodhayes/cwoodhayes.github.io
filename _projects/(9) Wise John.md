@@ -6,18 +6,19 @@ image: /assets/onstage_cover_photo.png
 description: 800k+ streams on Spotify for the songs I've written, performed, produced, and released.
 permalink: /projects/wise-john/
 date: 01-01-2025
+preview_gif: /assets/wj/mrlove_insta_ad.mp4
 ---
 
 ![Wise John on Stage](/assets/onstage_cover_photo.png)
 
-I write, perform, and produce music & visual art under the stage name [Wise John](https://open.spotify.com/artist/13DmASWA762GpdaSAAR90l). 
+I write, perform, and produce music & visual art under the stage name [Wise John](https://open.spotify.com/artist/13DmASWA762GpdaSAAR90l).
 
 *Stats:*
 - **800k+ streams on Spotify**, and more on other streaming platforms
 - **40+ Wise John shows** played in NYC, LA, and elsewhere
 - **24 songs released** (1 album, 3 EP's)
 
-- Musical contributions: songwriter, producer, vocals, piano, organ, synth, guitar, bass, drums. 
+- Musical contributions: songwriter, producer, vocals, piano, organ, synth, guitar, bass, drums.
 - Other contributions: bandleader, video editor, graphic designer, show booker, my own manager, etc etc
 
 Sonically I'm most often compared to Father John Misty, Phoebe Bridgers, Radiohead, and Rufus Wainwright. Lyrically, I've explored themes of love, loss, technology, and the decline of the American empire.
