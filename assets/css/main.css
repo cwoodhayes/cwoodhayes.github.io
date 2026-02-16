@@ -50,7 +50,7 @@ html {
 
 body {
   font-family: var(--font-main);
-  font-size: 17px;
+    font-size: 15px;
   line-height: 1.6;
   color: var(--color-black);
   background-color: var(--color-white);
@@ -760,23 +760,24 @@ a:focus {
 }
 
 .footer-note {
-  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
 }
 
 @media (max-width: 1024px) {
   .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
+  font-size: 1.05rem;
     gap: 2rem;
   }
 
   .about-content {
     grid-template-columns: 180px 1fr;
     gap: 2.5rem;
-    max-width: 100%;
+  padding: 0.7rem 0;
   }
 
   .profile-image {
-    width: 180px;
+  height: 250px;
     height: 180px;
   }
 
