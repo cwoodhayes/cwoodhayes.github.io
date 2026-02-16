@@ -35,6 +35,13 @@
             loading="lazy"
           >
         {% endif %}
+      {% elsif project.image %}
+        <img
+          src="{{ project.image | relative_url }}"
+          alt="{{ card_title }}"
+          class="card-gif"
+          loading="lazy"
+        >
       {% endif %}
 
       <div class="card-overlay">
