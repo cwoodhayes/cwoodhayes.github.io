@@ -5,7 +5,7 @@ category: personal
 preview_gif: /assets/msr/polyumi/umi_demo.mp4
 description: A novel multi-modal data collection system for robot imitation learning.
 permalink: /projects/polyumi/
-date: 2026-02-19
+date: 2026-02-01
 ---
 
 # PolyUMI: Visual+Auditory+Tactile Manipulation Data Collector for Imitation Learning

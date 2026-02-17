@@ -5,7 +5,7 @@ category: personal
 image: 
 description: Fine-tuned vision-language-action (VLA) model for bimanual garment folding.
 permalink: /projects/lehome-challenge-2026/
-date: 2026-02-16
+date: 2026-01-30
 redirect_to: https://sites.google.com/u.northwestern.edu/lehomechallenge
 preview_gif: assets/msr/lehome-challenge-demo.mp4
 ---
