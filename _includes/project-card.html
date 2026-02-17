@@ -4,14 +4,22 @@
     <div class="card-image-container">
       {% if project.preview_gif %}
         {% assign ext = project.preview_gif | split: '.' | last | downcase %}
-        {% if ext == 'mp4' %}
+        {% assign is_absolute = project.preview_gif contains '://' %}
+        {% if is_absolute %}
+          {% assign preview_src = project.preview_gif %}
+        {% else %}
+          {% assign preview_src = project.preview_gif | relative_url %}
+        {% endif %}
+        {% assign is_video = ext == 'mp4' or ext == 'mov' or ext == 'webm' %}
+        {% assign is_common_image = ext == 'png' or ext == 'jpg' or ext == 'jpeg' or ext == 'gif' or ext == 'webp' %}
+        {% if is_video or (project.preview_gif contains 'user-attachments/assets' and is_common_image == false) %}
           <video class="card-gif" autoplay loop muted playsinline preload="metadata" style="width:100%;height:auto;">
-            <source src="{{ project.preview_gif | relative_url }}" type="video/mp4">
+            <source src="{{ preview_src }}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
         {% else %}
           <img
-            src="{{ project.preview_gif | relative_url }}"
+            src="{{ preview_src }}"
             alt="{{ card_title }}"
             class="card-gif"
             loading="lazy"
