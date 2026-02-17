@@ -74,6 +74,7 @@ nav a,
   --color-gray-medium: #bbbbbb;
   --color-gray-dark: #e0e0e0;
   --color-gray-border: #222326;
+  --color-link-body: #fd9b3f;
   --color-accent: #e22d2d;
   --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-nav: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -567,6 +568,10 @@ a:focus {
   font-size: 1.05rem;
   line-height: 1.8;
   max-width: 100%;
+}
+
+.project-content a {
+  color: var(--color-link-body);
 }
 
 .project-content h2 {
