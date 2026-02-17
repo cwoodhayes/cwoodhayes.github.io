@@ -886,6 +886,11 @@ a:focus {
 }
 
 @media (max-width: 768px) {
+  .nav-logo .nav-name {
+    font-weight: 700;
+    font-size: 1.0em;
+  }
+
   .main-sections-layout {
     margin-left: 1rem;
     margin-right: 1rem;
@@ -918,11 +923,15 @@ a:focus {
   }
 
   .nav-logo .nav-subtitle {
-    font-size: 0.9rem;
+    display: none;
   }
 
   .nav-links-and-icons {
     gap: 10px;
+  }
+
+  .nav-links {
+    gap: 0.75rem;
   }
 
   .nav-contact-icons {
