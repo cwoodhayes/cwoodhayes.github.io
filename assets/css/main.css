@@ -886,6 +886,20 @@ a:focus {
 }
 
 @media (max-width: 768px) {
+  .main-sections-layout {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .left-nav {
+    display: none;
+  }
+
+  .sections-content {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   :root {
     --spacing-lg: 3rem;
     --spacing-xl: 4rem;
