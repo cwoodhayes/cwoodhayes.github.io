@@ -10,4 +10,16 @@ date: 2026-02-01
 
 # PolyUMI: Visual+Auditory+Tactile Manipulation Data Collector for Imitation Learning
 
-combining the Universal Manipulation Interface (UMI) platform with the PolyTouch optical tactile + audio sensor.
+This project combines the Universal Manipulation Interface (UMI) platform with the PolyTouch optical tactile + audio sensor, which I reverse-engineer and make open source as the PolyTouch CE.
+
+### My Contributions:
+- Reverse-engineering PolyTouch and redesigning UMI EE + collector to incorporate it and the required onboard compute (Raspberry Pi Zero 2 W).
+- Adapting the UMI training + inference pipelines to work on our Franka Emika Panda arm (different gripper from original paper) in 2026 (some softwares are EOL, etc) with a new sensor/finger mechanism (requires new policies to be trained).
+- Developed software data collection pipeline making it easy to record, organize, and visualize this multimodal data.
+
+
+---
+
+Here are live-updated slides from my winter project journal:
+
+<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQR-MULBLa4QTOi97m1QAagUZOOMOkp6oHEydoJPGzYtv5GeUqmyuLx2DniBYF2dP6ZISberjtdc6vv/pubembed?start=false&loop=true&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
