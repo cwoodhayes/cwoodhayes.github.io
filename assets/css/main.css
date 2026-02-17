@@ -283,7 +283,8 @@ a:focus {
 .card-image-container {
   position: relative;
   width: 100%;
-  height: 350px;
+  min-height: 250px;
+  max-height: 350px;
   overflow: hidden;
   background-color: var(--color-gray-light);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -291,9 +292,11 @@ a:focus {
 
 .card-gif {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  min-height: 250px;
+  max-height: 350px;
   display: block;
+  object-fit: contain;
 }
 
 .card-overlay {
@@ -953,7 +956,13 @@ a:focus {
   }
 
   .card-image-container {
-    height: 320px;
+    min-height: 180px;
+    max-height: 320px;
+  }
+
+  .card-gif {
+    min-height: 180px;
+    max-height: 320px;
   }
 
   .about-content {
@@ -1037,7 +1046,13 @@ a:focus {
   }
 
   .card-image-container {
-    height: 300px;
+    min-height: 160px;
+    max-height: 280px;
+  }
+
+  .card-gif {
+    min-height: 160px;
+    max-height: 280px;
   }
 
   .project-content {
