@@ -292,11 +292,9 @@ a:focus {
 
 .card-gif {
   width: 100%;
-  height: auto;
-  min-height: 250px;
-  max-height: 350px;
+  height: 100%;
   display: block;
-  object-fit: contain;
+  object-fit: cover;
 }
 
 .card-overlay {
