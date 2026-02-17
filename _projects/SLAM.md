@@ -1,6 +1,6 @@
 ---
 name: SLAM from Scratch
-tools: [ROS2, C++, SLAM, Turtlebot3, RViz, TF]
+tools: [ROS 2, C++, SLAM, Turtlebot3, RViz, TF, LiDAR]
 category: personal
 preview_gif: https://github.com/user-attachments/assets/bab2ae6e-a6a7-44c5-8ed0-ffb4ad08dbb6
 description: ROS 2-based lidar SLAM + control stack for Turtlebot3, with control, kinematics, geometry, and simulation tooling developed from scratch.
