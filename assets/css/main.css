@@ -271,10 +271,6 @@ a:focus {
   transition: transform var(--transition-speed);
 }
 
-.project-card:hover {
-  transform: translateY(-4px);
-}
-
 .card-link {
   display: block;
   color: inherit;
@@ -308,8 +304,14 @@ a:focus {
   transition: opacity var(--transition-speed);
 }
 
-.card-link:hover .card-overlay {
-  opacity: 1;
+@media (hover: hover) {
+  .project-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .card-link:hover .card-overlay {
+    opacity: 1;
+  }
 }
 
 .view-project-text {
