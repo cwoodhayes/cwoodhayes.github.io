@@ -4,7 +4,7 @@ layout: default
 
 <article class="project-page">
   <div class="project-container">
-    <header class="project-header">
+    <!-- <header class="project-header">
       <div class="project-links">
         {% if page.paper %}
         <a href="{{ page.paper }}" class="project-link" target="_blank" rel="noopener noreferrer">Paper</a>
@@ -15,11 +15,11 @@ layout: default
         {% if page.data %}
         <a href="{{ page.data }}" class="project-link" target="_blank" rel="noopener noreferrer">Data</a>
         {% endif %}
-      </div>
+      </div> -->
 
-      {% if page.tags %}
+      {% if page.tools %}
       <div class="project-tags">
-        {% for tag in page.tags %}
+        {% for tag in page.tools %}
         <span class="tag">{{ tag }}</span>
         {% endfor %}
       </div>
