@@ -17,6 +17,8 @@ This project combines the [Universal Manipulation Interface (UMI)](https://umi-g
 - Adapting the UMI training + inference pipelines to work on our Franka Emika Panda arm (different gripper from original paper) in 2026 (some softwares are EOL, etc) with a new sensor/finger mechanism (requires new policies to be trained).
 - Developed software data collection pipeline making it easy to record, organize, and visualize this multimodal data.
 
+### Future Work
+This project lays the groundwork for my master's thesis/capstone project beginning in the spring, which is to use the PolyUMI platform I've built to explore novel imitation learning strategies combining touch, vision, and audio data for robust manipulation.
 
 ---
 
