@@ -585,6 +585,13 @@ a:focus {
   letter-spacing: -0.02em;
 }
 
+.project-content hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-gray-medium);
+  opacity: 0.6;
+}
+
 .project-content img,
 .project-content video {
   max-width: 100%;
