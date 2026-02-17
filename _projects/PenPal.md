@@ -1,6 +1,6 @@
 ---
 name: PenPal - Conversational Arm
-tools: [ROS2, OpenCV, MoveIt, Robotic Arm, RealSense, python]
+tools: [ROS 2, OpenCV, MoveIt, Robotic Arm, RealSense, Python]
 category: personal
 image: https://github.com/user-attachments/assets/f5e6d137-fe92-4fc8-8cc6-306117b42d30
 description: Vision-guided robotic system which reads & writes text on a whiteboard held by a user. Built with a Franka Emika 7dof arm and a RealSense camera.

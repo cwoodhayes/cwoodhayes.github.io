@@ -1,6 +1,6 @@
 ---
 name: RPL Avionics System
-tools: [Avionics, Electronics, Flight Software, Embedded Systems, Real-time Systems]
+tools: [Avionics, Electronics, Flight Software, Embedded Systems, Real-Time Systems]
 image: /assets/rpl/avionics_system.jpeg
 category: personal
 description: Avionics system designed and built for the Traveler IV rocket, which successfully deployed parachutes and transmitted real-time trajectory data to space and back.
