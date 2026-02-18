@@ -19,11 +19,11 @@ preview_gif: /assets/wj/dreamgan/for_cover.mp4
 <div style="display: flex; gap: 2rem; align-items: flex-start; flex-wrap: wrap; margin-bottom: 2rem;">
 	<div style="flex: 1; min-width: 300px;">
 		<p>In late 2021, I became curious about the GAN-generated images I had seen bouncing around online, and wondered if the same technique could produce narrative videos instead.</p>
-		<p>After a night or two spent hacking around, I managed to adjust an existing VQGAN-CLIP implementation to produce narrative videos based on a series of prompts. The paper is here: https://arxiv.org/abs/2204.08583</p>
+		<p>After a night or two spent hacking around, I managed to adjust VQGAN-CLIP (<a href="https://arxiv.org/abs/2204.08583" target="_blank">Crowson et al</a>) to produce narrative videos based on a series of prompts.</p>
 		<p>Inspired by the dream journal I was keeping at the time, I called it DreamGAN, and used it to make a number of renderings of my and others' dreams, as well as video accompaniments for my songs.</p>
 	</div>
-	<div style="flex: 0 0 auto; min-width: 300px; max-width: 400px;">
-		<video width="100%" controls>
+	<div style="flex: 0 0 auto; min-width: 300px; max-width: 400px; margin-top: 0; padding-top: 0;">
+		<video style="margin-top: 0;" autoplay muted loop controls>
 			<source src="https://github.com/user-attachments/assets/06846f57-3d19-4520-a9ad-d8376b084965" type="video/mp4">
 			Your browser does not support the video tag.
 		</video>
