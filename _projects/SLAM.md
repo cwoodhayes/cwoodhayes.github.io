@@ -8,20 +8,28 @@ permalink: /projects/me495-slam/
 date: 2026-01-15
 ---
 
-# ME495 SLAM Stack
+# SLAM from Scratch: ROS 2 Navigation Stack for Turtlebot3
 
 <div class="project-button-row">
   {% include github-button.html url="https://github.com/ME495-Navigation/slam-cwoodhayes" %}
 </div>
 
-This project is my course repository for **ME495: Sensing, Navigation, and Machine Learning for Robotics**. It implements a full ROS 2 navigation stack for Turtlebot3, including simulation, control, and mapping components built from scratch.
+**Authors**: Conor Hayes
+
+In this project, I implement a full ROS 2 navigation stack for the [Turtlebot3 Burger](https://www.turtlebot.com/turtlebot3/) differential drive mobile robot, including LiDAR SLAM, control, and simulation components, all built from scratch in C++. This means no external SLAM or kinematics libraries, no Gazebo simulation, no Eiegen; just basic ROS 2 packages and my own implementations of the necessary algorithms and tools.
 
 ## Highlights
 
-- ROS 2 SLAM + control stack for Turtlebot3 (simulation + hardware)
+- EKF (Extended Kalman Filter) SLAM implementation using LiDAR data + odometry for mapping and localization
+- Custom forward + inverse kinematics implementation (`turtlelib`) for differential drive robot
 - Custom simulator (`nusim`) with configurable arena and obstacles
-- Core geometry and kinematics library (`turtlelib`) with SE(2) transforms
-- Visualization + tooling in RViz
+- Visualization + tooling in RViz for real-time robot state display in both simulation and hardware
+- Deployment to real hardware (Turtlebot3 Burger) for testing in a physical environment 
+
+## Tech Stack
+- ROS 2 Kilted Kaiju
+- C++23
+- Turtlebot3 Burger
 
 ## Packages
 
@@ -30,7 +38,6 @@ This project is my course repository for **ME495: Sensing, Navigation, and Machi
 - `turtlelib`: SE(2), diff-drive kinematics, and SVG helpers
 - `nusim`: RViz-based simulator for SLAM development
 
-## Links
+## Acknowledgements
 
-- Code: https://github.com/ME495-Navigation/slam-cwoodhayes
-- Course: https://nu-msr.github.io/ME495-Sensing-Navigation-and-Machine-Learning/
+Big thanks to Dr. Matthew Elwin, who runs the MSR program at Northwestern, and teaches the course in which this project was developed ([ME495: Sensing, Navigation, and Machine Learning](https://nu-msr.github.io/navigation/index.html)).
