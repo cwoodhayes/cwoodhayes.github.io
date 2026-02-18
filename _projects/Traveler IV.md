@@ -38,20 +38,28 @@ The avionics system performed well in-flight, aside from a few sensor glitches d
 
 Documentary about the vehicle and team (start at 22:58 for the launch):
 
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/72VkAoYt8mk?start=1378" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div style="width: 100%; aspect-ratio: 16 / 9;">
+	<iframe style="width: 100%; height: 100%;" src="https://www.youtube.com/embed/72VkAoYt8mk?start=1378" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 
 In-flight footage from the flight to space
 
-<iframe width="100%" height="400" src="https://www.youtube.com/embed/-6E7mFwsqUU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div style="width: 100%; aspect-ratio: 16 / 9;">
+	<iframe style="width: 100%; height: 100%;" src="https://www.youtube.com/embed/-6E7mFwsqUU" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 
 Whitepaper describing the performance of the vehicle:
 
-<iframe src="https://drive.google.com/viewerng/viewer?url=http%3A//static1.squarespace.com/static/549ce89be4b0cddb26c4894b/t/5ce58210e4966b7fc63fbe10/1558544951210/Traveler-IV-Whitepaper&embedded=true" width="600" height="780" style="border: none;"></iframe>
+<div style="width: 100%; max-width: 600px; margin: 0 auto;">
+	<iframe src="https://drive.google.com/viewerng/viewer?url=http%3A//static1.squarespace.com/static/549ce89be4b0cddb26c4894b/t/5ce58210e4966b7fc63fbe10/1558544951210/Traveler-IV-Whitepaper&embedded=true" style="width: 100%; aspect-ratio: 600 / 780; border: none;" frameborder="0"></iframe>
+</div>
 
 Launch procedures document I wrote & used during the launch to precisely coordinate with 50+ other engineers in the desert on a strict 3.5-hr timeline.
-<iframe class="embedly-embed" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1QwrFheadJeyUGvTcWwMZGDiPuXN5oWXEvow9g05874s%2Fpreview%3Fembedded%3Dtrue&display_name=Google+Docs&url=http%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1QwrFheadJeyUGvTcWwMZGDiPuXN5oWXEvow9g05874s%2Fedit%3Fusp%3Dsharing&image=https%3A%2F%2Flh7-us.googleusercontent.com%2Fdocs%2FAHkbwyIL6LdZAdqd0SMczaxiRbDBhjO9Z5joukw-RXN1cZM8Yq6-0I0p9DQgs4ZMahn66xAzvykkFZDLDDTZLLFS_6fSRGAlVPtbbGbVVjI3YVD3sTWXmBBu%3Dw1200-h630-p&type=text%2Fhtml&scroll=auto&schema=google" width="700" height="530" scrolling="auto" title="Google Docs embed" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
+<div style="width: 100%; max-width: 700px; margin: 0 auto;">
+	<iframe class="embedly-embed" style="width: 100%; aspect-ratio: 700 / 530;" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1QwrFheadJeyUGvTcWwMZGDiPuXN5oWXEvow9g05874s%2Fpreview%3Fembedded%3Dtrue&display_name=Google+Docs&url=http%3A%2F%2Fdocs.google.com%2Fdocument%2Fd%2F1QwrFheadJeyUGvTcWwMZGDiPuXN5oWXEvow9g05874s%2Fedit%3Fusp%3Dsharing&image=https%3A%2F%2Flh7-us.googleusercontent.com%2Fdocs%2FAHkbwyIL6LdZAdqd0SMczaxiRbDBhjO9Z5joukw-RXN1cZM8Yq6-0I0p9DQgs4ZMahn66xAzvykkFZDLDDTZLLFS_6fSRGAlVPtbbGbVVjI3YVD3sTWXmBBu%3Dw1200-h630-p&type=text%2Fhtml&scroll=auto&schema=google" scrolling="auto" title="Google Docs embed" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
+</div>
 
 Overview flowchart I designed describing the full launch procedure for all lab members on the day of the launch; printed & kept in-hand by all team leads on day of launch.
 ![TIV Launch Flow](/assets/rpl/Traveler%20IV%20Launch%20Flow.png)

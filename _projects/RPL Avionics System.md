@@ -31,11 +31,15 @@ The HAMSTER is USCRPL's homespun avionics system for high-powered amateur rocket
 
 An intro presentation I put together for new members of the avionics team & the non-avionics members of lab to understand the system basics:
 
-<iframe src="https://docs.google.com/presentation/d/1-4vDXhk09IZfEKJQSAACQHSc5AcUWKHXh3LUThavO0Q/embed?referrer=https://cwhayes.squarespace.com/&size=l" width="100%" height="600" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+<div style="width: 100%; max-width: 960px; margin: 0 auto;">
+	<iframe src="https://docs.google.com/presentation/d/1-4vDXhk09IZfEKJQSAACQHSc5AcUWKHXh3LUThavO0Q/embed?referrer=https://cwhayes.squarespace.com/&size=l" style="width: 100%; aspect-ratio: 16 / 9;" frameborder="0" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+</div>
 
 Custom carbon fiber filmanet-winding robot which I helped program.
 
 <iframe width="100%" height="400" src="https://www.youtube.com/embed/kaH_aItupps" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Team culture presentation I gave to all lab in response to some organizational & interpersonal challenges I helped mediate. 
-<iframe class="embedly-embed" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fdocs.google.com%2Fpresentation%2Fembed%3Fid%3D1igSnVGcpVnIaVXOBitp-yzIRH3X5SH0CQKcaO9WWL-s%26size%3Dl&display_name=Google+Docs&url=http%3A%2F%2Fdocs.google.com%2Fpresentation%2Fd%2F1igSnVGcpVnIaVXOBitp-yzIRH3X5SH0CQKcaO9WWL-s%2Fedit%3Fusp%3Ddrive_link&image=https%3A%2F%2Flh7-us.googleusercontent.com%2Fdocs%2FAHkbwyL9rM4JaT6xNEfkLgUt8yYVwH6C33-EM13m9k5UT6Gg84y8F4tjwbGR2om2ti2twQcPxtwfT7t-GAyw4oCU9ROVGck70T-HAMB7DpBiTK-uOrxbkVA%3Dw1200-h630-p&type=text%2Fhtml&schema=google" width="700" height="559" scrolling="no" title="Google Docs embed" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
+<div style="width: 100%; max-width: 700px; margin: 0 auto;">
+	<iframe class="embedly-embed" style="width: 100%; aspect-ratio: 700 / 559;" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fdocs.google.com%2Fpresentation%2Fembed%3Fid%3D1igSnVGcpVnIaVXOBitp-yzIRH3X5SH0CQKcaO9WWL-s%26size%3Dl&display_name=Google+Docs&url=http%3A%2F%2Fdocs.google.com%2Fpresentation%2Fd%2F1igSnVGcpVnIaVXOBitp-yzIRH3X5SH0CQKcaO9WWL-s%2Fedit%3Fusp%3Ddrive_link&image=https%3A%2F%2Flh7-us.googleusercontent.com%2Fdocs%2FAHkbwyL9rM4JaT6xNEfkLgUt8yYVwH6C33-EM13m9k5UT6Gg84y8F4tjwbGR2om2ti2twQcPxtwfT7t-GAyw4oCU9ROVGck70T-HAMB7DpBiTK-uOrxbkVA%3Dw1200-h630-p&type=text%2Fhtml&schema=google" scrolling="no" title="Google Docs embed" frameborder="0" allow="autoplay; fullscreen; encrypted-media; picture-in-picture;" allowfullscreen="true"></iframe>
+</div>
