@@ -8,6 +8,17 @@ permalink: /projects/me495-slam/
 date: 2026-01-15
 ---
 
+<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 1rem;">
+	<figure class="project-figure" style="flex: 1; min-width: 300px; margin: 0;">
+		<img src="https://github.com/ME495-Navigation/slam-cwoodhayes/raw/main/nusim/images/nusim1.png" alt="Custom-built SLAM simulator in RViz">
+		<figcaption>Left: Custom-built LiDAR SLAM simulator. <p/> Right: Driving the Turtlebot3 in a circle using odometry via custom forward kinematics module. </figcaption>
+	</figure>
+	<video style="flex: 1; min-width: 300px;" controls>
+		<source src="https://github.com/user-attachments/assets/bab2ae6e-a6a7-44c5-8ed0-ffb4ad08dbb6" type="video/mp4">
+		Your browser does not support the video tag.
+	</video>
+</div>
+
 # SLAM from Scratch: ROS 2 Navigation Stack for Turtlebot3
 
 <div class="project-button-row">
@@ -30,6 +41,7 @@ In this project, I implement a full ROS 2 navigation stack for the [Turtlebot3 B
 - ROS 2 Kilted Kaiju
 - C++23
 - Turtlebot3 Burger
+
 
 ## Packages
 
