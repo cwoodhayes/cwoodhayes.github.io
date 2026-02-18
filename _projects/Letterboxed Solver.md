@@ -2,7 +2,7 @@
 name: Letterboxed Solver
 tools: [Rust, Graph Search, A*, Algorithms]
 category: personal
-description: Optimal solver for NYT Letterboxed puzzles using graph search and A* algorithm.
+description: Optimal solver for NYT Letterboxed puzzles using graph search with A*.
 permalink: /projects/letterboxed-solver/
 preview_gif: https://github.com/user-attachments/assets/0c5d061b-8304-47d9-9355-8ea8816d5e85
 date: 2023-06-15
