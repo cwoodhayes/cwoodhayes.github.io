@@ -412,6 +412,20 @@ a:focus {
   margin-bottom: 2.5rem;
 }
 
+.about-bio {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--color-gray-dark);
+}
+
+.about-bio p {
+  margin-bottom: 1.5rem;
+}
+
+.about-bio p:last-of-type {
+  margin-bottom: 2.5rem;
+}
+
 .contact-info {
   display: flex;
   align-items: center;

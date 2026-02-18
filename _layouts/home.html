@@ -53,8 +53,10 @@ layout: default
           <img src="{{ site.author.image }}" alt="{{ site.title }}" class="profile-image">
         </div>
         <div class="about-text">
-          <p>{{ site.about.paragraph_1 }}</p>
-          <p>{{ site.about.paragraph_2 }}</p>
+          <div class="about-bio">
+            {% assign about_page = site.about | first %}
+            {{ about_page.content }}
+          </div>
 
           <div id="contact" class="contact-info">
             {% if site.author.linkedin %}
