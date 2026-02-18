@@ -1,5 +1,9 @@
 <div class="project-card">
-  <a href="{{ project.url }}" class="card-link">
+  {% if project.redirect_to %}
+    <a href="{{ project.redirect_to }}" class="card-link" target="_blank" rel="noopener noreferrer">
+  {% else %}
+    <a href="{{ project.url }}" class="card-link">
+  {% endif %}
     {% assign card_title = project.name | default: project.title %}
     <div class="card-image-container">
       {% if project.preview_gif %}

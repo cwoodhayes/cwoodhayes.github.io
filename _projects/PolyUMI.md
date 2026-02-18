@@ -22,6 +22,8 @@ date: 2026-02-01
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" %}
 </div>
 
+**Authors**: Conor Hayes
+
 This project combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with the [PolyTouch optical tactile + audio sensor](https://polytouch.alanz.info/) (which I reverse-engineer and make open source as the PolyTouch CE).
 
 ### My Contributions:

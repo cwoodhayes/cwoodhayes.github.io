@@ -26,6 +26,8 @@ date: 2025-01-01
 	{% include github-button.html url="https://github.com/raas-hybrid-lab/elegoo-raas" label="ELEGOO Rover Firmware" %}
 </div>
 
+**Authors**: Conor Hayes, Yutao He
+
 I prototyped a robotic tele-operation platform that enables remote control of a simple robot from a browser app, using WebRTC peer-to-peer streaming and AWS Kinesis Video.
 
 The platform consists of two browser-based WebRTC clients: the Lab Client, which captures video and control inputs from robots connected over BLE or WiFi, and the User Client, which receives the video stream and sends control commands back to the Lab Client. The Lab Client then relays these commands to the robot. WebRTC connections are facilitated by AWS Kinesis Video, which provides signaling and media relay services. 
