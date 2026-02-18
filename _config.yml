@@ -12,8 +12,14 @@ open_new_tab        : true                     # Opens external URLs in new tab 
 nav_subtitle        : Robotics + Embedded Systems
 
 about:
-  paragraph_1       : Hands on robotics and embedded systems engineer focused on robotic manipulation, embodied AI/ML, and spacecraft-grade hardware.
-  paragraph_2       : Deep experience delivering embedded systems for spacecraft and consumer medical devices.
+  paragraph_1       : >-
+    Hands-on robotics and embedded systems engineer with extensive experience 
+    building & deploying real-world hardware, autonomy stacks, and mission-critical 
+    embedded systems end-to-end. 
+    Strong focus on systems design, field testing, and reliability in harsh environments.
+  paragraph_2       : >-
+    Currently studying for an MS in Robotics at Northwestern University, focusing on 
+    robotic manipulation and embodied AI/ML. 
 
 
 ### Plugins ###
