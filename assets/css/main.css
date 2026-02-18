@@ -665,6 +665,26 @@ a:focus {
   font-weight: 600;
 }
 
+.project-content ul,
+.project-content ol {
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.project-content li {
+  /* margin-bottom: 0.5rem; */
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.project-content li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--color-link-body);
+}
+
 .project-footer {
   margin-top: 1rem;
   padding-top: 1rem;
