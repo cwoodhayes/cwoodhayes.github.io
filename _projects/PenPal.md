@@ -24,7 +24,7 @@ preview_gif: /assets/msr/penpal/penpal-cover.mp4
   {% include github-button.html url="https://github.com/cwoodhayes/final-project-penpal" %}
 </div>
 
-**Authors**: Conor Hayes, Amber Handal, Tianhao Zhang
+**Authors**: Conor Hayes, Amber Handal, Kyuwon Weon, Tianhao Zhang
 
 ## Project Overview
 PenPal is a vision-guided robotic system that can hold a written conversation. 
@@ -41,5 +41,28 @@ The system integrates:
 
 All perception, reasoning, and motion are performed dynamically at runtime, allowing the robot to adapt to changes in board position and orientation as they occur, such that the board can even be held by a human user as the robot writes.
 
+## System Architecture
+<figure style="width: 100%;">
+  <img src="/assets/msr/penpal/system-architecture.png" alt="PenPal Block Diagram" style="width: 100%;">
+</figure>
+
+
+### Nodes
+- `penpal.py`
+    Top-level orchestrator + FSM. Watches for board visibility, triggers OCR/VLM via a Trigger service client, and sends generated text to the writing stack (planner + controller). Provides wake, sleep, grab_pen services and write_message action. Subscribes to board_info.
+- `board_detector.py`
+	Real board detector. Consumes AprilTag detections and produces penpal_interfaces/BoardInfo (board_info) containing board pose, dimensions, writable area, and detection metadata (e.g., tag count, sequence number).
+- `ocr_node.py`
+	Real OCR + QA node. Provides read_and_answer_board (example_interfaces/Trigger) which captures/uses the latest image and returns a JSON payload containing transcription + a concise answer (and raw debug fields).
+- `mock_board_detector.py`
+	Publishes a fixed/synthetic board_info for development when the camera/AprilTags aren’t running (useful for testing planning/writing).
+- `mock_ocr_node.py`
+	Mock Trigger-service implementation of OCR/QA. Always returns a static JSON payload for end-to-end testing of PenPal without VLM dependencies.
+
+
 ## My Contributions
-- Led team
+- Led team of 4; project-managed & coordinated team effort to meet deadlines
+- Designed system architecture and managed system integration, ensuring individual work came together into a working system
+- Implemented `PenPal` top-level control node which integrates all system components, enabling the robot to perceive, reason, and write in a closed loop at runtime, as well as its compoments `ConvoFSM` and `FreespacePlanner`.
+- Implemented `WritePlanner`, which chunks and projects 2D text trajectories onto the 3D board plane as it moves in real-time.
+- Assisted Kyuwon with implementing `MoveItPPControl`, which sits below `WritePlanner` and executes its generated end-effector trajectories on the Franka arm using MoveIt.
