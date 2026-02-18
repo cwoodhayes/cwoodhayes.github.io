@@ -17,7 +17,7 @@
         {% assign is_video = ext == 'mp4' or ext == 'mov' or ext == 'webm' %}
         {% assign is_common_image = ext == 'png' or ext == 'jpg' or ext == 'jpeg' or ext == 'gif' or ext == 'webp' %}
         {% if is_video or (project.preview_gif contains 'user-attachments/assets' and is_common_image == false) %}
-          <video class="card-gif" autoplay loop muted playsinline preload="metadata" style="width:100%;height:auto;">
+          <video class="card-gif" autoplay loop muted playsinline preload="metadata">
             <source src="{{ preview_src }}" type="video/mp4">
             Your browser does not support the video tag.
           </video>
