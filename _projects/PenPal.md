@@ -5,7 +5,7 @@ category: personal
 image: https://github.com/user-attachments/assets/f5e6d137-fe92-4fc8-8cc6-306117b42d30
 description: Vision-guided robotic system which reads & writes text on a whiteboard held by a user. Built with a Franka Emika 7dof arm and a RealSense camera.
 date: 2025-12-02
-preview_gif: /assets/msr/penpal/penpal-cover.mp4
+preview_gif: https://github.com/user-attachments/assets/f62c5c46-58eb-4b1f-b6ac-8bad290d330f
 ---
 
 <div style="display: flex; gap-left: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 0rem;">
