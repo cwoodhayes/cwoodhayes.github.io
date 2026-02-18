@@ -593,6 +593,22 @@ a:focus {
   letter-spacing: -0.02em;
 }
 
+.project-content h4 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.015em;
+}
+
+.project-content h5,
+.project-content h6 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 .project-content hr {
   margin: 2.5rem 0;
   border: 0;
@@ -1046,6 +1062,11 @@ a:focus {
     margin-top: 1.5rem;
   }
 
+  .project-content h4 {
+    font-size: 1.05rem;
+    margin-top: 1.2rem;
+  }
+
   .project-content pre {
     display: block;
     overflow-x: auto;
@@ -1085,6 +1106,10 @@ a:focus {
 
   .project-content h3 {
     font-size: 1.1rem;
+  }
+
+  .project-content h4 {
+    font-size: 1rem;
   }
 
   .tag {
