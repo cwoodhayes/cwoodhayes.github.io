@@ -86,3 +86,4 @@ exclude:
   - LICENSE
   - "*.log"
   - .vscode
+  - _projects/Algorithms from Scratch.md
