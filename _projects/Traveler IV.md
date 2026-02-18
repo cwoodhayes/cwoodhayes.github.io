@@ -15,7 +15,7 @@ preview_gif: /assets/rpl/tiv_doc_clip.mp4
 
 ## The first entirely student-designed, built, and launched rocket to fly to space
 
-I helped lead University of Southern California's undergrad-run Rocket Propulsion Laboratory through this launch as the head of avionics. In this capacity I led the development of all electronics and software used to manufacture & fly the vehicle, including our custom-built avionics system.
+I helped lead University of Southern California's undergrad-run [Rocket Propulsion Laboratory](https://www.uscrpl.com/) through this launch as the head of avionics. In this capacity I led the development of all electronics and software used to manufacture & fly the vehicle, including our custom-built avionics system.
 
 I also led the effort to design the launch procedures, after procedural problems led to the failure of the [Traveler III](https://www.uscrpl.com/traveler-iii) rocket launch in 2018, and sat at the terminal as mission control officer for the flight.
 
