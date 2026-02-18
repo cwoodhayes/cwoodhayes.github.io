@@ -103,4 +103,19 @@ layout: default
     if (e.key === 'ArrowRight') showSlide(currentIndex + 1);
   });
 })();
+
+// Make all links in project content open in new tabs
+document.addEventListener('DOMContentLoaded', () => {
+  const projectContent = document.querySelector('.project-content');
+  if (projectContent) {
+    const links = projectContent.querySelectorAll('a');
+    links.forEach(link => {
+      // Only modify links that don't already have a target attribute
+      if (!link.hasAttribute('target')) {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      }
+    });
+  }
+});
 </script>
