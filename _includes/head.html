@@ -15,48 +15,77 @@
 
   <!-- Lightbox CSS -->
   <style>
-  .lightbox {
+  #lightbox-overlay {
     display: none;
     position: fixed;
     z-index: 9999;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     width: 100%;
     height: 100%;
-    padding: 1em;
-    background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.95);
     cursor: pointer;
-  }
-  .lightbox:target {
-    display: flex;
     align-items: center;
     justify-content: center;
   }
-  .lightbox:hover,
-  .lightbox:target:hover {
-    background-color: rgba(0, 0, 0, 0.95);
-    opacity: 1;
+  #lightbox-overlay.active {
+    display: flex;
   }
-  .lightbox span {
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+  #lightbox-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
     cursor: default;
   }
   </style>
   
-  <!-- Lightbox Esc key handler -->
+  <!-- Lightbox JavaScript -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Create lightbox overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'lightbox-overlay';
+    const img = document.createElement('img');
+    overlay.appendChild(img);
+    document.body.appendChild(overlay);
+    
+    // Open lightbox
+    function openLightbox(src, alt) {
+      img.src = src;
+      img.alt = alt;
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Close lightbox
+    function closeLightbox() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    // Click handler for lightbox images
+    document.addEventListener('click', (e) => {
+      const link = e.target.closest('a.lightbox-img');
+      if (link) {
+        e.preventDefault();
+        const img = link.querySelector('img');
+        if (img) {
+          openLightbox(img.src, img.alt);
+        }
+      }
+    });
+    
+    // Close on overlay click (but not on image)
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) {
+        closeLightbox();
+      }
+    });
+    
+    // Close on Esc key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && window.location.hash.startsWith('#img')) {
-        window.location.hash = '#_';
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        closeLightbox();
       }
     });
   });
