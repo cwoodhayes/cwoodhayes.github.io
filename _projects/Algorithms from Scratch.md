@@ -11,7 +11,7 @@ date: 2025-12-01
 
 This page contains a collection of repos according to a general theme: implementing + deriving AI/ML algorithms from scratch (i.e. no high-level ML libraries, then applying them to some real problem.
 
-Since these are all in Python, that specifically means nothing but numerical computing libraries (NumPy, Pandas) and plotting libraries (Matplotlib). Some works do also include reference implementations using `sklearn`, `pytorch`, etc for comparison purposes.
+Since these are all in Python, that specifically means using nothing higher-level than numerical computing libraries (`NumPy`, `Pandas`) and plotting libraries (`Matplotlib`, `Seaborn`). Some works do also include reference implementations using `sklearn`, `pytorch`, etc for comparison purposes.
 
 Algorithms & topics are:
 - Particle Filter for Robot Localization
@@ -40,11 +40,13 @@ The filter estimates the robot's 2D position and heading over time by combining:
 
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw1" label="Heirarchical Planning & Control (Online A* + PID)" %}
+	{% include pdf-button.html url="https://github.com/cwoodhayes/cs469-hw1/blob/main/writeup.pdf" label="Writeup" %}
 </div>
 
 ## Support Vector Machines (SVM) for Landmark Prediction
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw2" label="SVM for landmark prediction" %}
+	{% include pdf-button.html url="https://github.com/cwoodhayes/cs469-hw2/blob/main/writeup.pdf" label="Writeup" %}
 </div>
 
 
