@@ -110,6 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (projectContent) {
     const links = projectContent.querySelectorAll('a');
     links.forEach(link => {
+      // Skip lightbox links (for image lightboxes)
+      if (link.classList.contains('lightbox') || link.getAttribute('href').startsWith('#img')) {
+        return;
+      }
       // Only modify links that don't already have a target attribute
       if (!link.hasAttribute('target')) {
         link.setAttribute('target', '_blank');

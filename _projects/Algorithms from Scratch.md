@@ -36,11 +36,15 @@ The filter estimates the robot's 2D position and heading over time by combining:
 
 ### Plots
 
-<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start;">
-  <img src="/assets/msr/fromscratch/hw0/500particles.png" alt="Particle Filter Visualization" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw0/Q3_figure.png" alt="Online A* Path Planning Results" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw0/pretty_short.png" alt="Robot Trajectory Tracking" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#img1"><img src="/assets/msr/fromscratch/hw0/500particles.png" alt="Particle Filter Visualization" style="width: 100%; height: auto;" /></a>
+  <a href="#img2"><img src="/assets/msr/fromscratch/hw0/Q3_figure.png" alt="Online A* Path Planning Results" style="width: 100%; height: auto;" /></a>
+  <a href="#img3"><img src="/assets/msr/fromscratch/hw0/pretty_short.png" alt="Robot Trajectory Tracking" style="width: 100%; height: auto;" /></a>
 </div>
+
+<a href="#_" class="lightbox" id="img1"><span style="background-image: url('/assets/msr/fromscratch/hw0/500particles.png')"></span></a>
+<a href="#_" class="lightbox" id="img2"><span style="background-image: url('/assets/msr/fromscratch/hw0/Q3_figure.png')"></span></a>
+<a href="#_" class="lightbox" id="img3"><span style="background-image: url('/assets/msr/fromscratch/hw0/pretty_short.png')"></span></a>
 
 
 ## Heirarchical Planning & Control (Online A* + PID)
@@ -63,11 +67,15 @@ This repo builds up to the full implementation described above via the following
 
 ### Plots
 
-<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start;">
-  <img src="/assets/msr/fromscratch/hw1/Q5.png" alt="Path Planning Visualization" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw1/Q8.png" alt="Control Performance" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw1/Q11.png" alt="Navigation Results" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#img4"><img src="/assets/msr/fromscratch/hw1/Q5.png" alt="Path Planning Visualization" style="width: 100%; height: auto;" /></a>
+  <a href="#img5"><img src="/assets/msr/fromscratch/hw1/Q8.png" alt="Control Performance" style="width: 100%; height: auto;" /></a>
+  <a href="#img6"><img src="/assets/msr/fromscratch/hw1/Q11.png" alt="Navigation Results" style="width: 100%; height: auto;" /></a>
 </div>
+
+<a href="#_" class="lightbox" id="img4"><span style="background-image: url('/assets/msr/fromscratch/hw1/Q5.png')"></span></a>
+<a href="#_" class="lightbox" id="img5"><span style="background-image: url('/assets/msr/fromscratch/hw1/Q8.png')"></span></a>
+<a href="#_" class="lightbox" id="img6"><span style="background-image: url('/assets/msr/fromscratch/hw1/Q11.png')"></span></a>
 
 ## Support Vector Machines (SVM) for Landmark Prediction
 <div class="project-button-row">
@@ -97,13 +105,19 @@ The implementation includes:
 
 ### Plots
 
-<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start;">
-  <img src="/assets/msr/fromscratch/hw2/A1 - example states.png" alt="Example States" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw2/A1 - landmarks over time.png" alt="Landmarks Over Time" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw2/A2 - 3dplot.png" alt="3D Visualization" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw2/B - mean recall grid.png" alt="Recall Grid Search" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
-  <img src="/assets/msr/fromscratch/hw2/B_-_best_accuracy_ALL_3D_plot.png" alt="Best Accuracy 3D" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#img7"><img src="/assets/msr/fromscratch/hw2/A1 - example states.png" alt="Example States" style="width: 100%; height: auto;" /></a>
+  <a href="#img8"><img src="/assets/msr/fromscratch/hw2/A1 - landmarks over time.png" alt="Landmarks Over Time" style="width: 100%; height: auto;" /></a>
+  <a href="#img9"><img src="/assets/msr/fromscratch/hw2/A2 - 3dplot.png" alt="3D Visualization" style="width: 100%; height: auto;" /></a>
+  <a href="#img10"><img src="/assets/msr/fromscratch/hw2/B - mean recall grid.png" alt="Recall Grid Search" style="width: 100%; height: auto;" /></a>
+  <a href="#img11"><img src="/assets/msr/fromscratch/hw2/B_-_best_accuracy_ALL_3D_plot.png" alt="Best Accuracy 3D" style="width: 100%; height: auto;" /></a>
 </div>
+
+<a href="#_" class="lightbox" id="img7"><span style="background-image: url('/assets/msr/fromscratch/hw2/A1 - example states.png')"></span></a>
+<a href="#_" class="lightbox" id="img8"><span style="background-image: url('/assets/msr/fromscratch/hw2/A1 - landmarks over time.png')"></span></a>
+<a href="#_" class="lightbox" id="img9"><span style="background-image: url('/assets/msr/fromscratch/hw2/A2 - 3dplot.png')"></span></a>
+<a href="#_" class="lightbox" id="img10"><span style="background-image: url('/assets/msr/fromscratch/hw2/B - mean recall grid.png')"></span></a>
+<a href="#_" class="lightbox" id="img11"><span style="background-image: url('/assets/msr/fromscratch/hw2/B_-_best_accuracy_ALL_3D_plot.png')"></span></a>
 
 ## Deep Neural Networks from Scratch
 <div class="project-button-row">
