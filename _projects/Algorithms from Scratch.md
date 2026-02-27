@@ -43,6 +43,16 @@ The filter estimates the robot's 2D position and heading over time by combining:
 	{% include pdf-button.html url="https://github.com/cwoodhayes/cs469-hw1/blob/main/writeup.pdf" label="Writeup" %}
 </div>
 
+Implemented A* path planning with closed-loop waypoint control for a differential-drive robot, applied to a real-world obstacle map from the UTIAS Multi-Robot Cooperative Localization and Mapping Dataset. The system combines offline and online planning strategies with low-level motion control.
+
+The navigation stack combines:
+- **Offline A* planning** on fully-known obstacle grids with an admissible diagonal-normalized heuristic
+- **Online A*** that adapts in real time as obstacles are incrementally discovered during navigation
+- **Dual P-controller** that drives the robot toward waypoints with configurable gains and acceleration limits
+- **Robot simulator** that propagates control outputs through the differential-drive motion model with Gaussian noise
+
+**Key Results:** Offline A* found optimal paths with full map knowledge, while online A* successfully adapted as obstacles were revealed, sometimes taking detours when initially-planned routes became blocked. Obstacle inflation by 0.3m was essential for safe execution under noise. The P-controller handled all test paths successfully at low-to-moderate noise levels, with simultaneous planning and driving handling control noise more gracefully than post-hoc control since deviations automatically triggered replanning.
+
 ## Support Vector Machines (SVM) for Landmark Prediction
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw2" label="SVM for landmark prediction" %}
