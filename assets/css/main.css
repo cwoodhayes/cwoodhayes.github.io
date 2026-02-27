@@ -2,8 +2,7 @@
 .home-page {
   display: flex;
   align-items: flex-start;
-  margin-left: 2.5rem;
-  margin-right: 2.5rem;
+  padding: 0 2.5rem;
 }
 
 .left-nav {
@@ -42,6 +41,7 @@
   flex: 1;
   margin-left: 1.5rem;
   margin-right: 1.5rem;
+  min-width: 0;
 }
 
 .sections-layout {
@@ -116,6 +116,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+
 h1,
 h2,
 h3,
@@ -170,6 +171,7 @@ a:focus {
   border-bottom: 1px solid var(--color-gray-border);
   z-index: 1000;
   padding: 0.4rem 0;
+  box-sizing: border-box;
 }
 
 .nav-container {
@@ -179,6 +181,8 @@ a:focus {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .nav-logo a {
@@ -267,9 +271,6 @@ a:focus {
   padding: 0 2rem;
 }
 
-.home-page {
-  width: 100%;
-}
 
 .projects-section {
   padding: 0.5rem 1.5rem var(--spacing-xl) 0;
@@ -279,6 +280,7 @@ a:focus {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(max(300px, calc((100% - 2rem) / 3)), 1fr));
   gap: 1rem;
+  min-width: 0;
 }
 
 .project-card {
@@ -433,6 +435,7 @@ a:focus {
   font-size: 1.05rem;
   line-height: 1.8;
   color: var(--color-gray-dark);
+  overflow-wrap: anywhere;
 }
 
 .about-bio p {
@@ -491,6 +494,9 @@ a:focus {
   background-color: var(--color-gray-light);
   border-radius: 999px;
   transition: all var(--transition-speed);
+  max-width: 100%;
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
 }
 
 .email-contact:hover {
@@ -966,8 +972,7 @@ a:focus {
   }
 
   .home-page {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    padding: 0 1rem;
   }
 
   .left-nav {
