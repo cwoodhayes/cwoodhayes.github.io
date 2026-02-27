@@ -22,15 +22,12 @@ Algorithms & topics are:
 ## Particle Filter for Robot Localization
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw0" label="Particle Filter for Robot Localization" %}
+	{% include pdf-button.html url="https://github.com/cwoodhayes/cs469-hw0/blob/main/writeup.pdf" label="Writeup" %}
 </div>
 
 Implemented a particle filter from scratch for mobile robot localization, applied to real-world wheeled robot data from the [UTIAS Multi-Robot Cooperative Localization and Mapping Dataset](http://asrl.utias.utoronto.ca/datasets/mrclam/index.html). 
 
 The filter combines a differential-drive motion model, a range/bearing measurement model using LiDAR data, and low-variance resampling to estimate the robot's 2D position and heading over time.
-
-All code is implemented in Python using only numerical + plotting libraries (NumPy, Pandas, Matplotlib)--no higher-level ML libraries allowed.
-
-A full writeup including analysis, derivations, and discussion of results is available [here](writeup.pdf).
 
 The filter estimates the robot's 2D position and heading over time by combining:
 - A **motion model** based on differential-drive kinematics
