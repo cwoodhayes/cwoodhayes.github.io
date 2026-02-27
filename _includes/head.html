@@ -42,6 +42,12 @@
   <!-- Lightbox JavaScript -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
+    let currentIndex = -1;
+
+    function getLightboxLinks() {
+      return Array.from(document.querySelectorAll('a.lightbox-img'));
+    }
+
     // Create lightbox overlay
     const overlay = document.createElement('div');
     overlay.id = 'lightbox-overlay';
@@ -56,6 +62,20 @@
       overlay.classList.add('active');
       document.body.style.overflow = 'hidden';
     }
+
+    function showByIndex(index) {
+      const links = getLightboxLinks();
+      if (!links.length) return;
+
+      const total = links.length;
+      const normalizedIndex = ((index % total) + total) % total;
+      const link = links[normalizedIndex];
+      const targetImg = link.querySelector('img');
+      if (!targetImg) return;
+
+      currentIndex = normalizedIndex;
+      openLightbox(targetImg.src, targetImg.alt);
+    }
     
     // Close lightbox
     function closeLightbox() {
@@ -68,9 +88,11 @@
       const link = e.target.closest('a.lightbox-img');
       if (link) {
         e.preventDefault();
-        const img = link.querySelector('img');
-        if (img) {
-          openLightbox(img.src, img.alt);
+        const links = getLightboxLinks();
+        currentIndex = links.indexOf(link);
+        const targetImg = link.querySelector('img');
+        if (targetImg) {
+          openLightbox(targetImg.src, targetImg.alt);
         }
       }
     });
@@ -84,8 +106,14 @@
     
     // Close on Esc key
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+      if (!overlay.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
         closeLightbox();
+      } else if (e.key === 'ArrowRight') {
+        showByIndex(currentIndex + 1);
+      } else if (e.key === 'ArrowLeft') {
+        showByIndex(currentIndex - 1);
       }
     });
   });
