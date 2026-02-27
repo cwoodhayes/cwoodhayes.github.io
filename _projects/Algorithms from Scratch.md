@@ -34,10 +34,19 @@ The filter estimates the robot's 2D position and heading over time by combining:
 
 **Key Results:** With tuned noise parameters, the particle filter tracked the ground truth trajectory closely while dead reckoning diverged rapidly due to compounding control uncertainty. Control noise had the largest impact on accuracy, especially during periods of missing landmark measurements when the filter only had odometry to rely on.
 
+### Plots
+
+<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start;">
+  <img src="/assets/msr/fromscratch/hw0/500particles.png" alt="Particle Filter Visualization" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw0/Q3_figure.png" alt="Online A* Path Planning Results" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw0/pretty_short.png" alt="Robot Trajectory Tracking" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+</div>
+
+
 ## Heirarchical Planning & Control (Online A* + PID)
 
 <div class="project-button-row">
-	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw1" label="Heirarchical Planning & Control (Online A* + PID)" %}
+	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw1" label="Heirarchical Planning & Control" %}
 	{% include pdf-button.html url="https://github.com/cwoodhayes/cs469-hw1/blob/main/writeup.pdf" label="Writeup" %}
 </div>
 
@@ -50,8 +59,15 @@ This repo builds up to the full implementation described above via the following
 - A dual P-controller that drives the robot toward waypoints with configurable gains, biases, and acceleration limits
 - A robot navigation simulator (RobotNavSim) that propagates control outputs through the motion model with Gaussian noise
 
-
 **Key Results:** Offline A* found optimal paths with full map knowledge, while online A* successfully adapted as obstacles were revealed, sometimes taking detours when initially-planned routes became blocked. Padding the collision region of obstacles by 0.3m was essential for safe execution under noise, due to the controller cutting corners. The P-controller handled all test paths successfully at low-to-moderate noise levels, with simultaneous planning and driving handling control noise more gracefully than post-hoc control since deviations automatically triggered replanning.
+
+### Plots
+
+<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start;">
+  <img src="/assets/msr/fromscratch/hw1/Q5.png" alt="Path Planning Visualization" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw1/Q8.png" alt="Control Performance" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw1/Q11.png" alt="Navigation Results" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+</div>
 
 ## Support Vector Machines (SVM) for Landmark Prediction
 <div class="project-button-row">
@@ -79,6 +95,15 @@ The implementation includes:
 - The final classifier achieves **97% accuracy** and **88% recall** on a held-out 20% test set (randomly shuffled to avoid trajectory-ordering bias).
 - Recall is the more informative metric here, since the class imbalance (most landmarks are invisible most of the time) means a trivial all-negative classifier would score deceptively high on accuracy alone.
 
+### Plots
+
+<div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: flex-start;">
+  <img src="/assets/msr/fromscratch/hw2/A1 - example states.png" alt="Example States" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw2/A1 - landmarks over time.png" alt="Landmarks Over Time" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw2/A2 - 3dplot.png" alt="3D Visualization" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw2/B - mean recall grid.png" alt="Recall Grid Search" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+  <img src="/assets/msr/fromscratch/hw2/B_-_best_accuracy_ALL_3D_plot.png" alt="Best Accuracy 3D" style="flex: 1; min-width: 300px; max-width: 400px; height: auto;"/>
+</div>
 
 ## Deep Neural Networks from Scratch
 <div class="project-button-row">
