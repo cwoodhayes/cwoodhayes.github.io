@@ -1,6 +1,6 @@
 ---
 name: ML/AI Algorithms from Scratch
-tools: [Python, Deep Learning, Navigation, Path Planning, Sensor Fusion, Particle Filter, Support Vector Machines (SVM), Online A*, Neural Networks]
+tools: [Python, Deep Learning, Navigation, Path Planning, Sensor Fusion, Particle Filter, SVM, A*]
 category: personal
 image: /assets/msr/particle_filter.png
 description: Collection of AI/ML algorithms for robotic navigation and perception, implemented from scratch in Python (just numpy & pandas).
