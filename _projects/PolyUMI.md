@@ -7,13 +7,11 @@ description: A novel multi-modal data collection system for robot imitation lear
 permalink: /projects/polyumi/
 date: 2026-02-01
 ---
-<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 2rem;">
-	<figure class="project-figure" style="width: 300px; margin: 0;">
-		<img src="/assets/msr/polyumi/IMG_0579.JPG" alt="PolyTouch CE v0.1">
-	</figure>
-	<figure class="project-figure" style="width: 300px; margin: 0;">
-		<img src="/assets/msr/polyumi/IMG_0595.JPG" alt="PolyTouch CE + UMI gripper">
-	</figure>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_gripper_cad.png" alt="PolyUMI Gripper CAD" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee.jpg" alt="Custom UMI EE for Franka Hand" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_internal_cam.jpg" alt="Internal finger camera view" style="width: 100%; height: auto;" /></a>
 </div>
 
 # PolyUMI: Visual+Auditory+Tactile Manipulation Data Collector for Imitation Learning
