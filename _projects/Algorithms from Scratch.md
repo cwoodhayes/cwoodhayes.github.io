@@ -9,18 +9,49 @@ date: 2025-12-01
 
 # Algorithms from Scratch: AI/ML for Robotics
 
-<div class="project-button-row">
-	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw0" label="Particle Filter for Robot Localization" %}
-	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw1" label="Heirarchical Planning & Control (Online A* + PID)" %}
-	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw2" label="SVM for landmark prediction" %}
-	{% include github-button.html url="https://github.com/cwoodhayes/MSAI437_homework" label="Deep Neural Network from Scratch" %}
-</div>
+This page contains a collection of repos according to a general theme: implementing + deriving AI/ML algorithms from scratch (i.e. no high-level ML libraries, then applying them to some real problem.
+
+Since these are all in Python, that specifically means nothing but numerical computing libraries (NumPy, Pandas) and plotting libraries (Matplotlib). Some works do also include reference implementations using `sklearn`, `pytorch`, etc for comparison purposes.
+
+Algorithms & topics are:
+- Particle Filter for Robot Localization
+- Heirarchical Planning & Control (Online A* + PID)
+- Support Vector Machines (SVM) for Landmark Prediction on a Mobile Robot
+- Deep Neural Networks from Scratch (applied to predict some basic nonlinear functions...nothing robotics-y here, but close enough)
 
 ## Particle Filter for Robot Localization
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw0" label="Particle Filter for Robot Localization" %}
 </div>
 
-Implemented a particle filter from scratch for mobile robot localization, applied to real-world wheeled robot data from the UTIAS Multi-Robot Cooperative Localization and Mapping Dataset. The filter combines a differential-drive motion model, a range/bearing measurement model using LiDAR data, and low-variance resampling to estimate the robot's 2D position and heading over time.
+Implemented a particle filter from scratch for mobile robot localization, applied to real-world wheeled robot data from the [UTIAS Multi-Robot Cooperative Localization and Mapping Dataset](http://asrl.utias.utoronto.ca/datasets/mrclam/index.html). 
+
+The filter combines a differential-drive motion model, a range/bearing measurement model using LiDAR data, and low-variance resampling to estimate the robot's 2D position and heading over time.
+
+All code is implemented in Python using only numerical + plotting libraries (NumPy, Pandas, Matplotlib)--no higher-level ML libraries allowed.
+
+A full writeup including analysis, derivations, and discussion of results is available [here](writeup.pdf).
+
+The filter estimates the robot's 2D position and heading over time by combining:
+- A **motion model** based on differential-drive kinematics
+- A **measurement model** that computes expected range and bearing to known landmarks given LiDAR-based heading data, weighted via Gaussian likelihood
+- **Low-variance resampling** for particle set updates (Probabilistic Robotics §4.3)
 
 **Key Results:** With tuned noise parameters, the particle filter tracked ground truth closely while dead reckoning diverged rapidly due to compounding control uncertainty. Control noise had the largest impact on accuracy, with performance degrading during periods of missing landmark measurements when the filter relied solely on motion propagation.
+
+## Heirarchical Planning & Control (Online A* + PID)
+
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw1" label="Heirarchical Planning & Control (Online A* + PID)" %}
+</div>
+
+## Support Vector Machines (SVM) for Landmark Prediction
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/cs469-hw2" label="SVM for landmark prediction" %}
+</div>
+
+
+## Deep Neural Networks from Scratch
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/MSAI437_homework" label="Deep Neural Network from Scratch" %}
+</div>
