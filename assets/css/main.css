@@ -146,6 +146,7 @@ h2 {
 h3 {
   font-size: 1.5rem;
   font-weight: 600;
+  margin-top: 2rem;
 }
 
 p {
@@ -380,6 +381,46 @@ a:focus {
   background-color: var(--color-gray-dark);
   color: var(--color-white);
   border-color: var(--color-gray-dark);
+}
+
+.coursework-section {
+  padding: var(--spacing-xl) 0;
+  background-color: var(--color-white);
+}
+
+.coursework-section h2 {
+  margin-bottom: 3rem;
+  text-align: left;
+}
+
+.coursework-content {
+  max-width: 900px;
+}
+
+.coursework-category {
+  margin-bottom: 2rem;
+}
+
+.coursework-category:last-child {
+  margin-bottom: 0;
+}
+
+.coursework-section ul {
+  margin-bottom: 1rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+.coursework-section li {
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.coursework-section li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--color-link-body);
 }
 
 .about-section {
