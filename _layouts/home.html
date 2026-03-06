@@ -48,25 +48,9 @@ layout: default
 
     <section id="coursework" class="coursework-section">
       <div class="container">
-        <h2>M.S. in Robotics at Northwestern - My Coursework</h2>
         <div class="coursework-content">
-          <div class="coursework-category">
-            <h3>Robot Dynamics & Control</h3>
-            <ul>
-              <li>ME449 Robotic Manipulation - Prof. Kevin Lynch</li>
-              <li>ME314 Machine Dynamics - Prof. Todd Murphey</li>
-              <li>ME450 Embedded Systems in Robotics - Prof. Matthew Elwin</li>
-            </ul>
-          </div>
-          <div class="coursework-category">
-            <h3>Embodied AI + ML</h3>
-            <ul>
-              <li>CS469 Machine Learning & Artificial Intelligence in Robotics - Prof. Brenna Argall</li>
-              <li>CS396 Reasoning and Planning in the Foundation Models Era - Prof. Manling Li</li>
-              <li>ME495 Sensing, Navigation, and Machine Learning for Robotics - Prof. Matthew Elwin</li>
-              <li>MSAI437 Deep Learning - Prof. David Demeter</li>
-            </ul>
-          </div>
+          {% assign coursework_page = site.coursework | first %}
+          {{ coursework_page.content }}
         </div>
       </div>
     </section>

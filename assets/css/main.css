@@ -388,35 +388,27 @@ a:focus {
   background-color: var(--color-white);
 }
 
-.coursework-section h2 {
-  margin-bottom: 3rem;
-  text-align: left;
-}
-
 .coursework-content {
   max-width: 900px;
 }
 
-.coursework-category {
-  margin-bottom: 2rem;
+.coursework-content h2 {
+  margin-bottom: 3rem;
+  text-align: left;
 }
 
-.coursework-category:last-child {
-  margin-bottom: 0;
-}
-
-.coursework-section ul {
+.coursework-content ul {
   margin-bottom: 1rem;
   padding-left: 0;
   list-style: none;
 }
 
-.coursework-section li {
+.coursework-content li {
   padding-left: 1.5rem;
   position: relative;
 }
 
-.coursework-section li::before {
+.coursework-content li::before {
   content: "→";
   position: absolute;
   left: 0;
