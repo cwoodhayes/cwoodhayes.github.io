@@ -21,7 +21,7 @@ preview_gif: https://github.com/user-attachments/assets/f62c5c46-58eb-4b1f-b6ac-
 
 # PenPal: Vision-Guided Conversational Writing Robot
 <div class="project-button-row">
-  {% include github-button.html url="https://github.com/cwoodhayes/final-project-penpal" %}
+  {% include github-button.html url="https://github.com/ME495-EmbeddedSystems/final-project-penpal" %}
 </div>
 
 **Authors**: Conor Hayes, Amber Handal, Kyuwon Weon, Tianhao Zhang
