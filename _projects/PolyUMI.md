@@ -13,6 +13,10 @@ date: 2026-02-01
     <source src="https://github.com/user-attachments/assets/ca8afcf6-e07f-4742-9793-6ca54265329d" type="video/mp4">
     Your browser does not support the video tag.
   </video>
+  <video controls playsinline style="width: 100%; height: auto; border-radius: 0.5rem;">
+    <source src="https://github.com/user-attachments/assets/6f7a2f8f-0ad8-4217-af69-94231b63fa67" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
   <p style="margin: 0.5rem 0 0; text-align: center; font-size: 0.95rem; color: #666;">Time to collect an episode with PolyUMI: 10secs. Time to collect an episode for the same task with teleoperation: 80secs (8x longer). PolyUMI enables collecting much richer, more dynamic manipulation trajectories at a much faster rate than teleoperations.</p>
 </div>
 
