@@ -8,11 +8,13 @@ permalink: /projects/polyumi/
 date: 2026-02-01
 ---
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_gripper_cad.png" alt="PolyUMI Gripper CAD" style="width: 100%; height: auto;" /></a>
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee.jpg" alt="Custom UMI EE for Franka Hand" style="width: 100%; height: auto;" /></a>
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_internal_cam.jpg" alt="Internal finger camera view" style="width: 100%; height: auto;" /></a>
+<div style="width: 100%; margin: 1.5rem 0 0;">
+  <video controls playsinline style="width: 100%; height: auto; border-radius: 0.5rem;">
+    <source src="https://github.com/user-attachments/assets/ca8afcf6-e07f-4742-9793-6ca54265329d" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
 </div>
+
 
 # PolyUMI: Visual+Auditory+Tactile Manipulation Data Collector for Imitation Learning
 
@@ -31,6 +33,12 @@ This project combines the [Universal Manipulation Interface (UMI)](https://umi-g
 
 ### Future Work
 This project lays the groundwork for my master's thesis/capstone project beginning in the spring, which is to use the PolyUMI platform I've built to explore novel imitation learning strategies combining touch, vision, and audio data for robust manipulation.
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_gripper_cad.png" alt="PolyUMI Gripper CAD" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee.jpg" alt="Custom UMI EE for Franka Hand" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_internal_cam.jpg" alt="Internal finger camera view" style="width: 100%; height: auto;" /></a>
+</div>
 
 ---
 
