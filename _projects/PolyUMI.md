@@ -31,6 +31,11 @@ TODO: sensor surface demo
 
 **Authors**: Conor Hayes
 
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 100%; height: auto;" /></a>
+</div>
+
+
 This project combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with the [PolyTouch optical tactile + audio sensor](https://polytouch.alanz.info/) (which I reverse-engineer and make open source as the PolyTouch CE).
 
 ### My Contributions:
