@@ -35,6 +35,14 @@ TODO: sensor surface demo
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 100%; height: auto;" /></a>
 </div>
 
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/poly_plus_umi_eq.png" alt="PolyTouch + UMI =" /></a>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_cad.png" alt="Gripper + EE CAD" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_irl.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_tripod.png" alt="Live visualization of gripper audiovisual data" style="width: 100%; height: auto;" /></a>
+</div>
 
 This project combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with the [PolyTouch optical tactile + audio sensor](https://polytouch.alanz.info/) (which I reverse-engineer and make open source as the PolyTouch CE).
 
