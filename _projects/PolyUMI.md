@@ -14,12 +14,20 @@ date: 2026-02-01
 
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" %}
+	{% include github-button.html url="https://cad.onshape.com/documents/51445b7d15b8d189878323f1/w/358bf42f47b2b1f2a511decc/e/9a3e51ec7a29118eecf3283b" label="Gripper CAD"%}
+	{% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka mount CAD"%}
 </div>
 
-**Authors**: Conor Hayes
+PolyUMI is a real-time data collection & control platform for robotic imitation learning, which unifies the following sensor modalities in a single end-effector:
+- **touch** (via a custom optical tactile-sensing finger, based off of [PolyTouch](https://polytouch.alanz.info/)) - *10fps 540x480 MJPEG video (MP4)*
+- **mechanical vibration** (via a contact microphone fixed to the finger housing) - *16kHz PCM audio (WAV)*
+- **vision** (via GoPro camera on wrist + finger camera peripheral vision) - *60fps 1920x1080 MJPEG video (MP4) + 10fps 540x480 MJPEG video*
+- **proprioception** (via monocular inertial SLAM from GoPro + IMU in gripper, or robot joint encoders + FK in embodiments)
+
+It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with firmware and software for the above built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 80%; height: auto;" /></a>
 </div>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
@@ -31,26 +39,28 @@ date: 2026-02-01
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_tripod.png" alt="Live visualization of gripper audiovisual data" style="width: 100%; height: auto;" /></a>
 </div>
 
-This project combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with the [PolyTouch optical tactile + audio sensor](https://polytouch.alanz.info/) (which I reverse-engineer and make open source as the PolyTouch CE).
+## System Overview
+### PolyUMI Gripper
+  - Enables recording of manipulation demonstrations with the touch of a button
+  - ~5hrs of battery life, cable free, no need for any external PC to record
 
-### My Contributions:
-- Reverse-engineering PolyTouch and redesigning UMI EE + collector to incorporate it and the required onboard compute (Raspberry Pi Zero 2 W).
-- Adapting the UMI training + inference pipelines to work on our Franka Emika Panda arm (different gripper from original paper) in 2026 (some softwares are EOL, etc) with a new sensor/finger mechanism (requires new policies to be trained).
-- Developed software data collection pipeline making it easy to record, organize, and visualize this multimodal data.
+### PolyUMI End-Effectors
+  - Currently supports the [Franka Hand](https://franka.de/accessories) (novel design)
+  - but can easily support other arms, humanoids, etc --- anything with a wrist.
 
-
-<div style="width: 100%; margin: 1.5rem 0;">
-  <img src="/assets/msr/polyumi/ML_data_overview.drawio.png" alt="PolyUMI machine learning data overview" style="width: 100%; height: auto; border-radius: 0.5rem;" />
-</div>
-
-### Future Work
-This project lays the groundwork for my master's thesis/capstone project beginning in the spring, which is to use the PolyUMI platform I've built to explore novel imitation learning strategies combining touch, vision, and audio data for robust manipulation.
-
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_gripper_cad.png" alt="PolyUMI Gripper CAD" style="width: 100%; height: auto;" /></a>
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee.jpg" alt="Custom UMI EE for Franka Hand" style="width: 100%; height: auto;" /></a>
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi_internal_cam.jpg" alt="Internal finger camera view" style="width: 100%; height: auto;" /></a>
-</div>
+### Data Pipeline
+All firmware and software is written from scratch, with the following priorities:
+1. **As close to turnkey as possible.** 
+  - With this system, given a clean hardware setup, you can go from **0 to 1 in 20 minutes** (nothing is installed -> livestreaming data from the arm, recording data on the gripper, and postprocessing gripper data on PC)
+2. **Data collection & processing is quick and easy**
+  - a single button press starts & stops data collection, and a single command fetches all recorded episodes onto PC from the gripper over the network.
+3. **Data is ready for training**
+  - all data is timestamped and synchronized to the same clock
+  - all sensors produce data at rates and resolutions standard for training robot policies (>10Hz, >540p)
+4. **Data artifacts are well-organized**
+  - the postprocessing pipeline gathers all data from the hardware and stores each episode at-rest in an MCAP file alongside comprehensive metadata, saving intermediate artifacts for traceability
+  - built for robot policy training; pipeline extensions convert at-rest format to any common dataset format (Zarr, LeRobot Dataset, etc)
+  - all demonstrations can be replayed or livestreamed to [Foxglove](https://foxglove.dev/)
 
 ## Architecture
 
