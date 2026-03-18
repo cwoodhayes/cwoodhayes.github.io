@@ -59,6 +59,8 @@ UMI-style gripper supporting the PolyUMI touch sensing finger (designed & manufa
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/finger_exploded.png" alt="PolyUMI finger exploded view" style="width: 100%; max-width: 80%; height: auto;" /></a>
 </div>
 
+TODO manufacturing compilation video + link to build docs.
+
 
 ### PolyUMI End-Effectors
 #### Franka Hand
@@ -108,9 +110,8 @@ The hardware and software for the PolyUMI finger was designed from the bottom up
 TODO add these figures + videos:
 - Mirror-ray figure from the PolyTouch paper (with a caption comparing PolyTouch vs. PolyUMI).
 - Sensing-surface layup documentation + fabrication clip.
-- CAD section view and illuminated internal photo.
-- Internal camera screenshot with side-view regions highlighted.
-- touch surface replacement video
+- CAD section view + irl pic to show LED placement.
+- Internal camera still with windows & mirror highlighted & labeled
 
 References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
 
@@ -122,14 +123,14 @@ The contact microphone is rigidly coupled to the finger housing, so it primarily
 References: PolyTouch, [ManiWAV](https://mani-wav.github.io/)
 
 ### Wrist Camera
-This subsystem follows the UMI design with incremental hardware updates and software integration into the PolyUMI stack. It also preserves compatibility with the existing vision-only UMI workflow.
+This sensing system follows the UMI design with minor hardware updates for a new GoPro version. PolyUMI also adds BLE-based control of the GoPro from the gripper's onboard SBC (Raspberry Pi Zero 2W), which is required to synchronize timestamps for all sensor datastreams & ensure that the sensors begin recording at the same time.
 
 - GoPro Hero 12 + MAX Lens Mod 2.0 (approximately 177 deg FOV)
 - Side mirrors provide a binocular view of the manipulated object.
 - **Output:**: 60 fps video at rest as MP4 
+- **Control:** via [Open GoPro's BLE API](https://gopro.github.io/OpenGoPro/) from the gripper's onboard Raspberry Pi
 
-Planned media for this section:
-- Annotated image showing camera FOV and side-mirror sight lines.
+TODO figure: annotated image showing camera FOV and side mirrors.
 
 References: UMI
 
@@ -138,7 +139,7 @@ Proprioceptive data is available in two forms:
 - 6DoF end-effector pose + gripper width; embodiment-agnostic
 - Joint angles; embodiment-specific
 
-TODO diagram
+TODO data flow diagram
 
 #### End-Effector
 When mounted to an arm or any other embodiment, joint angle data can be sourced directly from motor encoders, and EE pose can be trivially obtained through forward kinematics.
