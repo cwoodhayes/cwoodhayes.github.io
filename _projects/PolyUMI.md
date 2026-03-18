@@ -8,9 +8,9 @@ permalink: /projects/polyumi/
 date: 2026-02-01
 ---
 
-<iframe width="720" height="405" src="https://www.youtube.com/embed/9W4t_Zj5kCw?autoplay=1&loop=1&playlist=9W4t_Zj5kCw&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="720" height="405" src="https://www.youtube.com/embed/lprvheXONTs?autoplay=1&loop=1&playlist=lprvheXONTs&mute=1&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-# PolyUMI: Visual+Auditory+Tactile Manipulation Data Collector for Imitation Learning
+# PolyUMI: Visual+Auditory+Tactile Manipulation Platform for Imitation Learning
 
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" %}
@@ -24,7 +24,7 @@ PolyUMI is a real-time data collection & control platform for robotic imitation 
 - **vision** (via GoPro camera on wrist + finger camera peripheral vision) - *60fps 1920x1080 MJPEG video (MP4) + 10fps 540x480 MJPEG video*
 - **proprioception** (via monocular inertial SLAM from GoPro + IMU in gripper, or robot joint encoders + FK in embodiments)
 
-It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with firmware and software for the above built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
+It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with hardware, firmware, and software for the above built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 80%; height: auto;" /></a>
@@ -41,11 +41,13 @@ It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.git
 
 ## System Overview
 
-TODO - block diagram
-
 ### PolyUMI Gripper
   - Enables recording of manipulation demonstrations with the touch of a button
   - ~5hrs of battery life, cable free, no need for any external PC to record
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/system_block_diagram.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 80%; height: auto;" /></a>
+</div>
 
 ### PolyUMI End-Effectors
   - Currently supports the [Franka Hand](https://franka.de/accessories) (novel design)
@@ -83,6 +85,7 @@ TODO add these figures + videos:
 - Sensing-surface layup documentation + fabrication clip.
 - CAD section view and illuminated internal photo.
 - Internal camera screenshot with side-view regions highlighted.
+- touch surface replacement video
 
 References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
 
