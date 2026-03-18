@@ -20,6 +20,8 @@ date: 2026-02-01
   {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
 </div>
 
+*(note - this page is still a work in progress)*
+
 PolyUMI is a real-time data collection & control platform for robotic imitation learning, which unifies the following sensor modalities in a single end-effector:
 - **touch** (via a custom optical tactile-sensing finger, based off of [PolyTouch](https://polytouch.alanz.info/)) - *10fps 540x480 MJPEG video (MP4)*
 - **mechanical vibration** (via a contact microphone fixed to the finger housing) - *16kHz PCM audio (WAV)*
@@ -44,16 +46,33 @@ It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.git
 ## System Overview
 
 ### PolyUMI Gripper
+UMI-style gripper supporting the PolyUMI touch sensing finger (designed & manufactured by me, with UMI's open source gripper as a starting point)
   - Enables recording of manipulation demonstrations with the touch of a button
   - ~5hrs of battery life, cable free, no need for any external PC to record
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/system_block_diagram.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 80%; height: auto;" /></a>
 </div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/gripper_cad.png" alt="PolyUMI gripper CAD" style="width: 100%; max-width: 80%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/gripper_irl.JPG" alt="PolyUMI gripper IRL" style="width: 100%; max-width: 80%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/finger_exploded.png" alt="PolyUMI finger exploded view" style="width: 100%; max-width: 80%; height: auto;" /></a>
+</div>
+
 
 ### PolyUMI End-Effectors
-  - Currently supports the [Franka Hand](https://franka.de/accessories) (novel design)
-  - but can easily support other arms, humanoids, etc --- anything with a wrist.
+#### Franka Hand
+PolyUMI end-effector for the [Franka Hand](https://franka.de/accessories) (designed & manufactured by me)
+- Maintains the same spatial relationships between sensors & fingers as the PolyUMI gripper to aid in policy transfer
+- Separate gripper adapter parts (in pink) enable reuse of the Gripper's finger designs
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee.jpg" alt="Franka EE IRL" style="width: 100%; height: auto;" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee_exploded.png" alt="Franka EE CAD Exploded View" style="width: 100%; height: auto;" /></a>
+</div>
+
+#### Others
+System can easily support other arms, humanoids, etc --- anything with a wrist. Just need an end-effector hardware design for each.
 
 ### Data Pipeline
 All firmware and software is written from scratch, with the following priorities:
@@ -82,8 +101,8 @@ The hardware and software for the PolyUMI finger was designed from the bottom up
 - **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
 
 <figure class="project-figure">
-<iframe width="720" height="405" src="https://www.youtube.com/embed/9J0HMS4kfYM?autoplay=0&loop=1&playlist=9J0HMS4kfYM&mute=1&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<figcaption>The finger surface deformation is clearly visible in the color gradient when an object (such as this M3x30 screw) presses against it.</figcaption>
+<iframe width="720" height="405" src="https://www.youtube.com/embed/9J0HMS4kfYM?autoplay=0&loop=1&playlist=9J0HMS4kfYM&mute=0&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<figcaption>The finger surface deformation is clearly visible in the color gradient when an object (such as this M3x30 screw) presses against it. Audio is from the finger's integrated contact microphone.</figcaption>
 </figure>
 
 TODO add these figures + videos:
@@ -154,11 +173,12 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 - Add CLI screenshots for both recording and postprocessing flows.
 - Add Foxglove screenshots + shared visualization config.
 
-<div style="width: 100%; margin: 1.5rem 0;">
-  <img src="/assets/msr/polyumi/PolyUMI SW block diagram.png" alt="PolyUMI software block diagram" style="width: 100%; height: auto; border-radius: 0.5rem;" />
-  <p style="margin: 0.5rem 0 0; text-align: center; font-size: 0.95rem; color: #666;">3 configurations of the polyumi system</p>
-</div>
-
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/PolyUMI SW block diagram.png" alt="PolyUMI software block diagram" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>3 configurations of the software to support 3 use-cases: 1) recording on the gripper, 2) transferring recorded data from the gripper to PC, and 3) livestreaming data from the end-effector to ROS2 for inference/control and visualization.</figcaption>
+</figure>
 
 ## Next Steps
 
