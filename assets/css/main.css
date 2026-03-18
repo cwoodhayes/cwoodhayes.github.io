@@ -719,6 +719,10 @@ a:focus {
 }
 
 .project-figure iframe {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  aspect-ratio: 720 / 405;
   border: 1px solid var(--color-gray-border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -728,11 +732,16 @@ a:focus {
   font-size: 0.95rem;
   color: var(--color-gray-dark);
   text-align: center;
+  max-width: 720px;
 }
 
 .project-content iframe {
   display: block;
   margin: 2rem auto;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  aspect-ratio: 16 / 9;
 }
 
 .project-content pre {
