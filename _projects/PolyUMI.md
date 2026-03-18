@@ -68,23 +68,23 @@ All firmware and software is written from scratch, with the following priorities
 ## Sensors: Theory of Operation
 
 ### Optical Tactile Finger
-The optical finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
+The PolyUMI finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
 
-The mechanical, electrical, and software design for the PolyUMI finger was done from the bottom up, to fit the new UMI-based system and enable easy experimentation to improve to PolyTouch's performance. Additionally, I do not have access to any source code, designs, or information for PolyTouch beyond the paper itself.
+The hardware and software for the PolyUMI finger was designed from the bottom up, to fit the new UMI-based system and enable easy experimentation to improve sensing performance. Additionally, I do not have access to any source code, designs, or information for PolyTouch beyond the paper itself.
 
-- **Sensing surface:** VHB tape for soft material, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture. Mounted on an acrylic plate, and detachable from finger assembly for easy replacement
+- **Sensing surface:** VHB tape for conformability, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture & durability. Mounted on an acrylic plate, and detachable from finger assembly for easy replacement
 - **Illumination:** [Flexible LED tube](https://www.digikey.com/en/products/detail/adafruit-industries-llc/6143/26250001) mounted in the rear of the sensing surface
 - **Peripheral vision:** side windows provide a secondary view of the manipulation scene, similar to PolyTouch.
 - **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
 
-Planned media for this section:
+TODO add these figures + videos:
 - Nail press demo clip with synchronized audio.
 - Mirror-ray figure from the PolyTouch paper (with a caption comparing PolyTouch vs. PolyUMI).
 - Sensing-surface layup documentation + fabrication clip.
 - CAD section view and illuminated internal photo.
 - Internal camera screenshot with side-view regions highlighted.
 
-References: PolyTouch, GelSight, [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
+References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
 
 ### Contact Microphone
 The contact microphone is rigidly coupled to the finger housing, so it primarily captures mechanical vibration traveling through the sensor body, with relatively little airborne sound.
@@ -106,18 +106,27 @@ Planned media for this section:
 References: UMI
 
 ### Proprioception
-PolyUMI supports two complementary proprioception paths:
+Proprioceptive data is available in two forms:
+- 6DoF end-effector pose + gripper width; embodiment-agnostic
+- Joint angles; embodiment-specific
 
-- **Embodiment-native path:** direct joint sensing (angles, velocities, efforts, etc.) followed by forward kinematics to compute end-effector pose.
-- **Gripper-centric path:** visual-inertial SLAM estimates a 6-DoF pose trajectory, then an embodiment-specific inverse kinematics solver maps this trajectory to joint-space commands.
+TODO diagram
 
-Conceptual flow:
-- Embodiment: joint state -> FK -> 6-DoF pose
-- Gripper: GoPro camera + IMU -> ORB-SLAM3 (monocular visual-inertial) -> 6-DoF pose trajectory -> IK -> joint state
+#### End-Effector
+When mounted to an arm or any other embodiment, joint angle data can be sourced directly from motor encoders, and EE pose can be trivially obtained through forward kinematics.
+For the Franka arm, this data is all availble directly from the `libfranka` API.
 
-References: UMI
+#### PolyUMI Gripper
+When data is collected from the gripper alone, proprioceptive information must be derived from other sensor data.
+In particular, PolyUMI follows the original UMI paper in using [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)'s monocular-inertial SLAM implementation to derive a 6DoF pose trajectory using the GoPro's video feed and integrated IMU.
+Gripper width is calculated using the ArUco tags on the gripper fingers.
+
+Then, an embodiment-specific IK solver can be used to map this pose trajectory to a trajectory in joint-space.
+
+**References**: UMI
 
 ## System Architecture and Design
+- Full BOM is [here](https://docs.google.com/spreadsheets/d/1tMQNNxZsd84y2yo-7dfs8auQ5Ptbd8Gklj7v1k_vXQo/edit?usp=sharing).
 
 ### Mechanical
 - CAD resources: gripper and Franka mount Onshape documents (linked above).
@@ -126,7 +135,6 @@ References: UMI
 - Add a short build log (video or slideshow) covering fabrication/assembly.
 
 ### Electrical
-- Link full BOM.
 - Add system-level block diagram.
 - Add LED driver schematic.
 - Add close-up photos of critical wiring/connectors.
