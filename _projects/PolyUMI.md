@@ -8,7 +8,9 @@ permalink: /projects/polyumi/
 date: 2026-02-01
 ---
 
+<figure class="project-figure">
 <iframe width="720" height="405" src="https://www.youtube.com/embed/lprvheXONTs?autoplay=1&loop=1&playlist=lprvheXONTs&mute=1&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</figure>
 
 # PolyUMI: Visual+Auditory+Tactile Manipulation Platform for Imitation Learning
 
@@ -79,8 +81,12 @@ The hardware and software for the PolyUMI finger was designed from the bottom up
 - **Peripheral vision:** side windows provide a secondary view of the manipulation scene, similar to PolyTouch.
 - **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
 
+<figure class="project-figure">
+<iframe width="720" height="405" src="https://www.youtube.com/embed/9J0HMS4kfYM?autoplay=0&loop=1&playlist=9J0HMS4kfYM&mute=1&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<figcaption>The finger surface deformation is clearly visible in the color gradient when an object (such as this M3x30 screw) presses against it.</figcaption>
+</figure>
+
 TODO add these figures + videos:
-- Nail press demo clip with synchronized audio.
 - Mirror-ray figure from the PolyTouch paper (with a caption comparing PolyTouch vs. PolyUMI).
 - Sensing-surface layup documentation + fabrication clip.
 - CAD section view and illuminated internal photo.
