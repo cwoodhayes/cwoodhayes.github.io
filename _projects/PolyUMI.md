@@ -201,7 +201,7 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 
 ---
 
-Here's a deck I update weekly to reflect my latest progress.
+Here's a deck I updated weekly for the first 9 weeks of the project (Jan-Feb 2026).
 
 <div style="width: 100%; max-width: 960px; margin: 0 auto;">
 	<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQR-MULBLa4QTOi97m1QAagUZOOMOkp6oHEydoJPGzYtv5GeUqmyuLx2DniBYF2dP6ZISberjtdc6vv/pubembed?start=false&loop=true&delayms=3000" frameborder="0" style="width: 100%; aspect-ratio: 960 / 569;" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
