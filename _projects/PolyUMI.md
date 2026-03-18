@@ -95,9 +95,9 @@ All firmware and software is written from scratch, with the following priorities
 ### Optical Tactile Finger
 The PolyUMI finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
 
-The hardware and software for the PolyUMI finger was designed from the bottom up, to fit the new UMI-based system and enable easy experimentation to improve sensing performance. Additionally, I do not have access to any source code, designs, or information for PolyTouch beyond the paper itself.
+The hardware & software for the PolyUMI finger are designed and built from scratch; however, the sensing approach and system architecture draw heavily from PolyTouch. No source code or design files from that work were available — only the published paper — so all implementation details were independently developed, and modifications were made as appropriate to fit the goals of rapid iteration and integration with a UMI-style gripper design.
 
-- **Sensing surface:** VHB tape for conformability, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture & durability. Mounted on an acrylic plate, and detachable from finger assembly for easy replacement
+- **Sensing surface:** VHB tape for conformability, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture & durability (following PolyTouch). Mounted on an acrylic plate which is detachable from finger assembly for easy replacement + iteration.
 - **Illumination:** [Flexible LED tube](https://www.digikey.com/en/products/detail/adafruit-industries-llc/6143/26250001) mounted in the rear of the sensing surface
 - **Peripheral vision:** side windows provide a secondary view of the manipulation scene, similar to PolyTouch.
 - **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
