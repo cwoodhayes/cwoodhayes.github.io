@@ -40,6 +40,9 @@ It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.git
 </div>
 
 ## System Overview
+
+TODO - block diagram
+
 ### PolyUMI Gripper
   - Enables recording of manipulation demonstrations with the touch of a button
   - ~5hrs of battery life, cable free, no need for any external PC to record
@@ -62,12 +65,101 @@ All firmware and software is written from scratch, with the following priorities
   - built for robot policy training; pipeline extensions convert at-rest format to any common dataset format (Zarr, LeRobot Dataset, etc)
   - all demonstrations can be replayed or livestreamed to [Foxglove](https://foxglove.dev/)
 
-## Architecture
+## Sensors: Theory of Operation
+
+### Optical Tactile Finger
+The optical finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
+
+The mechanical, electrical, and software design for the PolyUMI finger was done from the bottom up, to fit the new UMI-based system and enable easy experimentation to improve to PolyTouch's performance. Additionally, I do not have access to any source code, designs, or information for PolyTouch beyond the paper itself.
+
+- **Sensing surface:** VHB tape for soft material, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture. Mounted on an acrylic plate, and detachable from finger assembly for easy replacement
+- **Illumination:** [Flexible LED tube](https://www.digikey.com/en/products/detail/adafruit-industries-llc/6143/26250001) mounted in the rear of the sensing surface
+- **Peripheral vision:** side windows provide a secondary view of the manipulation scene, similar to PolyTouch.
+- **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
+
+Planned media for this section:
+- Nail press demo clip with synchronized audio.
+- Mirror-ray figure from the PolyTouch paper (with a caption comparing PolyTouch vs. PolyUMI).
+- Sensing-surface layup documentation + fabrication clip.
+- CAD section view and illuminated internal photo.
+- Internal camera screenshot with side-view regions highlighted.
+
+References: PolyTouch, GelSight, [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
+
+### Contact Microphone
+The contact microphone is rigidly coupled to the finger housing, so it primarily captures mechanical vibration traveling through the sensor body, with relatively little airborne sound.
+
+- **Output:** 16 kHz mono PCM audio (stored at rest as WAV container, MCAP)
+
+References: PolyTouch, [ManiWAV](https://mani-wav.github.io/)
+
+### Wrist Camera
+This subsystem follows the UMI design with incremental hardware updates and software integration into the PolyUMI stack. It also preserves compatibility with the existing vision-only UMI workflow.
+
+- GoPro Hero 12 + MAX Lens Mod 2.0 (approximately 177 deg FOV)
+- Side mirrors provide a binocular view of the manipulated object.
+- **Output:**: 60 fps video at rest as MP4 
+
+Planned media for this section:
+- Annotated image showing camera FOV and side-mirror sight lines.
+
+References: UMI
+
+### Proprioception
+PolyUMI supports two complementary proprioception paths:
+
+- **Embodiment-native path:** direct joint sensing (angles, velocities, efforts, etc.) followed by forward kinematics to compute end-effector pose.
+- **Gripper-centric path:** visual-inertial SLAM estimates a 6-DoF pose trajectory, then an embodiment-specific inverse kinematics solver maps this trajectory to joint-space commands.
+
+Conceptual flow:
+- Embodiment: joint state -> FK -> 6-DoF pose
+- Gripper: GoPro camera + IMU -> ORB-SLAM3 (monocular visual-inertial) -> 6-DoF pose trajectory -> IK -> joint state
+
+References: UMI
+
+## System Architecture and Design
+
+### Mechanical
+- CAD resources: gripper and Franka mount Onshape documents (linked above).
+- Add breakdown of total part count and role of each component.
+- Add per-part CAD renders.
+- Add a short build log (video or slideshow) covering fabrication/assembly.
+
+### Electrical
+- Link full BOM.
+- Add system-level block diagram.
+- Add LED driver schematic.
+- Add close-up photos of critical wiring/connectors.
+
+### Software
+- Source code: [PolyUMI GitHub](https://github.com/cwoodhayes/polyumi)
+- Add software architecture diagram.
+- Add CLI screenshots for both recording and postprocessing flows.
+- Add Foxglove screenshots + shared visualization config.
 
 <div style="width: 100%; margin: 1.5rem 0;">
   <img src="/assets/msr/polyumi/PolyUMI SW block diagram.png" alt="PolyUMI software block diagram" style="width: 100%; height: auto; border-radius: 0.5rem;" />
   <p style="margin: 0.5rem 0 0; text-align: center; font-size: 0.95rem; color: #666;">3 configurations of the polyumi system</p>
 </div>
+
+
+## Next Steps
+
+  - hardware design improvements
+	- add second LED strip at fingertip; design custom LED pcb 
+		- need better illumination at front of sensor
+		- better control over light orientation (the current tube gets twisted), more mechanical robustness, and smaller form factor
+	- optimize mirror curvature + camera placement to minimize distortion, variation in effective sensing surface distance (so it all fits in the same depth-of-field), and blind spots (currently there's one at the rear of the sensor)
+	- sensing surface stiffness - experiment with materials to make it softer
+- slam pipeline robustness improvements
+- implement inference + training infrastructure, and evaluate various policies! planning to explore
+	- diffusion policy
+	- ACT
+	- various VLA's with SFT
+	- RL-based fine-tuning of all for failure recovery
+	- others TBD
+- publish :)
+
 
 ---
 
