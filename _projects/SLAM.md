@@ -8,16 +8,13 @@ permalink: /projects/me495-slam/
 date: 2026-01-15
 ---
 
-<div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap; margin-bottom: 1rem;">
-	<figure class="project-figure" style="flex: 1; min-width: 300px; margin: 0;">
-		<img src="https://github.com/ME495-Navigation/slam-cwoodhayes/raw/main/nusim/images/nusim1.png" alt="Custom-built SLAM simulator in RViz">
-		<figcaption>Left: Custom-built LiDAR SLAM simulator. <p/> Right: Driving the Turtlebot3 in a circle using odometry via custom forward kinematics module. </figcaption>
-	</figure>
-	<video style="flex: 1; min-width: 300px;" controls>
-		<source src="https://github.com/user-attachments/assets/bab2ae6e-a6a7-44c5-8ed0-ffb4ad08dbb6" type="video/mp4">
+<figure class="project-figure">
+	<video width="720" height="405" controls preload="metadata">
+		<source src="https://github.com/user-attachments/assets/1179359c-8443-42d2-a3f8-9bd3460544c9" type="video/mp4">
 		Your browser does not support the video tag.
 	</video>
-</div>
+	<figcaption>Real-world deployment of the EKF-SLAM algorithm with landmark detection & association, run onboard the Turtlebot3 with real-time visualization in RViz. Key: Green/multicolored dots: LIDAR scan points. Green obstacles+robot+path = SLAM estimate. Blue robot+path = odometry-only estimate. White obstacles=landmarks detected by the `landmarks` node (see below), which feed into SLAM. SLAM's robot pose covariance is shown as the purple ellipse and yellow cone.</figcaption>
+</figure>
 
 # SLAM from Scratch: ROS 2 Navigation Stack for Turtlebot3
 
@@ -27,15 +24,24 @@ date: 2026-01-15
 
 **Authors**: Conor Hayes
 
-In this project, I implement a full ROS 2 navigation stack for the [Turtlebot3 Burger](https://www.turtlebot.com/turtlebot3/) differential drive mobile robot, including LiDAR SLAM, control, and simulation components, all built from scratch in C++. This means no external SLAM or kinematics libraries, no Gazebo simulation, no Eiegen; just basic ROS 2 packages and my own implementations of the necessary algorithms and tools.
+In this project, I implement a full ROS 2 navigation stack for the [Turtlebot3 Burger](https://www.turtlebot.com/turtlebot3/) differential drive mobile robot, including LiDAR SLAM, control, and simulation components, all built from scratch in C++. This means no external SLAM or kinematics libraries, no Gazebo simulation, just basic ROS 2 packages, [armadillo](https://arma.sourceforge.net/) for linear algebra, and my own implementations of the necessary algorithms and tools.
 
 ## Highlights
 
 - EKF (Extended Kalman Filter) SLAM implementation using LiDAR data + odometry for mapping and localization
+- Custom data association + lidar clustering & classification based on circle fitting for landmark extraction
 - Custom forward + inverse kinematics implementation (`turtlelib`) for differential drive robot
 - Custom simulator (`nusim`) with configurable arena and obstacles
 - Visualization + tooling in RViz for real-time robot state display in both simulation and hardware
 - Deployment to real hardware (Turtlebot3 Burger) for testing in a physical environment 
+
+<figure class="project-figure">
+	<video width="720" height="405" controls preload="metadata">
+		<source src="https://github.com/user-attachments/assets/ea1a8a6e-004b-4681-86aa-999a3f587f48" type="video/mp4">
+		Your browser does not support the video tag.
+	</video>
+	<figcaption>Custom-built LiDAR SLAM simulator, with ground truth (red), odometry-only (blue), and SLAM (green) map & pose estimates shown, as well as obstacle detection in white.</figcaption>
+</figure>
 
 ## Tech Stack
 - ROS 2 Kilted Kaiju
