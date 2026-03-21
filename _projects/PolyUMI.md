@@ -222,19 +222,17 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" label="PolyUMI GitHub"%}
 </div>
 
-<figure class="project-figure">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; max-width: 1000px; margin:  0 auto;">
+<figure class="project-figure" style="margin: 0 auto;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/cli_help_pi.png" alt="Pi firmware help screen"/></a>
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/cli_help_post.png" alt="Postprocessing help screen" /></a>
   </div>
   <figcaption>Help screens for the PolyUMI pi firmware and postprocessing tools.</figcaption>
 </figure>
 
-<figure class="project-figure">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/PolyUMI SW block diagram.png" alt="PolyUMI software block diagram" style="width: 100%; height: auto;" /></a>
-  </div>
-  <figcaption>3 configurations of the software to support 3 use-cases: 1) recording on the gripper, 2) transferring recorded data from the gripper to PC, and 3) livestreaming data from the end-effector to ROS2 for inference/control and visualization.</figcaption>
+<figure class="project-figure" style="max-width: 500px; margin: 0 auto;">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/receiver_node_info.png" alt="Receiver node info" /></a>
+  <figcaption>ROS 2 parameters & topics published by the receiver node.</figcaption>
 </figure>
 
 ## Next Steps
@@ -259,5 +257,5 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img" style="max-width: 400px;"><img src="/assets/msr/polyumi/parts_graveyard.JPG" alt="PolyUMI failed & test parts"/></a>
-  <figcaption>I iterated on these parts quite a bit :D<br/> Here is a graveyard of not-quite-right prints, failed cuts, broken mirrors, and also a nice jig for doing heat-set inserts for the camera mount, which is at an awkward angle inside the finger housing cavity.</figcaption>
+  <figcaption>I iterated on these parts quite a bit. <br/> Here is a graveyard of not-quite-right prints, failed cuts, broken mirrors, and also a nice jig for doing heat-set inserts for the camera mount, which is at an awkward angle inside the finger housing cavity.</figcaption>
 </figure>
