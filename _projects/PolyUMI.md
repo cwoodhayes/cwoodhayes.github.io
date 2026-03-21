@@ -221,8 +221,6 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" label="PolyUMI GitHub"%}
 </div>
 
-See above for more.
-
 <figure class="project-figure">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; max-width: 1000px; margin:  0 auto;">
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/cli_help_pi.png" alt="Pi firmware help screen"/></a>
