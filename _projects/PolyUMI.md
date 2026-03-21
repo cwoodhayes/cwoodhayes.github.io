@@ -28,18 +28,21 @@ PolyUMI is a real-time data collection & control platform for robotic imitation 
 
 It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with hardware, firmware, and software for the above built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
 
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 80%; height: auto;" /></a>
-</div>
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" /></a>
+</figure>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/poly_plus_umi_eq.png" alt="PolyTouch + UMI =" /></a>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_cad.png" alt="Gripper + EE CAD" style="width: 100%; height: auto;" /></a>
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_irl.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_tripod.png" alt="Live visualization of gripper audiovisual data" style="width: 100%; height: auto;" /></a>
-</div>
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_cad.png" alt="Gripper + EE CAD" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_irl.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_tripod.png" alt="Live visualization of gripper audiovisual data" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>PolyUMI combines the touch-sensing capabilities of the <a href="https://polytouch.alanz.info/">PolyTouch sensor</a> with the <a href="https://umi-gripper.github.io/">UMI</a> platform, with novel mechanisms, electrical design, firmware, and software purpose-built for both offline and real-time data collection and control.</figcaption>
+</figure>
 
 ## System Overview
 
@@ -47,6 +50,7 @@ It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.git
 UMI-style gripper supporting the PolyUMI touch sensing finger (designed & manufactured by me, with UMI's open source gripper as a starting point)
   - Enables recording of manipulation demonstrations with the touch of a button
   - ~5hrs of battery life, cable free, no need for any external PC to record
+  - Novel mechanical, electrical, and software design to support PolyUMI's 4 simultaneous datastreams, with a focus on ease of use and rapid iteration
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/system_block_diagram.png" alt="PolyUMI platform overview" style="width: 100%; max-width: 80%; height: auto;" /></a>
@@ -56,8 +60,6 @@ UMI-style gripper supporting the PolyUMI touch sensing finger (designed & manufa
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/gripper_irl.JPG" alt="PolyUMI gripper IRL" style="width: 100%; max-width: 80%; height: auto;" /></a>
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/finger_exploded.png" alt="PolyUMI finger exploded view" style="width: 100%; max-width: 80%; height: auto;" /></a>
 </div>
-
-TODO manufacturing compilation video + link to build docs.
 
 
 ### PolyUMI End-Effectors
@@ -75,7 +77,12 @@ PolyUMI end-effector for the [Franka Hand](https://franka.de/accessories) (desig
 System can easily support other arms, humanoids, etc --- anything with a wrist. Just need an end-effector hardware design for each.
 
 ### Data Pipeline
-All firmware and software is written from scratch, with the following priorities:
+
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polyumi sw components.png" alt="PolyUMI software component diagram" /></a>
+</figure>
+
+**PolyUMI's firmware and software is architected from scratch with the following priorities:**
 1. **As close to turnkey as possible.** 
   - With this system, given a clean hardware setup, you can go from **0 to 1 in 20 minutes** (nothing is installed -> livestreaming data from the arm, recording data on the gripper, and postprocessing gripper data on PC)
 2. **Data collection & processing is quick and easy**
@@ -123,10 +130,22 @@ References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https:
 </figure>
 
 ### Contact Microphone
-The contact microphone is rigidly coupled to the finger housing, so it primarily captures mechanical vibration traveling through the sensor body, with relatively little airborne sound.
-The audio DAC and amplification is handled prior to processing in the RPi firmware using the [Raspiaudio ULTRA+](https://raspiaudio.com/product/ultra/) HAT, a COTS hobby audio interface board for the Raspberry Pi Zero. 
+The contact microphone is rigidly coupled to the finger housing, and it mostly captures mechanical vibration traveling through the sensor body, with relatively little airborne sound. The primary purpose of this modality is to **capture moments of contact between the finger and the environment**, whether for precise timestamping of contact events or to capture information about the nature of the contact (e.g. a hard tap vs a soft press, or texture information from sliding contact). (CITE MANIWAV PAPER)
+
+The audio DAC and amplification is handled prior to processing in the RPi firmware using the [Raspiaudio ULTRA+](https://raspiaudio.com/product/ultra/) HAT, a COTS hobby audio interface board for the Raspberry Pi Zero. The contact mic itself is a low-end unit designed for use on acoustic guitars (see the [BOM spreadsheet](https://docs.google.com/spreadsheets/d/1tMQNNxZsd84y2yo-7dfs8auQ5Ptbd8Gklj7v1k_vXQo/edit?usp=sharing) for details).
 
 - **Output:** 16 kHz mono PCM audio (stored at rest as WAV container, MCAP)
+
+<div style="display: grid; grid-template-columns: 3fr 1fr; gap: 1rem;">
+  <figure class="project-figure">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/contact_mic_waveform.png" alt="Contact mic waveform" /></a>
+    <figcaption>Contact microphone's output for a 1-minute demo session. Contacts between the finger and a hard surface are evident as sharp spikes in the waveform.</figcaption>
+  </figure>
+  <figure class="project-figure">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/contact_mic.jpg" alt="Contact mic" /></a>
+    <figcaption>Contact mic mount point.</figcaption>
+  </figure>
+</div>
 
 References: PolyTouch, [ManiWAV](https://mani-wav.github.io/)
 
@@ -137,8 +156,6 @@ This sensing system follows the UMI design with minor hardware updates for a new
 - Side mirrors provide a binocular view of the manipulated object.
 - **Output:**: 60 fps video at rest as MP4 
 - **Control:** via [Open GoPro's BLE API](https://gopro.github.io/OpenGoPro/) from the gripper's onboard Raspberry Pi
-
-TODO figure: annotated image showing camera FOV and side mirrors.
 
 References: UMI
 
