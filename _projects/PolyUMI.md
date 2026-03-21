@@ -26,7 +26,7 @@ PolyUMI is a real-time data collection & control platform for robotic imitation 
 - **vision** (via GoPro camera on wrist + finger camera peripheral vision) - *60fps 1920x1080 MJPEG video (MP4) + 10fps 540x480 MJPEG video*
 - **proprioception** (via monocular inertial SLAM from GoPro + IMU in gripper, or robot joint encoders + FK in embodiments)
 
-It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with hardware, firmware, and software for the above built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
+It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with hardware, firmware, and software built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" /></a>
@@ -44,12 +44,17 @@ It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.git
   <figcaption>PolyUMI combines the touch-sensing capabilities of the <a href="https://polytouch.alanz.info/">PolyTouch sensor</a> with the <a href="https://umi-gripper.github.io/">UMI</a> platform, with novel mechanisms, electrical design, firmware, and software purpose-built for both offline and real-time data collection and control.</figcaption>
 </figure>
 
+Philosophically, my inspiration for this project comes from my belief that embodied AI's greatest ally is hardware-software co-design. AI taking over the planning & control layers of the robotics stack means a more flexible, agile, intuitive approach to hardware and sensing is possible.
+
+With the completion of this phase of the PolyUMI project, I'm now able to pursue multimodal imitation learning research on my own research platform built from the bottom-up; this means that my iteration on model performance will include iteration on the **full design**, including the hardware itself.
+
+
 ## System Overview
 
 ### PolyUMI Gripper
 UMI-style gripper supporting the PolyUMI touch sensing finger (designed & manufactured by me, with UMI's open source gripper as a starting point)
-  - Enables recording of manipulation demonstrations with the touch of a button
-  - ~5hrs of battery life, cable free, no need for any external PC to record
+  - **Fully wireless** data recording, with ~5hrs of battery life. No external PC required until you want to transfer the data for processing & training.
+  - Start and stop recording with a touch of a single button, with all data sources time-synchronized.
   - Novel mechanical, electrical, and software design to support PolyUMI's 4 simultaneous datastreams, with a focus on ease of use and rapid iteration
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
@@ -150,7 +155,7 @@ The audio DAC and amplification is handled prior to processing in the RPi firmwa
 References: PolyTouch, [ManiWAV](https://mani-wav.github.io/)
 
 ### Wrist Camera
-This sensing system follows the UMI design with minor hardware updates for a new GoPro version. PolyUMI also adds BLE-based control of the GoPro from the gripper's onboard SBC (Raspberry Pi Zero 2W), which is required to synchronize timestamps for all sensor datastreams & ensure that the sensors begin recording at the same time.
+This sensing system follows the UMI design with minor hardware updates for a new GoPro version (Hero 12 vs. Hero 9). PolyUMI also adds BLE-based control of the GoPro from the gripper's onboard SBC (Raspberry Pi Zero 2W), which is required to synchronize timestamps for all sensor datastreams & ensure that the sensors begin recording at the same time.
 
 - GoPro Hero 12 + MAX Lens Mod 2.0 (approximately 177 deg FOV)
 - Side mirrors provide a binocular view of the manipulated object.
@@ -160,17 +165,17 @@ This sensing system follows the UMI design with minor hardware updates for a new
 References: UMI
 
 ### Proprioception
-Proprioceptive data is available in two forms:
-- 6DoF end-effector pose + gripper width; embodiment-agnostic
-- Joint angles; embodiment-specific
 
-TODO data flow diagram
+<figure class="project-figure">
+  <a href="#" class="lightbox-img" style="max-width: 800px;"><img src="/assets/msr/polyumi/proprioception_dataflow.png" alt="PolyUMI proprioception dataflow" /></a>
+  <figcaption>Proprioceptive data can be supplied as embodiment-specifc joint angles or embodiment-agnostic 6DoF pose + gripper width at both training and inference time.</figcaption>
+</figure>
 
-#### End-Effector
+#### Embodiment Proprioception
 When mounted to an arm or any other embodiment, joint angle data can be sourced directly from motor encoders, and EE pose can be trivially obtained through forward kinematics.
 For the Franka arm, this data is all availble directly from the `libfranka` API.
 
-#### PolyUMI Gripper
+#### PolyUMI Gripper Proprioception
 When data is collected from the gripper alone, proprioceptive information must be derived from other sensor data.
 In particular, PolyUMI follows the original UMI paper in using [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)'s monocular-inertial SLAM implementation to derive a 6DoF pose trajectory using the GoPro's video feed and integrated IMU.
 Gripper width is calculated using the ArUco tags on the gripper fingers.
@@ -201,7 +206,6 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
   - The original fin-ray finger + UMI finger mount were slightly enlarged to match the dimensions of the sensing finger.
   - The remaining parts of the original UMI (core trigger mechanism + GoPro mount + finger rail) were left identical to the original; this also enables existing users of the UMI to switch out only the fingers to switch to the PolyUMI system.
 
-- Add per-part CAD renders.
 - Add a short build log (video or slideshow) covering fabrication/assembly.
 
 ### Electrical
