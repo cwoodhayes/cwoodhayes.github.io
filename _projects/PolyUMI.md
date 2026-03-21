@@ -94,19 +94,15 @@ All firmware and software is written from scratch, with the following priorities
 
 ### Optical Tactile Finger
 
-<figure class="project-figure">
-<iframe width="720" height="405" src="https://www.youtube.com/embed/9J0HMS4kfYM?autoplay=0&loop=1&playlist=9J0HMS4kfYM&mute=0&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-<figcaption>The finger surface deformation is clearly visible in the color gradient when an object (such as this M3x30 screw) presses against it. Audio is from the finger's integrated contact microphone.</figcaption>
-</figure>
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
   <figure class="project-figure">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polytouch_ray_diagram.png" alt="PolyUMI gripper CAD" style="width: 100%; max-width: 80%; height: auto;" /></a>
-    <figcaption>Testing caption</figcaption>
+    <iframe width="720" height="405" src="https://www.youtube.com/embed/9J0HMS4kfYM?autoplay=0&loop=1&playlist=9J0HMS4kfYM&mute=0&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <figcaption>The finger surface deformation is clearly visible in the color gradient when an object (such as this M3x30 screw) presses against it. Audio is from the finger's integrated contact microphone.</figcaption>
   </figure>
   <figure class="project-figure">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/labelled sensor view.png" alt="PolyUMI gripper CAD" style="width: 100%; max-width: 80%; height: auto;" /></a>
-    <figcaption>Testing caption</figcaption>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/labelled sensor view.png" alt="labelled sensor view"/></a>
+    <figcaption>Guide to the visual field of the finger camera. (click for full-size) </figcaption>
   </figure>
 </div>
 
@@ -122,6 +118,11 @@ The hardware & software for the PolyUMI finger are designed and built from scrat
 Sensing surface manufacturing instructions are [here](https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing). Full build documentation including 3D print, laser cut, and mechanical + PCB assembly instructions are coming soon.
 
 References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
+
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polytouch_ray_diagram.png" alt="PolyUMI gripper CAD" style="max-width: 800px; height: auto;" /></a>
+  <figcaption>The camera obtains an "overhead view" of the sensing surface via a curved mirror mounted on the opposite inner surface of the finger. This gives a more detailed view of the surface interior and gives a sufficiently consistent optical distance from surface to lens that the whole surface fits in the camera's depth-of-field. Figure taken from (REFERENCE TO POLYTOUCH) to convey the general idea. </figcaption>
+</figure>
 
 ### Contact Microphone
 The contact microphone is rigidly coupled to the finger housing, so it primarily captures mechanical vibration traveling through the sensor body, with relatively little airborne sound.
