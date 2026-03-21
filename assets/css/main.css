@@ -636,6 +636,18 @@ a:focus {
   color: var(--color-white);
 }
 
+.project-link.is-disabled {
+  color: #989ca3;
+  border-color: var(--color-gray-border);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.project-link.is-disabled:hover {
+  background-color: transparent;
+  color: #989ca3;
+}
+
 .project-tags {
   margin-top: 1rem;
   margin-bottom: 1.5rem;
