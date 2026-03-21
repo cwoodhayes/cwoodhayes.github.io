@@ -206,19 +206,25 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
   - The original fin-ray finger + UMI finger mount were slightly enlarged to match the dimensions of the sensing finger.
   - The remaining parts of the original UMI (core trigger mechanism + GoPro mount + finger rail) were left identical to the original; this also enables existing users of the UMI to switch out only the fingers to switch to the PolyUMI system.
 
-- Add a short build log (video or slideshow) covering fabrication/assembly.
-
 ### Electrical
-- Add system-level block diagram.
-- Add LED driver schematic.
-- Add close-up photos of critical wiring/connectors.
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; max-width: 800px; margin: 0 auto;">
+  <figure class="project-figure">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/led_circuit_detail.JPG" alt="LED circuit detail"/></a>
+    <figcaption>Quick-and-dirty LED driver circuit. </figcaption>
+  </figure>
+  <figure class="project-figure">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/led_circuit_diagram.JPG" alt="LED circuit diagram" /></a>
+    <figcaption>The RPi Zero 2W's 16mA GPIO pins can't drive the LED strip's 80mA load directly, so PWM control of a MOSFET is used, powered by the RPi's 5V rail.</figcaption>
+  </figure>
+</div>
+
+- TODO add system-level block diagram showing protocols & interconnects.
 
 ### Software
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" label="PolyUMI GitHub"%}
 </div>
 
-- Add software architecture diagram.
 - Add CLI screenshots for both recording and postprocessing flows.
 - Add Foxglove screenshots + shared visualization config.
 
