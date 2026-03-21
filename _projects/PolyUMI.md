@@ -216,8 +216,6 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
   <figcaption>Quick-and-dirty LED driver circuit. The RPi Zero 2W's 16mA GPIO pins can't drive the LED strip's 80mA load directly, so PWM control of a MOSFET is used, powered by the RPi's 5V rail.</figcaption>
 </figure>
 
-- TODO add system-level block diagram showing protocols & interconnects.
-
 ### Software
 <div class="project-button-row">
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" label="PolyUMI GitHub"%}
@@ -260,8 +258,7 @@ See above for more.
 
 ---
 
-Here's a deck I updated weekly for the first 9 weeks of the project (Jan-Feb 2026).
-
-<div style="width: 100%; max-width: 960px; margin: 0 auto;">
-	<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQR-MULBLa4QTOi97m1QAagUZOOMOkp6oHEydoJPGzYtv5GeUqmyuLx2DniBYF2dP6ZISberjtdc6vv/pubembed?start=false&loop=true&delayms=3000" frameborder="0" style="width: 100%; aspect-ratio: 960 / 569;" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-</div>
+<figure class="project-figure">
+  <a href="#" class="lightbox-img" style="max-width: 400px;"><img src="/assets/msr/polyumi/parts_graveyard.JPG" alt="PolyUMI failed & test parts"/></a>
+  <figcaption>I iterated on these parts quite a bit :D<br/> Here is a graveyard of not-quite-right prints, failed cuts, broken mirrors, and also a nice jig for doing heat-set inserts for the camera mount, which is at an awkward angle inside the finger housing cavity.</figcaption>
+</figure>
