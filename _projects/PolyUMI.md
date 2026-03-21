@@ -20,8 +20,6 @@ date: 2026-02-01
   {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
 </div>
 
-*(note - this page is still a work in progress)*
-
 PolyUMI is a real-time data collection & control platform for robotic imitation learning, which unifies the following sensor modalities in a single end-effector:
 - **touch** (via a custom optical tactile-sensing finger, based off of [PolyTouch](https://polytouch.alanz.info/)) - *10fps 540x480 MJPEG video (MP4)*
 - **mechanical vibration** (via a contact microphone fixed to the finger housing) - *16kHz PCM audio (WAV)*
@@ -102,7 +100,7 @@ All firmware and software is written from scratch, with the following priorities
   </figure>
   <figure class="project-figure">
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/labelled sensor view.png" alt="labelled sensor view"/></a>
-    <figcaption>Guide to the visual field of the finger camera. (click for full-size) </figcaption>
+      <figcaption>Guide to the visual field of the finger camera. <i>(click for full-size)</i></figcaption>
   </figure>
 </div>
 
@@ -126,6 +124,7 @@ References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https:
 
 ### Contact Microphone
 The contact microphone is rigidly coupled to the finger housing, so it primarily captures mechanical vibration traveling through the sensor body, with relatively little airborne sound.
+The audio DAC and amplification is handled prior to processing in the RPi firmware using the [Raspiaudio ULTRA+](https://raspiaudio.com/product/ultra/) HAT, a COTS hobby audio interface board for the Raspberry Pi Zero. 
 
 - **Output:** 16 kHz mono PCM audio (stored at rest as WAV container, MCAP)
 
@@ -167,8 +166,24 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 - Full BOM is [here](https://docs.google.com/spreadsheets/d/1tMQNNxZsd84y2yo-7dfs8auQ5Ptbd8Gklj7v1k_vXQo/edit?usp=sharing).
 
 ### Mechanical
-- CAD resources: gripper and Franka mount Onshape documents (linked above).
-- Add breakdown of total part count and role of each component.
+<div class="project-button-row">
+  {% include github-button.html url="https://cad.onshape.com/documents/51445b7d15b8d189878323f1/w/358bf42f47b2b1f2a511decc/e/9a3e51ec7a29118eecf3283b" label="Gripper CAD" icon="onshape" %}
+  {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
+</div>
+
+- CAD resources: Gripper and Franka Mount Onshape documents (linked above).
+- 6 new parts designed:
+  - PolyUMI sensor finger (4 parts):
+    - Finger shell -- housing for the mirror, sensing surface, LED strip, and contact mic. 
+    - Finger holder -- encloses rear of finger, and mounts the finger camera + raspberry pi stack
+    - Side window(s) + sensor surface acrylic - completes finger enclosure
+  - Franka EE (2 parts):
+    - Finger adapter - adapts the Franka Hand's parallel gripper fingers to the PolyUMI's fingers
+    - Gopro + mirror mount - mounts the GoPro and mirrors to the Franka Hand
+- Additional modifications:
+  - The original fin-ray finger + UMI finger mount were slightly enlarged to match the dimensions of the sensing finger.
+  - The remaining parts of the original UMI (core trigger mechanism + GoPro mount + finger rail) were left identical to the original; this also enables existing users of the UMI to switch out only the fingers to switch to the PolyUMI system.
+
 - Add per-part CAD renders.
 - Add a short build log (video or slideshow) covering fabrication/assembly.
 
@@ -178,7 +193,10 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 - Add close-up photos of critical wiring/connectors.
 
 ### Software
-- Source code: [PolyUMI GitHub](https://github.com/cwoodhayes/polyumi)
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" label="PolyUMI GitHub"%}
+</div>
+
 - Add software architecture diagram.
 - Add CLI screenshots for both recording and postprocessing flows.
 - Add Foxglove screenshots + shared visualization config.
