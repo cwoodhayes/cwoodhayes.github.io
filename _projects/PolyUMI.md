@@ -66,7 +66,7 @@ TODO manufacturing compilation video + link to build docs.
 #### Franka Hand
 PolyUMI end-effector for the [Franka Hand](https://franka.de/accessories) (designed & manufactured by me)
 - Maintains the same spatial relationships between sensors & fingers as the PolyUMI gripper to aid in policy transfer
-- Separate gripper adapter parts (in pink) enable reuse of the Gripper's finger designs
+- Separate finger-to-mount adapter (pink in photo left, gunmetal grey in CAD right) enable reuse of the Gripper's finger designs on the Franka end-effector. This also enables using one physical sensing finger for both training and inference by transferring it from the Gripper to the arm, which will likely improve model performance.
 
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/franka_ee.jpg" alt="Franka EE IRL" style="width: 100%; height: auto;" /></a>
@@ -93,25 +93,33 @@ All firmware and software is written from scratch, with the following priorities
 ## Sensors: Theory of Operation
 
 ### Optical Tactile Finger
-The PolyUMI finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
-
-The hardware & software for the PolyUMI finger are designed and built from scratch; however, the sensing approach and system architecture draw heavily from PolyTouch. No source code or design files from that work were available — only the published paper — so all implementation details were independently developed, and modifications were made as appropriate to fit the goals of rapid iteration and integration with a UMI-style gripper design.
-
-- **Sensing surface:** VHB tape for conformability, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture & durability (following PolyTouch). Mounted on an acrylic plate which is detachable from finger assembly for easy replacement + iteration.
-- **Illumination:** [Flexible LED tube](https://www.digikey.com/en/products/detail/adafruit-industries-llc/6143/26250001) mounted in the rear of the sensing surface
-- **Peripheral vision:** side windows provide a secondary view of the manipulation scene, similar to PolyTouch.
-- **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
 
 <figure class="project-figure">
 <iframe width="720" height="405" src="https://www.youtube.com/embed/9J0HMS4kfYM?autoplay=0&loop=1&playlist=9J0HMS4kfYM&mute=0&showinfo=0&rel=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 <figcaption>The finger surface deformation is clearly visible in the color gradient when an object (such as this M3x30 screw) presses against it. Audio is from the finger's integrated contact microphone.</figcaption>
 </figure>
 
-TODO add these figures + videos:
-- Mirror-ray figure from the PolyTouch paper (with a caption comparing PolyTouch vs. PolyUMI).
-- Sensing-surface layup documentation + fabrication clip.
-- CAD section view + irl pic to show LED placement.
-- Internal camera still with windows & mirror highlighted & labeled
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+  <figure class="project-figure">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polytouch_ray_diagram.png" alt="PolyUMI gripper CAD" style="width: 100%; max-width: 80%; height: auto;" /></a>
+    <figcaption>Testing caption</figcaption>
+  </figure>
+  <figure class="project-figure">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/labelled sensor view.png" alt="PolyUMI gripper CAD" style="width: 100%; max-width: 80%; height: auto;" /></a>
+    <figcaption>Testing caption</figcaption>
+  </figure>
+</div>
+
+The PolyUMI finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
+
+The hardware & software for the PolyUMI finger are designed and built from scratch; however, the sensing approach and system architecture draw heavily from PolyTouch. No source code or design files from that work were available — only the published paper — so all implementation details were independently developed, and modifications were made as appropriate to fit the goals of rapid iteration and integration with a UMI-style gripper design.
+
+- **Sensing surface:** VHB tape for conformability, coated with aluminim powder + covered with medical tape on the outer surface for reflectivity + texture & durability (following PolyTouch). Mounted on an acrylic plate which is detachable from finger assembly for easy replacement + iteration.
+- **Illumination:** [Flexible LED tube](https://www.digikey.com/en/products/detail/adafruit-industries-llc/6143/26250001) mounted in the rear of the sensing surface (see below for ECAD + circuit diagrams, and Onshape linked above for mechanical details).
+- **Peripheral vision:** side windows provide a secondary view of the manipulation scene, similar to PolyTouch.
+- **Output:** 10 fps MJPEG video at 540x480 (stored in the finger as JPEG frames for efficiency, and at rest as MP4 + MCAP)
+
+Sensing surface manufacturing instructions are [here](https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing). Full build documentation including 3D print, laser cut, and mechanical + PCB assembly instructions are coming soon.
 
 References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
 
