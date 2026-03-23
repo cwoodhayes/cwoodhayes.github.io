@@ -27,7 +27,7 @@ PolyUMI is a real-time data collection & control platform for robotic imitation 
 - **vision** (via GoPro camera on wrist + finger camera peripheral vision) - *60fps 1920x1080 MJPEG video (MP4) + 10fps 540x480 MJPEG video*
 - **proprioception** (via monocular inertial SLAM from GoPro + IMU in gripper, or robot joint encoders + FK in embodiments)
 
-It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with hardware, firmware, and software built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer).
+It combines the [Universal Manipulation Interface (UMI)](https://umi-gripper.github.io/) platform with a custom touch-sensing finger inspired by the [PolyTouch tactile + audio sensor](https://polytouch.alanz.info/), with hardware, firmware, and software built from scratch for a modern robotics stack (ROS2 Kilted + Python 3.13 + Foxglove visualizer) [1, 2].
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/dataflow_overview.png" alt="PolyUMI platform overview" /></a>
@@ -89,7 +89,7 @@ System can easily support other arms, humanoids, etc --- anything with a wrist. 
 </figure>
 
 **PolyUMI's firmware and software is architected from scratch with the following priorities:**
-1. **As close to turnkey as possible.** 
+1. **As close to turnkey as possible.**
   - With this system, given a clean hardware setup, you can go from **0 to 1 in 20 minutes** (nothing is installed -> livestreaming data from the arm, recording data on the gripper, and postprocessing gripper data on PC)
 2. **Data collection & processing is quick and easy**
   - a single button press starts & stops data collection, and a single command fetches all recorded episodes onto PC from the gripper over the network.
@@ -117,7 +117,7 @@ System can easily support other arms, humanoids, etc --- anything with a wrist. 
   </figure>
 </div>
 
-The PolyUMI finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror.  
+The PolyUMI finger follows the same core sensing principle as [PolyTouch](https://polytouch.alanz.info/): a deformable sensing surface is observed by an internal camera through a curved mirror [2].
 
 The hardware & software for the PolyUMI finger are designed and built from scratch; however, the sensing approach and system architecture draw heavily from PolyTouch. No source code or design files from that work were available — only the published paper — so all implementation details were independently developed, and modifications were made as appropriate to fit the goals of rapid iteration and integration with a UMI-style gripper design.
 
@@ -128,15 +128,15 @@ The hardware & software for the PolyUMI finger are designed and built from scrat
 
 Sensing surface manufacturing instructions are [here](https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing). Full build documentation including 3D print, laser cut, and mechanical + PCB assembly instructions are coming soon.
 
-References: PolyTouch, [GelSight](https://www.gelsight.com/), [DenseTact](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
+Tactile sensors inspiring this one: PolyTouch [2], GelSight [3], DenseTact [4].
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/polytouch_ray_diagram.png" alt="PolyUMI gripper CAD" style="max-width: 800px; height: auto;" /></a>
-  <figcaption>The camera obtains an "overhead view" of the sensing surface via a curved mirror mounted on the opposite inner surface of the finger. This gives a more detailed view of the surface interior and gives a sufficiently consistent optical distance from surface to lens that the whole surface fits in the camera's depth-of-field. Figure taken from (REFERENCE TO POLYTOUCH) to convey the general idea. </figcaption>
+  <figcaption>The camera obtains an "overhead view" of the sensing surface via a curved mirror mounted on the opposite inner surface of the finger. This gives a more detailed view of the surface interior and gives a sufficiently consistent optical distance from surface to lens that the whole surface fits in the camera's depth-of-field. Figure adapted from PolyTouch [2] to convey the general idea.</figcaption>
 </figure>
 
 ### Contact Microphone
-The contact microphone is rigidly coupled to the finger housing, and it mostly captures mechanical vibration traveling through the sensor body, with relatively little airborne sound. The primary purpose of this modality is to **capture moments of contact between the finger and the environment**, whether for precise timestamping of contact events or to capture information about the nature of the contact (e.g. a hard tap vs a soft press, or texture information from sliding contact). (CITE MANIWAV PAPER)
+The contact microphone is rigidly coupled to the finger housing, and it mostly captures mechanical vibration traveling through the sensor body, with relatively little airborne sound. The primary purpose of this modality is to **capture moments of contact between the finger and the environment**, whether for precise timestamping of contact events or to capture information about the nature of the contact (e.g. a hard tap vs a soft press, or texture information from sliding contact) [5].
 
 The audio DAC and amplification is handled prior to processing in the RPi firmware using the [Raspiaudio ULTRA+](https://raspiaudio.com/product/ultra/) HAT, a COTS hobby audio interface board for the Raspberry Pi Zero. The contact mic itself is a low-end unit designed for use on acoustic guitars (see the [BOM spreadsheet](https://docs.google.com/spreadsheets/d/1tMQNNxZsd84y2yo-7dfs8auQ5Ptbd8Gklj7v1k_vXQo/edit?usp=sharing) for details).
 
@@ -153,17 +153,13 @@ The audio DAC and amplification is handled prior to processing in the RPi firmwa
   </figure>
 </div>
 
-References: PolyTouch, [ManiWAV](https://mani-wav.github.io/)
-
 ### Wrist Camera
-This sensing system follows the UMI design with minor hardware updates for a new GoPro version (Hero 12 vs. Hero 9). PolyUMI also adds BLE-based control of the GoPro from the gripper's onboard SBC (Raspberry Pi Zero 2W), which is required to synchronize timestamps for all sensor datastreams & ensure that the sensors begin recording at the same time.
+This sensing system follows the UMI design with minor hardware updates for a new GoPro version (Hero 12 vs. Hero 9) [1]. PolyUMI also adds BLE-based control of the GoPro from the gripper's onboard SBC (Raspberry Pi Zero 2W), which is required to synchronize timestamps for all sensor datastreams & ensure that the sensors begin recording at the same time.
 
 - GoPro Hero 12 + MAX Lens Mod 2.0 (approximately 177 deg FOV)
 - Side mirrors provide a binocular view of the manipulated object.
-- **Output:**: 60 fps video at rest as MP4 
+- **Output:**: 60 fps video at rest as MP4
 - **Control:** via [Open GoPro's BLE API](https://gopro.github.io/OpenGoPro/) from the gripper's onboard Raspberry Pi
-
-References: UMI
 
 ### Proprioception
 
@@ -178,12 +174,10 @@ For the Franka arm, this data is all availble directly from the `libfranka` API.
 
 #### PolyUMI Gripper Proprioception
 When data is collected from the gripper alone, proprioceptive information must be derived from other sensor data.
-In particular, PolyUMI follows the original UMI paper in using [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)'s monocular-inertial SLAM implementation to derive a 6DoF pose trajectory using the GoPro's video feed and integrated IMU.
+In particular, PolyUMI follows the original UMI paper in using [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)'s monocular-inertial SLAM implementation to derive a 6DoF pose trajectory using the GoPro's video feed and integrated IMU [1, 6].
 Gripper width is calculated using the ArUco tags on the gripper fingers.
 
 Then, an embodiment-specific IK solver can be used to map this pose trajectory to a trajectory in joint-space.
-
-**References**: UMI
 
 ## System Architecture and Design
 - Full BOM is [here](https://docs.google.com/spreadsheets/d/1tMQNNxZsd84y2yo-7dfs8auQ5Ptbd8Gklj7v1k_vXQo/edit?usp=sharing).
@@ -197,7 +191,7 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 - CAD resources: Gripper and Franka Mount Onshape documents (linked above).
 - 6 new parts designed:
   - PolyUMI sensor finger (4 parts):
-    - Finger shell -- housing for the mirror, sensing surface, LED strip, and contact mic. 
+    - Finger shell -- housing for the mirror, sensing surface, LED strip, and contact mic.
     - Finger holder -- encloses rear of finger, and mounts the finger camera + raspberry pi stack
     - Side window(s) + sensor surface acrylic - completes finger enclosure
   - Franka EE (2 parts):
@@ -238,7 +232,7 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
 ## Next Steps
 
   - hardware design improvements
-	- add second LED strip at fingertip; design custom LED pcb 
+	- add second LED strip at fingertip; design custom LED pcb
 		- need better illumination at front of sensor
 		- better control over light orientation (the current tube gets twisted), more mechanical robustness, and smaller form factor
 	- optimize mirror curvature + camera placement to minimize distortion, variation in effective sensing surface distance (so it all fits in the same depth-of-field), and blind spots (currently there's one at the rear of the sensor)
@@ -259,3 +253,12 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
   <a href="#" class="lightbox-img" style="max-width: 400px;"><img src="/assets/msr/polyumi/parts_graveyard.JPG" alt="PolyUMI failed & test parts"/></a>
   <figcaption>I iterated on these parts quite a bit. <br/> Here is a graveyard of not-quite-right prints, failed cuts, broken mirrors, and also a nice jig for doing heat-set inserts for the camera mount, which is at an awkward angle inside the finger housing cavity.</figcaption>
 </figure>
+
+## References
+
+1. Universal Manipulation Interface (UMI). Project page and publication links. [https://umi-gripper.github.io/](https://umi-gripper.github.io/)
+2. PolyTouch tactile + audio sensor. Project page and publication links. [https://polytouch.alanz.info/](https://polytouch.alanz.info/)
+3. GelSight tactile sensing technology. [https://www.gelsight.com/](https://www.gelsight.com/)
+4. DenseTact optical tactile sensor. [https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor](https://techfinder.stanford.edu/technology/densetact-optical-tactile-sensor)
+5. ManiWAV: Learning robot manipulation from in-the-wild audio-visual data. Project page and publication links. [https://mani-wav.github.io/](https://mani-wav.github.io/)
+6. ORB-SLAM3 repository and related paper resources. [https://github.com/UZ-SLAMLab/ORB_SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3)

@@ -790,24 +790,39 @@ a:focus {
   font-weight: 600;
 }
 
-.project-content ul,
-.project-content ol {
+.project-content ul {
   margin-bottom: 1rem;
   padding-left: 0;
   list-style: none;
 }
 
-.project-content li {
+.project-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  list-style: decimal;
+}
+
+.project-content ul li,
+.project-content ol li {
   /* margin-bottom: 0.5rem; */
   padding-left: 1.5rem;
   position: relative;
 }
 
-.project-content li::before {
+.project-content ul li::before {
   content: "→";
   position: absolute;
   left: 0;
   color: var(--color-link-body);
+}
+
+.project-content ol li {
+  padding-left: 0;
+  position: static;
+}
+
+.project-content ol li::before {
+  content: none;
 }
 
 .project-footer {
