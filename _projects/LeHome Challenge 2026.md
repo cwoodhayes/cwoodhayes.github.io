@@ -17,3 +17,14 @@ Redirecting to LeHome Challenge 2026...
 <script>
   window.location.href = 'https://sites.google.com/u.northwestern.edu/lehomechallenge';
 </script>
+
+
+## Process:
+
+
+Models evaluated:
+- X-VLA
+- SmolVLA
+- LingBot
+- Diffusion Policy
+- Action Chunking Transformer (ACT)
