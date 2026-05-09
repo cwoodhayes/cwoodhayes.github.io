@@ -4,7 +4,7 @@ tools: [ROS 2, OpenCV, MoveIt, Robotic Arm, RealSense, Python]
 category: personal
 image: https://github.com/user-attachments/assets/f5e6d137-fe92-4fc8-8cc6-306117b42d30
 description: Vision-guided robotic system which reads & writes text on a whiteboard held by a user. Built with a Franka Emika 7dof arm and a RealSense camera.
-date: 2025-12-02
+date: 2026-04-01
 preview_gif: https://github.com/user-attachments/assets/f62c5c46-58eb-4b1f-b6ac-8bad290d330f
 ---
 

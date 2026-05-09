@@ -5,7 +5,7 @@ category: personal
 preview_gif: /assets/msr/polyumi/polyumi_goproview.mp4
 description: A novel multi-modal data collection system for robot imitation learning.
 permalink: /projects/polyumi/
-date: 2026-02-01
+date: 2026-05-01
 ---
 
 <figure class="project-figure">
