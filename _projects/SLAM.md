@@ -86,3 +86,8 @@ Here is how the pipeline works at a high level (diagram & text below):
 - `turtle_control`: command and odometry pipeline for Turtlebot3
 - `nuturtle_description`: URDF and RViz assets for multiple robot instances
 - `turtlelib`: shared pure C++ libary for all other packages. Contains SE(2) math helpers, kinematics, SLAM, data association, etc.
+
+## Check it out on GitHub!
+<div class="project-button-row">
+  {% include github-button.html url="https://github.com/ME495-Navigation/slam-cwoodhayes" %}
+</div>
