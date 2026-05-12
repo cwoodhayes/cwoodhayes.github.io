@@ -37,6 +37,10 @@ In this project, we taught 2 HuggingFace SO-101 arms to fold laundry as entrants
 - Competition performance was evaluated on an unseen validation set with many more garments & environments
 - A successful fold was defined by distance between several pairs of keypoints, indicating regions of the fabric that should be close or far apart (i.e. shirt's left arm should be folded across the chest to the opposite shoulder, without crumpling the shirt). My write-up on how to achieve each fold is [here](https://github.com/cwoodhayes/lehome-laundrynauts/blob/main/docs/folding_instructions.md)
 
+### Our performance
+- **40.0% success rate** across 4 garment types on the competition's private validation set, with a single policy handling all 4 garments.
+- **placed 54th out of ~230** entrants to the competition
+
 ### My role:
 - Project manager (organized the effort, led meetings, distributed tasks)
 - Ported LingBot VLA to work with the competition environment, set up & trained using a RunPod instance
@@ -84,7 +88,7 @@ Data Collection strategies:
 # Lessons Learned
 
 - Ease-of-use for the data collection, training, and evaluation pipelines is extremely important, to tighten the development-test loop. Without this, it can quickly become extremely demoralizing to iterate on the system.
-- COMPUTE MATTERS SO MUCH. The limited resources of our lab's local servers (2 GPU's with 32GB of VRAM) made running IsaacSim slow, and made it literally impossible to train large models like LingBot. Spending cash on an H200 instance on RunPod immediately paid off once I switched to that to train LingBot.
+- COMPUTE MATTERS SO MUCH. The limited resources of our lab's local servers (2 NVIDIA RTX 6000 GPU's with 48GB of VRAM) made running IsaacSim slow, and made it literally impossible to train large models like LingBot. Spending cash on an H200 instance on RunPod immediately paid off once I switched to that to train LingBot.
 - Teleoperation is hard. We made a last-minute pivot to try automated data generation, and I think that strategy would have paid off had we finished in time. But as for teleoperation, especially with an arm like the 6dof SO-101 which is not overactuated, the control interface of a leader/follower setup was extremely difficult to master. Things that would have made this easier:
   - more easily backdrivable leader arm. I think the motors are a bit too highly geared for this purpose
   - more power in the leader arm motors; they struggle to overcome the force of the hand even when the follower arm impacts a surface
