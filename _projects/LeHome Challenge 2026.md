@@ -6,8 +6,18 @@ image:
 description: Fine-tuned vision-language-action (VLA) model for bimanual garment folding in IsaacSim.
 permalink: /projects/lehome-challenge-2026/
 date: 2026-01-30
-preview_gif: assets/msr/lehome-challenge-demo.mp4
+preview_gif: assets/msr/lehome/lehome-challenge-demo.mp4
 ---
+
+
+<figure class="project-figure">
+	<video width="720" height="405" controls preload="metadata">
+		<source src="https://github.com/user-attachments/assets/690e3757-2210-4d3e-9d9b-9e8414ba9cea" type="video/mp4">
+		Your browser does not support the video tag.
+	</video>
+	<figcaption>Deployment of our fine-tuned SmolVLA policy to the simulated SO-101 arms. The failure recovery behavior seen here likely comes from emergent behavior from the SmolVLA pretraining, rather than from our fine-tuning, as we only included successful demonstrations in the training dataset. As can be seen here, it is a struggle to get the shirt not to crumple; however, by the competition's distance metrics this fold is a success. We could have improved upon the failure recovery behavior either through implementing an expert-driven paradigm like DAgger, or through an RL-based posttraining approach.</figcaption>
+</figure>
+
 
 # Overview
 <div class="project-button-row">
@@ -22,7 +32,7 @@ In this project, we taught 2 HuggingFace SO-101 arms to fold laundry as entrants
 
 ### Quick facts about the challenge:
 - 4 garments to fold (pants, shorts, longsleeve shirt, T-shirt)
-- Given a basic IsaacSim environment with the arms in a simulated living room
+- Given a basic IsaacSim environment with the arms in a simulated kitchen
 - Given meshes for 2 examples of each garment
 - Competition performance was evaluated on an unseen validation set with many more garments & environments
 - A successful fold was defined by distance between several pairs of keypoints, indicating regions of the fabric that should be close or far apart (i.e. shirt's left arm should be folded across the chest to the opposite shoulder, without crumpling the shirt)
