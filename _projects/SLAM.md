@@ -81,6 +81,8 @@ Here is how the pipeline works at a high level (diagram & text below):
 
 ## Packages
 
+**No external dependencies other than ROS2 and Armadillo**
+
 - `nuslam`: SLAM nodes & configuration
 - `nusim`: RViz-based simulator for SLAM development
 - `turtle_control`: command and odometry pipeline for Turtlebot3
