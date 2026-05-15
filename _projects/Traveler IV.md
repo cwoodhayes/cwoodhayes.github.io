@@ -3,7 +3,7 @@ name: Traveler IV - USC Rocket Propulsion Lab
 tools: [Avionics, Electronics, Embedded Systems, Rocket Engineering, Launch Operations]
 category: personal
 image: /assets/rpl/t4_launch_wide.jpg
-description: The first entirely student-designed, built, and launched rocket to fly to space, for which I was the Lead Avionics Engineer.
+description: Lead Avionics Engineer for the first entirely student-designed, built, and launched rocket to fly to space.
 permalink: /projects/traveler-iv/
 date: 2019-05-01
 preview_gif: /assets/rpl/tiv_doc_clip.mp4
