@@ -15,6 +15,6 @@
 - ME495 Sensing, Navigation, and Machine Learning for Robotics - Prof. Matthew Elwin
 - MSAI437 Deep Learning - Prof. David Demeter
 
-### Kellogg School of Business
+### Kellogg School of Management
 - ENTR922 Building Intelligent Products - Prof. Birju Shah (former head of AI/ML @ Uber)
 - LDEV452 Executive Presentations - Prof. Heather Barnes
