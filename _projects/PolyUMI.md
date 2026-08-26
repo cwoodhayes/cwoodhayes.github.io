@@ -18,8 +18,13 @@ date: 2026-05-01
 	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" %}
   {% include github-button.html url="https://cad.onshape.com/documents/51445b7d15b8d189878323f1/w/358bf42f47b2b1f2a511decc/e/9a3e51ec7a29118eecf3283b" label="Gripper CAD" icon="onshape" %}
   {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
-  <span class="project-link is-disabled" aria-disabled="true">Build Instructions (Coming Soon)</span>
+  {% include github-button.html url="https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing" label="Build Instructions" icon="web" %}
+  {% include github-button.html url="/assets/msr/polyumi/polyumi_icra2026_poster.pdf" label="ICRA 2026 Poster" icon="web" %}
 </div>
+
+### 🎉🤖🇦🇹 Presented in the [CR2 Workshop](https://cr2-icra.github.io/) at ICRA 2026 (Vienna, Austria).
+
+---
 
 PolyUMI is a novel real-time data collection & control platform for robotic imitation learning, which unifies the following sensor modalities in a single end-effector:
 - **touch** (via a custom optical tactile-sensing finger, based off of [PolyTouch](https://polytouch.alanz.info/)) - *10fps 540x480 MJPEG video (MP4)*
