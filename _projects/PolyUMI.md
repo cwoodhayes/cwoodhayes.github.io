@@ -22,7 +22,7 @@ date: 2026-05-01
   {% include github-button.html url="/assets/msr/polyumi/polyumi_icra2026_poster.pdf" label="ICRA 2026 Poster" icon="web" %}
 </div>
 
-<h3 style="text-align: center;">🎉🤖 Presented in the <a href="https://cr2-icra.github.io/">CR2 Workshop</a> at ICRA 2026 (Vienna, Austria) 🇦🇹🎉</h3>
+<h3 style="text-align: center;">🤖 Presented in the <a href="https://cr2-icra.github.io/">CR2 Workshop</a> at ICRA 2026 (Vienna, Austria) 🤖</h3>
 
 ---
 
