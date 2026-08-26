@@ -22,7 +22,7 @@ date: 2026-05-01
   {% include github-button.html url="/assets/msr/polyumi/polyumi_icra2026_poster.pdf" label="ICRA 2026 Poster" icon="web" %}
 </div>
 
-### 🎉🤖🇦🇹 Presented in the [CR2 Workshop](https://cr2-icra.github.io/) at ICRA 2026 (Vienna, Austria).
+<h3 style="text-align: center;">🎉🤖 Presented in the <a href="https://cr2-icra.github.io/">CR2 Workshop</a> at ICRA 2026 (Vienna, Austria) 🇦🇹🎉</h3>
 
 ---
 
@@ -258,6 +258,19 @@ Then, an embodiment-specific IK solver can be used to map this pose trajectory t
   <a href="#" class="lightbox-img" style="max-width: 400px;"><img src="/assets/msr/polyumi/parts_graveyard.JPG" alt="PolyUMI failed & test parts"/></a>
   <figcaption>I iterated on these parts quite a bit. <br/> Here is a graveyard of not-quite-right prints, failed cuts, broken mirrors, and also a nice jig for doing heat-set inserts for the camera mount, which is at an awkward angle inside the finger housing cavity.</figcaption>
 </figure>
+
+---
+
+
+## Citation
+
+{% include citation.html bibtex="@inproceedings{hayes2026polyumi,
+  title     = {PolyUMI: Visual + Auditory + Tactile Manipulation Platform for Imitation Learning},
+  author    = {Hayes, Conor Wood},
+  booktitle = {ICRA Workshop on the Path Towards Generalizable Contact-Rich Robotics: Control and Representation (CR2@ICRA2026)},
+  year      = {2026},
+  url       = {https://openreview.net/forum?id=Ou39QMiCMP}
+}" %}
 
 ## References
 

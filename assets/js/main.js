@@ -134,6 +134,54 @@
     document.body.removeChild(textArea);
   }
 
+  function copyCitationToClipboard(button) {
+    const box = button.closest('.citation-box');
+    const codeEl = box ? box.querySelector('.citation-code') : null;
+    if (!codeEl) return;
+
+    const text = codeEl.textContent;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(() => showCopySuccess(button))
+        .catch(() => fallbackCopyText(text, button));
+    } else {
+      fallbackCopyText(text, button);
+    }
+  }
+
+  function fallbackCopyText(text, button) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      document.execCommand('copy');
+      showCopySuccess(button);
+    } catch (err) {
+      console.error('Fallback: Failed to copy text:', err);
+    }
+
+    document.body.removeChild(textArea);
+  }
+
+  function initCitationCopy() {
+    const buttons = document.querySelectorAll('.citation-copy-btn');
+    if (!buttons.length) return;
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        copyCitationToClipboard(btn);
+      });
+    });
+  }
+
   function showCopySuccess(button) {
     const label = button.querySelector('.copy-text');
     if (!label) return;
@@ -230,6 +278,7 @@
     initSmoothScroll();
     initSectionTracking();
     initEmailCopy();
+    initCitationCopy();
     initPopStateHandler();
     initActiveNavTracking();
     scrollToHashOnLoad();
