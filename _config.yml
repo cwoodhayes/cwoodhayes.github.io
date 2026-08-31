@@ -19,6 +19,14 @@ plugins:
   - jekyll-feed
 
 
+### Markdown ###
+# math_engine tells kramdown to parse $$...$$ as math at the markdown level, so underscores and
+# asterisks inside LaTeX are never mistaken for emphasis. Rendering is done client-side by MathJax,
+# loaded from _includes/head.html only on pages with `mathjax: true` in their front matter.
+kramdown:
+  math_engine: mathjax
+
+
 ### Navbar Settings ###
 nav_exclude:                                            # The following paths are excluded from navbar
   - pages/tags.html
