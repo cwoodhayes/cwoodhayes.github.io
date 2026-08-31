@@ -247,15 +247,7 @@ The arm figure below is also the clearest measurement of what replacing MoveIt w
   <figcaption>Arm execution latency by cross-correlation, commanded pose against measured TCP. Left: routed through MoveIt — the measured trace is visibly stepped at the planner's cadence, and the peak sits at 498 ms. Right: the streaming impedance controller, 77 ms, tracking the commanded sinusoid smoothly. The 77ms delay is almost entirely due to the compliance of the controller.</figcaption>
 </figure>
 
-Gripper latency depends on which driver is running, and the two are not measured the same way. The FAULHABER tracker is a linear enough plant for cross-correlation against a chirp. The Franka Hand is not: its blocking moves are not a delayed linear echo of the command, and correlation against it returns phase lag rather than delay. The tell is that the estimate grows with how much of an accelerating sweep the probe sees (0.41 → 0.94 → 1.04 → 1.20 s), where a transport delay is invariant to that. The Hand path instead carries an explicit model of its trapezoidal move profile and schedules setpoints against it.
-
-<figure class="project-figure">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_hand_chirp_failure.png" alt="Chirp correlation against the Franka Hand" style="width: 100%; height: auto;" /></a>
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_hand_width_trace.png" alt="Franka Hand width trace with command sends marked" style="width: 100%; height: auto;" /></a>
-  </div>
-  <figcaption>Left: why correlation does not work on the Franka Hand — the correlation curve is essentially flat, the reported 1719 ms peak is not a delay, and the aligned traces do not overlay. Right: the same hand under step excitation, width against time with command sends and <code>move()</code> returns marked. The 5 Hz state stream is visible as the staircase, and the spacing between a send and the following motion is the quantity the interpolator models.</figcaption>
-</figure>
+Latency at inference time forces the model to predict further out into the future, since we handle the latency by skipping the first n steps from the action chunk s.t. `n/step_freq_hz == T_latency`.
 
 The binding constraint is that the chunk must outlast the latency budget:
 
@@ -264,8 +256,6 @@ t_{\mathrm{obs\ age}} + t_{\mathrm{exec}} < n_{\mathrm{action\ steps}} \cdot \De
 $$
 
 If it does not hold, every action has already elapsed on arrival and the arm does not move at all, while every other indicator reads healthy.
-
-Two runtime figures separate the common failure modes. The round trip is split into the forward pass (timed through the server's own sync point) and the remainder, which isolates GPU contention from link time. And the count of actions surviving the staleness trim per chunk tracks headroom directly — on this setup it exposed the laptop's USB Fast Ethernet adapter, whose 100 Mbit cap puts a ~24 ms floor under every inference. Sending frames as raw `uint8` rather than base64 `float32` cut the observation payload from 1.6 MB to 0.30 MB.
 
 > **PLACEHOLDER — diagram:** end-to-end latency diagram, photon to motion, with each calibrated/measured/adopted segment labeled.
 
