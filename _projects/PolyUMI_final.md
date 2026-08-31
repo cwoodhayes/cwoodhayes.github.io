@@ -9,7 +9,7 @@ date: 2026-08-30
 mathjax: true
 ---
 
-> **PLACEHOLDER — hero video:** the "main demo" cut — red-block-in-cup policy rollout, intercut with a gear pickup and a water-bottle-shake episode, chosen to make the modalities (touch, audio, vision, proprioception) legible at a glance. Should read clearly as "wireless demo on gripper" -> "trained policy running on arm."
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Sa69GP3sHYM?si=Fu_ILmnGHV8FnWkp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # PolyUMI (Part 2): Training and Deploying a Multimodal Manipulation Policy
 
