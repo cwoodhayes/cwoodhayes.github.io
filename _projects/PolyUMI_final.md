@@ -11,52 +11,109 @@ mathjax: true
 
 > **PLACEHOLDER — hero video:** the "main demo" cut — red-block-in-cup policy rollout, intercut with a gear pickup and a water-bottle-shake episode, chosen to make the modalities (touch, audio, vision, proprioception) legible at a glance. Should read clearly as "wireless demo on gripper" -> "trained policy running on arm."
 
-# PolyUMI, Part II: Preprocessing, Training, and Deploying a Multimodal Manipulation Policy
+# PolyUMI (Part 2): Training and Deploying a Multimodal Manipulation Policy
 
-[Part 1](/projects/polyumi/) covers PolyUMI's hardware, firmware, and data collection system. This post covers the rest of the pipeline: preprocessing, dataset generation, training, and closed-loop deployment on a Franka FR3.
+<div class="project-button-row">
+	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" %}
+  {% include github-button.html url="https://cad.onshape.com/documents/51445b7d15b8d189878323f1/w/358bf42f47b2b1f2a511decc/e/9a3e51ec7a29118eecf3283b" label="Gripper CAD" icon="onshape" %}
+  {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
+  {% include github-button.html url="https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing" label="Build Instructions" icon="web" %}
+  {% include github-button.html url="/assets/msr/polyumi/polyumi_icra2026_poster.pdf" label="ICRA 2026 Poster" icon="web" %}
+</div>
 
-## Quick recap
 
-PolyUMI is a handheld, wireless UMI-style gripper with an optical tactile finger (after [PolyTouch](https://polytouch.alanz.info/)) and a contact microphone, plus a matching end-effector for a Franka arm. One button press records four synchronized streams — vision (GoPro), touch (finger camera), vibration (contact mic), and proprioception (SLAM, or robot encoders on the arm) — with no external PC required at collection time.
+> This article is Part 2 of 2 on PolyUMI; [Part 1](/projects/polyumi/) covers PolyUMI's hardware, firmware, and data collection system. Here we cover the rest of the pipeline: preprocessing, dataset creation, training, and real-time policy deployment on a Franka FR3.
 
-## Data Pipeline: From Raw Session to Training-Ready Dataset
+PolyUMI is a multimodal robot learning policy training, inference, and data collection platform, which enables rapid iteration on imitation learning policies beyond visuomotor. 
 
-### The working format: `pzarr`
+The hardware platform includes a wireless UMI-style gripper with an optical tactile finger and a contact microphone (inspired by [PolyTouch](https://polytouch.alanz.info/)), plus a matching end-effector for a Franka arm. One button press records four synchronized streams — vision (GoPro), touch (finger camera), vibration (contact mic), and proprioception (SLAM/joint encoders+FK) — with no external PC required at collection time.
 
-Recorded sessions are fetched and processed by `pingest`, PolyUMI's ingest CLI, into a zarr-based working format (`pzarr`). It is deliberately not a training format: it is a lossless, incrementally-writable store that each pipeline step reads from and writes back into, so re-running one step does not re-derive the others.
+The training and inference platform is built from bottom-up as a distributed system using ROS2, docker, and zmq, to support drop-in substitution of new models into the inference pipeline (just rebuild the training/inference docker container, and point its API server to your new model), and separation of concerns between machine learning and robot control for better performance. The system's ease-of-use has been proven in practice through a remote collaboration with [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/), in which we have trained and deployed models developed by them with only ~30 minutes of sit-down work.
+
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_irl.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/high_level_overview.png" alt="High level overview" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>See <a href="/projects/polyumi/">Part 1</a> for detailed write-up on PolyUMI's novel UMI-style data collection system.</figcaption>
+
+</figure>
+
+## Data Pipeline: From Episode Recording to Training-Ready Dataset
+
+### Working Data Format
+
+Recorded sessions are fetched and processed by `pingest`, PolyUMI's preprocessing CLI, into a zarr-based working format (`pzarr`). It is deliberately not a training format, but instead a lossless, incrementally-writable store which is mutated in place by each preprocessing pipeline step. 
 
 - No resampling at storage time; every stream keeps its own native-rate timestamps.
-- Video and audio are kept at full fidelity. GoPro frames are decoded on demand from the source MP4 rather than re-encoded into the store — re-encoding inflated the store roughly 70x with no fidelity gain.
-- Steps are tracked per scene and independently re-runnable, so partial and interrupted runs are recoverable.
+- Lossless data storage for maximum flexibility and fast runtime.
+- Steps are tracked per scene and are independently re-runnable, for ease of re-processing and development.
 
-Training and visualization formats — a UMI-compatible `ReplayBuffer`, MCAP, eventually LeRobot — are exports downstream of `pzarr`, not replacements for it.
+Training and visualization formats -- e.g. `diffusion_policy`-style `ReplayBuffer` subclasses, MCAP, and potentially others -- are lossy downstream artifacts of `pzarr`, and can be generated by `pingest` once preprocessing is complete.
 
-> **PLACEHOLDER — diagram:** preprocessing pipeline flow, `pzarr` between raw ingest and the training/visualization exports. (candidate base: the existing `polyumi_working_format_schema.svg` / "ML data overview" diagrams, redrawn)
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/polyumi_working_format_schema.png" alt="pzarr working format schema" /></a>
+  <figcaption>The <code>pzarr</code> schema: one store per scene, one subgroup per episode, per-stream timestamps at native rates, and pipeline steps writing annotations in place. Sidecars (raw MP4s, SLAM atlas) sit alongside rather than inside. <i>(click for full size)</i></figcaption>
+</figure>
 
-### The six preprocessing steps
+### Pre-processing Pipeline
 
 Most of these resolve a clock or a reference frame that two data sources do not share.
 
-1. **Chirp-based time alignment.** The finger camera and mic run on the Pi's clock, the GoPro on its own. At the start of each recording the Pi emits a linear frequency sweep from a piezo buzzer, captured by both the finger's air mic and the GoPro's mic. A matched filter recovers the chirp onset in both tracks; their difference is the offset between the two clock domains. No hardware sync line is required.
-2. **Visual-inertial SLAM.** Following UMI, GoPro video and IMU are run through monocular-inertial [ORB-SLAM3](https://github.com/UZ-SLAMLab/ORB_SLAM3) to recover a 6-DoF gripper trajectory, using a fork with fixes for the newer camera hardware and for pipeline integration.
-3. **SLAM-to-OptiTrack alignment.** Where a scene has mocap coverage, an SE(3) transform between the SLAM and OptiTrack frames is fit by Horn's method, so the two trajectories can be compared or substituted.
-4. **ArUco gripper width.** Fiducials on the fingers are detected in the GoPro footage and solved via fisheye-undistorted PnP to give a per-frame width signal.
-5. **Canonical end-effector pose.** SLAM reports the GoPro's optical frame; OptiTrack reports a marker rigid-body frame. Neither is a frame a policy can train on. Policies train on poses relative to the episode's first, $$T_0^{-1}T_k$$, from which a shared world frame cancels — but a body-frame offset $$X$$ does not:
+#### 1. Chirp-based time alignment
+The finger camera and mic run on the Pi's clock, the GoPro on its own. At the start of each recording the Pi emits a linear frequency sweep from a piezo buzzer, captured by both the finger's air mic and the GoPro's mic. A matched filter recovers the chirp onset in both tracks; their difference is the offset between the two clock domains. No hardware sync line is required.
 
-    $$
-    \left(T_0 X\right)^{-1}\left(T_k X\right) = X^{-1}\left(T_0^{-1} T_k\right) X
-    $$
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/chirp_time_sync.png" alt="Chirp onset detected in the finger and GoPro audio streams" /></a>
+  <figcaption>Step 1. The chirp is located independently in the Pi's air mic and the GoPro's mic; the difference between the two onsets (here 0.488 s) is the offset between the clock domains. The piezo channel is shown on the same axis for reference.</figcaption>
+</figure>
 
-    leaving a $$(R - I)x$$ term in the relative translation: roughly 4 cm of phantom motion for a 30° wrist rotation at the 7 cm GoPro-to-fingertip scale. Both sources are therefore re-expressed onto the fingertip midpoint via the GoPro, which is the only body the handheld gripper and the arm-mounted end-effector share.
-6. **Contact-mic audio blocking.** The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's own timestamp rather than by a fixed sample-rate ratio (16000/59.94 is not an integer, so a fixed multiply walks off the audio over an episode). Blocks are at least as wide as the largest anchor gap, so concatenating them reconstructs a gapless waveform.
 
-> **PLACEHOLDER — figure:** SLAM trajectory overlaid on the recorded scene (Foxglove 3D view with the GoPro image plane, if achievable).
+#### 2. Visual-inertial SLAM 
+Following UMI, GoPro video and IMU are run through monocular-inertial SLAM (using PolyUMI's fork of [ORB-SLAM3](https://github.com/cwoodhayes/ORB_SLAM3_PolyUMI)) to recover a 6-DoF gripper trajectory.
+
+The fork contains several changes relative to UMI's fork for improved performance:
+
+#### 3. SLAM-to-OptiTrack alignment
+Where a scene has mocap coverage, an SE(3) transform between the SLAM and OptiTrack frames is fit by Horn's method, so the two trajectories can be compared or substituted.
+
+#### 4. ArUco gripper width
+Fiducials on the fingers are detected in the GoPro footage and solved via fisheye-undistorted PnP to give a per-frame width signal.
+
+#### 5. Canonical end-effector pose
+SLAM reports the GoPro's optical frame; OptiTrack reports a marker rigid-body frame. Neither is a frame a policy can train on. Policies train on poses relative to the episode's first, $$T_0^{-1}T_k$$, from which a shared world frame cancels — but a body-frame offset $$X$$ does not:
+
+$$
+\left(T_0 X\right)^{-1}\left(T_k X\right) = X^{-1}\left(T_0^{-1} T_k\right) X
+$$
+
+leaving a $$(R - I)x$$ term in the relative translation: roughly 4 cm of phantom motion for a 30° wrist rotation at the 7 cm GoPro-to-fingertip scale. Both sources are therefore re-expressed onto the fingertip midpoint via the GoPro, which is the only body the handheld gripper and the arm-mounted end-effector share.
+
+#### 6. Contact-mic audio blocking
+The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's own timestamp rather than by a fixed sample-rate ratio (16000/59.94 is not an integer, so a fixed multiply walks off the audio over an episode). Blocks are at least as wide as the largest anchor gap, so concatenating them reconstructs a gapless waveform.
+
+SLAM does not place every frame. Rows the localizer could not solve are left as NaN rather than interpolated, and the exporter splits an episode into contiguous runs around them, discarding runs shorter than a minimum length. Tracking loss concentrates in the lead-in, before the localizer has relocalized against the scene's prebuilt atlas.
+
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/slam_tracking_baseline.png" alt="Per-episode SLAM tracking timeline" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/slam_mask.png" alt="SLAM camera mask" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>Left: per-episode tracking timeline for one scene — blue tracked, red lost. The mapping session (top) tracks throughout; episodes lose the first one to five seconds. Right: the mask applied before tracking. White pixels are discarded — the fingers, mount, and mirrors sit at a fixed image location regardless of camera motion, so their features carry zero parallax and give every keyframe the same descriptor signature.</figcaption>
+</figure>
 
 > **PLACEHOLDER — figure:** contact-mic waveform sliced into per-frame blocks, illustrating step 6.
 
 ### Data organization
 
 A local web UI (`polyumi-catalog`) indexes the recordings directory into SQLite and browses tasks, scenes, sessions, and exported datasets. It also fetches from the Pi, re-runs pipeline steps, and opens episodes in Foxglove. It is a thin layer over the pipeline scripts rather than part of them.
+
+Episodes replay into [Foxglove](https://foxglove.dev/) through an MCAP export, and the end-effector streams live into the same layout during inference.
+
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_episode.png" alt="Foxglove layout replaying one episode" /></a>
+  <figcaption>One episode in Foxglove: finger camera, GoPro, IMU, gripper width, and all three audio streams on a common timeline. The chirp is visible at the head of the finger air-mic track.</figcaption>
+</figure>
 
 > **PLACEHOLDER — screenshot:** catalog UI browsing a scene / episode list.
 
@@ -134,7 +191,25 @@ photon ──(latency.gopro)──> header.stamp ──(measured live)──> re
 
 `header.stamp` is the earliest instant the client can observe. Everything after it — color conversion, tick phasing, the POST, the network, the forward pass — is measured on every tick and converted directly into a count of leading actions to discard. Everything before it is calibrated offline: camera latency by filming a QR-encoded clock and differencing against the frame's stamp (UMI measures 0.125–0.17 s on the same GoPro-to-capture-card chain), arm execution latency by chirping the commanded pose and cross-correlating against where the TCP actually went. Proprioception latency is adopted rather than measured, at ~1 ms; isolating it would need external ground truth of the true pose, and UMI hardcodes the same constant for the same reason.
 
+The arm figure below is also the clearest measurement of what replacing MoveIt with the streaming impedance servo bought. Under MoveIt, the planner's cadence capped how fast the arm could be swept, quantizing the measured trace and putting the correlation peak at 498 ms; against the servo the same probe returns 77 ms with a much sharper peak. A result still in the hundreds of milliseconds is the signature of something routing through the planner.
+
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_arm_moveit.png" alt="Arm latency probe through MoveIt" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_arm_servo.png" alt="Arm latency probe against the streaming servo" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>Arm execution latency by cross-correlation, commanded pose against measured TCP. Left: routed through MoveIt — the measured trace is visibly stepped at the planner's cadence, and the peak sits at 498 ms. Right: the streaming impedance controller, 77 ms, tracking the commanded sinusoid smoothly.</figcaption>
+</figure>
+
 Gripper latency depends on which driver is running, and the two are not measured the same way. The FAULHABER tracker is a linear enough plant for cross-correlation against a chirp. The Franka Hand is not: its blocking moves are not a delayed linear echo of the command, and correlation against it returns phase lag rather than delay. The tell is that the estimate grows with how much of an accelerating sweep the probe sees (0.41 → 0.94 → 1.04 → 1.20 s), where a transport delay is invariant to that. The Hand path instead carries an explicit model of its trapezoidal move profile and schedules setpoints against it.
+
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_hand_chirp_failure.png" alt="Chirp correlation against the Franka Hand" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_hand_width_trace.png" alt="Franka Hand width trace with command sends marked" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>Left: why correlation does not work on the Franka Hand — the correlation curve is essentially flat, the reported 1719 ms peak is not a delay, and the aligned traces do not overlay. Right: the same hand under step excitation, width against time with command sends and <code>move()</code> returns marked. The 5 Hz state stream is visible as the staircase, and the spacing between a send and the following motion is the quantity the interpolator models.</figcaption>
+</figure>
 
 The binding constraint is that the chunk must outlast the latency budget:
 
