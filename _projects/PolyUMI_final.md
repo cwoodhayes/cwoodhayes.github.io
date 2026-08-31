@@ -31,13 +31,18 @@ The hardware platform includes a wireless UMI-style gripper with an optical tact
 The training and inference platform is built from bottom-up as a distributed system using ROS2, docker, and zmq, to support drop-in substitution of new models into the inference pipeline (just rebuild the training/inference docker container, and point its API server to your new model), and separation of concerns between machine learning and robot control for better performance. The system's ease-of-use has been proven in practice through a remote collaboration with [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/), in which we have trained and deployed models developed by them with only ~30 minutes of sit-down work.
 
 <figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/workflow.png" alt="pzarr working format schema" /></a>
+  <figcaption>Typical workflow for training & deploying a task-specific imitation learning policy with PolyUMI.</figcaption>
+</figure>
+
+<!-- <figure class="project-figure">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_irl.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/high_level_overview.png" alt="High level overview" style="width: 100%; height: auto;" /></a>
   </div>
   <figcaption>See <a href="/projects/polyumi/">Part 1</a> for detailed write-up on PolyUMI's novel UMI-style data collection system.</figcaption>
 
-</figure>
+</figure> -->
 
 ## Data Pipeline: From Episode Recording to Training-Ready Dataset
 
@@ -58,7 +63,10 @@ Training and visualization formats -- e.g. `diffusion_policy`-style `ReplayBuffe
 
 ### Pre-processing Pipeline
 
-Most of these resolve a clock or a reference frame that two data sources do not share.
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/preprocessing_overview.png" alt="preprocessing flow" /></a>
+  <figcaption> Overview of the pre-processing stages. <i>(click for full size)</i></figcaption>
+</figure>
 
 #### 1. Chirp-based time alignment
 The finger camera and mic run on the Pi's clock, the GoPro on its own. At the start of each recording the Pi emits a linear frequency sweep from a piezo buzzer, captured by both the finger's air mic and the GoPro's mic. A matched filter recovers the chirp onset in both tracks; their difference is the offset between the two clock domains. No hardware sync line is required.
@@ -75,22 +83,40 @@ Following UMI, GoPro video and IMU are run through monocular-inertial SLAM (usin
 The fork contains several notable changes relative to UMI's fork for improved performance:
 
 - **Camera model and calibration.** New settings for the GoPro Hero 12 + Max Lens Mod 2.0, calibrated with [OpenImuCameraCalibrator](https://github.com/urbste/OpenImuCameraCalibrator); UMI's fork targets a Hero 9.
-- **Split into a mapper and a localizer.** Two new binaries: one builds a scene atlas, the other localizes each episode against that prebuilt atlas, so episodes are independent of one another and reprocessing one does not touch the map.
-- **Camera-frame pose output.** `SaveTrajectoryEuRoC` branches on sensor type, and its inertial branch composes `mImuCalib.mTbc` — so in monocular-inertial it reports the *IMU body* pose rather than the camera pose. Switching to `SaveTrajectoryCSV` writes `Twc` directly. Checked by rotating measured accelerometer into the world frame through the resulting poses: gravity clusters to 4.3° read as camera poses, against 39.7° read as body poses. The CSV also carries `frame_idx` and an explicit `is_lost` column, one row per fed frame, so the Python side indexes rows instead of matching timestamps back onto the frame grid.
-- **Masking the camera-rigid hardware.** Both new binaries had dropped the mask call they inherited. The bottom ~35% of the fisheye is hardware bolted to the camera — fingers, their ArUco tags, LED strips, wiring PCB, mirrors — sitting at a fixed image location regardless of camera motion, so its features carry zero parallax and give every keyframe the same dominant DBoW2 signature. Unmasked on one scene: 498 of 506 two-view reconstructions failed while mapping, and 39 of 62 episodes never relocalized. The mask is a PNG named by `Mask.Path` in the settings YAML rather than polygons in code, since its shape is a property of the physical gripper.
-- **Restored upstream's 1.0 s IMU initialization window.** At the 0.3 s UMI uses, the initializer gets ~18 frames to find enough parallax; all 25 failed inits in that scene timed out at exactly 0.3003 s, none on keypoint count. With the mask, mapping the same scene went from 25 failed inits to 0, 7 map resets to 0, first lock at frame 598 (t = 9.98 s) to frame 36 (t = 0.60 s), and 85.8% to 98.7% of frames tracked.
+- **Improved masking of the gripper hardware.** The bottom ~35% of the GoPro's view is the gripper itself. ORB-SLAM doesn't intrinsically know this, and will waste ORB features on the gripper (which provide zero parallax). We mask out the gripper at the pixel level using a PNG mask (see below) to exactly remove the hardware from the view. Unmasked on one sample scene: 498 of 506 two-view reconstructions failed while mapping, and 39 of 62 episodes fail to localize; after masking, 59 of 62 localized.
 - **Corrected `is_lost` on poseless rows.** `Track()`'s final branch fires both when tracking is lost and when the frame simply never got a pose — typically the frame right after initialization or relocalization — and in both cases republishes the previous frame's pose and timestamp. It was recording those rows as tracked, so a duplicated pose at a repeated timestamp claimed to be real. All five consumers already read the flag as "this row has no pose of its own", so `UpdateFrameIMU` had been rescaling duplicated poses as if they were measurements.
 - **Streaming decode and optional frame decimation.** The frame buffer was being filled even on the single-pass path the pipeline actually runs, costing ~0.8 GB on short episodes and ~7 GB for a minute of video at ~4.1 MB per decoded frame. Single-pass now streams with one frame in flight. A `POLYUMI_SLAM_FRAME_STRIDE` env var adds optional temporal decimation to both binaries, bit-identical to previous behaviour when unset.
 - **Robustness against the video decoder.** `CAP_PROP_POS_MSEC` is unreliable on the last decoded frame under this OpenCV/FFmpeg build, occasionally reporting zero or a non-increasing value; timestamps are repaired to strictly increasing by extrapolated spacing. `CAP_PROP_FPS` reporting 0 or NaN was separately turning the mapper's loop pacing into `inf`, hanging the run.
 - **ORB features raised to 2500**, and more diagnostic output on tracking failure.
 
-The localizer also gained an optional forward + reverse two-pass mode, which recovers lead-in frames by reaching them from the well-tracked middle of an episode with a motion prior. The pipeline no longer uses it: it now prefers to leave frames SLAM could not place as NaN and split episodes around them, rather than merging two trajectories and trusting the result.
+As well as some important changes relative to the original ORB-SLAM shared with UMI:
+- **Split into a mapper and a localizer.** Two binaries: one builds a scene atlas, the other localizes against that prebuilt atlas. In pre-processing we perform one long mapping pass, then every demonstration episode is localized against that same map to ensure consistency (and save on runtime).
+
+<figure class="project-figure">
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/SLAM_mask.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/SLAM_mask_alone.png" alt="High level overview" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>PolyUMI's SLAM fork masks out gripper hardware as shown with a PNG mask manually painted on in GIMP.</figcaption>
+
+</figure>
+
 
 #### 3. SLAM-to-OptiTrack alignment
-Where a scene has mocap coverage, an SE(3) transform between the SLAM and OptiTrack frames is fit by Horn's method, so the two trajectories can be compared or substituted.
+PolyUMI supports capturing pose data from an OptiTrack motion capture system. This functionality was added primarily to evaluate SLAM performance, but can also be configured to replace SLAM as the pose trajectory source in training datasets.
+
+To enable direct comparison of the SLAM and OptiTrack trajectories (if both are available), an SE(3) transform between the two frames is derived using Horn's method as follows:
+
+Given corresponding SLAM/OptiTrack positions $$\{p_i, q_i\}_{i=1}^N$$ with centroids $$\bar p, \bar q$$ and cross-covariance $$H = \sum_i (p_i-\bar p)(q_i-\bar q)^\top = U\Sigma V^\top$$, the rotation and translation minimizing $$\sum_i \|Rp_i + t - q_i\|^2$$ are given in closed form by
+
+$$
+R = V\,\mathrm{diag}(1,\,1,\,\det(VU^\top))\,U^\top, \qquad t = \bar q - R\bar p,
+$$
+
+with the $$\det(VU^\top)$$ term correcting for reflections so that $$\det R = +1$$.
 
 #### 4. ArUco gripper width
-Fiducials on the fingers are detected in the GoPro footage and solved via fisheye-undistorted PnP to give a per-frame width signal.
+Fiducials on the fingers are detected in the GoPro footage and solved via fisheye-undistorted PnP to give a per-frame width signal. This step follows UMI exactly.
 
 #### 5. Canonical end-effector pose
 SLAM reports the GoPro's optical frame; OptiTrack reports a marker rigid-body frame. Neither is a frame a policy can train on. Policies train on poses relative to the episode's first, $$T_0^{-1}T_k$$, from which a shared world frame cancels — but a body-frame offset $$X$$ does not:
@@ -102,32 +128,32 @@ $$
 leaving a $$(R - I)x$$ term in the relative translation: roughly 4 cm of phantom motion for a 30° wrist rotation at the 7 cm GoPro-to-fingertip scale. Both sources are therefore re-expressed onto the fingertip midpoint via the GoPro, which is the only body the handheld gripper and the arm-mounted end-effector share.
 
 #### 6. Contact-mic audio blocking
-The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's own timestamp rather than by a fixed sample-rate ratio (16000/59.94 is not an integer, so a fixed multiply walks off the audio over an episode). Blocks are at least as wide as the largest anchor gap, so concatenating them reconstructs a gapless waveform.
-
-SLAM does not place every frame. Rows the localizer could not solve are left as NaN rather than interpolated, and the exporter splits an episode into contiguous runs around them, discarding runs shorter than a minimum length. Tracking loss concentrates in the lead-in, before the localizer has relocalized against the scene's prebuilt atlas.
+The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's timestamp. This enables sending the audio in the form of log-mel spectrogram images into the downstream model, so that it can be consumed using a vision transformer (i.e. the pretrained AST ViT).
 
 <figure class="project-figure">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/slam_tracking_baseline.png" alt="Per-episode SLAM tracking timeline" style="width: 100%; height: auto;" /></a>
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/slam_mask.png" alt="SLAM camera mask" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/log_mel_fullep.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/log_mel_frames.png" alt="High level overview" style="width: 100%; height: auto;" /></a>
   </div>
-  <figcaption>Left: per-episode tracking timeline for one scene — blue tracked, red lost. The mapping session (top) tracks throughout; episodes lose the first one to five seconds. Right: the mask applied before tracking. White pixels are discarded — the fingers, mount, and mirrors sit at a fixed image location regardless of camera motion, so their features carry zero parallax and give every keyframe the same descriptor signature.</figcaption>
+  <figcaption>Contact mic waveform sliced into per-frame blocks.</figcaption>
+
 </figure>
 
-> **PLACEHOLDER — figure:** contact-mic waveform sliced into per-frame blocks, illustrating step 6.
-
 ### Data organization
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TYbPCeTTV2g?si=Dx986_gru-WjNoE0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 A local web UI (`polyumi-catalog`) indexes the recordings directory into SQLite and browses tasks, scenes, sessions, and exported datasets. It also fetches from the Pi, re-runs pipeline steps, and opens episodes in Foxglove. It is a thin layer over the pipeline scripts rather than part of them.
 
 Episodes replay into [Foxglove](https://foxglove.dev/) through an MCAP export, and the end-effector streams live into the same layout during inference.
 
 <figure class="project-figure">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_episode.png" alt="Foxglove layout replaying one episode" /></a>
-  <figcaption>One episode in Foxglove: finger camera, GoPro, IMU, gripper width, and all three audio streams on a common timeline. The chirp is visible at the head of the finger air-mic track.</figcaption>
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/foxglove_episode.png" alt="Foxglove layout replaying one episode" /></a>
+    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/catalog_ui_scene.png" alt="Catalog UI scene view" style="width: 100%; height: auto;" /></a>
+  </div>
+  <figcaption>Left: One episode in Foxglove: finger camera, GoPro, IMU, gripper width, and all three audio streams on a common timeline. The chirp is visible at the head of the finger air-mic track. <br/>Right: Catalog UI showing detail on a scene.</figcaption>
 </figure>
-
-> **PLACEHOLDER — screenshot:** catalog UI browsing a scene / episode list.
 
 ## Model Training
 
@@ -245,28 +271,59 @@ Evaluation is in progress and is the subject of an upcoming publication. Planned
 
 ## Lessons Learned
 
-*(Skeleton — claims and their supporting evidence. Editorial voice to be written.)*
+Lessons learned from bringing up a UMI system (no particular order):
+1. Latency is perhaps the hardest problem to solve at inference. the lower the total latency, the less the model has to predict the future. difficulty scales with:
+	1. number of modalities (i have 4)
+	2. number of compute nodes (at inference, I have 4, simplified down from 3. At data collection time, I have 4)
+	3. nondeterminism (use wired connections where possible, etc)
+		1. Measure what you can at runtime
+		2. Calibrate out what you can't using offline testing procedures
+		3. Try to reduce mean + stdev as much as possible
+2. Control architecture is the unpublished "secret sauce"
+	1. Arm:
+		1. well-tuned, fast cartesian impedance controller for soft handling
+		2. needs trajectory interpolation (+ smoothing for jittery policy outputs?)
+	2. Gripper:
+		1. real-time control required (note on Franka Hand)
+3. Naive data collection is an ideal, not a reality
+	1. There are tricks to collecting good UMI policies -- fully non-expert operators + fully embodiment-agnostic data collection isn't realistic (at this data scale + system performance)
+		1. Embodiment specific needs:
+			1. Collect trajectories that respect the kinematics of the arm (ie workspace limits, don't bottom out onto table, avoid joint singularities)
+		2. Need to move deliberately enough so that your policy's control frequency can capture the important moments for your task -- especially contact rich ones. Unlike teleop, a umi policy can collect *really fast trajectories* and deploy them onto the arm--this doesn't mean that you *should* do this, because these often perform worse
+		3. Good SLAM performance is essential & tricky (even with my SLAM improvements) -- you get the hang of it, but it takes trial and error 
+	2. Limiting the operator's haptic & sensory feedback to what the gripper can record (even if just in imagination) is very helpful. Think through how the signals you have can help the model understand your task, and perform the task accordingly
+	3. Still much more expressive than teleop! 
+		1. Stuff that gives you more expressiveness (given a policy & a set of modalities)
+			1. Improved hardware performance (mechanism design)
+			2. High system performance (low latency, high fidelity)
+			3. 
+4. Need to think through how to decrease domain gap between gripper & end-effector from day one in design phase. Need to iterate full-stack to improve this
+	1. Examples:
+		1. Audio noise improvement -- embedded mic, gear tolerance tightening (show difference)
+		2. Side window vs no side window
+		3. Sensing surface improvement
+5. Data organization & visualization is key (ie catalog ui, foxglove, jupyter notebooks, etc)
+	1. You will need a way to prune out bad episodes from your dataset etc
+	2. Make data collection easy (good gripper design) pays dividends in policy & task development + performance (due to more expressive behavior capture). In-the-wild data, etc
+	3. Need to have an intuitive understanding of the system's performance, beyond just abstract. Your intuition is most powerful instrument for debugging, need to supply it with data. LLM's are incredible at symbolic reasoning and can help you with bugs of that nature; but they usually can't do this system-level thinking and physical intuition. Figure out a way to make your problems obvious visually, auditorially, use all your senses to understand the system and the problem. 
 
-**1. Latency is the hardest problem at inference, and scales with both modality count and node count.** The lower the total latency, the less the model must predict the future to cover it. This setup runs four modalities across four nodes at inference. Variance matters as much as the mean: prefer wired links, measure what is measurable at runtime, calibrate the rest offline.
+Biggest takeaway:
+- Getting a UMI-based imitation learning policy working requires a significant investment in systems & infrastructure, and each modality makes it harder. Don't throw this away & don't understimate the effort. Need to get the system performing *really well* in a good old fashioned engineering sense before model improvements even make a difference.
 
-**2. Control architecture is the unpublished part.** A well-tuned impedance controller, trajectory interpolation, and real-time-capable gripper control are load-bearing and largely absent from the papers. The stiffness/clip interaction above is the concrete example: it converts an unbounded spring into a 20 N ceiling without giving up free-space tracking accuracy. On the gripper, a driver that cannot track at the policy's rate caps what the policy can express, independent of the model.
-
-**3. Fully embodiment-agnostic data collection does not hold at this scale.** Demonstrations must respect the target arm's kinematics — workspace limits, singularities, not bottoming out on the table. Operators must move slowly enough that the policy's control rate captures contact events; a handheld gripper can record trajectories faster than the arm can usefully reproduce. SLAM quality gates everything downstream, and is sensitive to details like masking the gripper hardware out of the camera view, since those pixels carry zero parallax and give every keyframe the same descriptor signature.
-
-**4. The gripper/end-effector domain gap has to be designed out, not corrected afterward.** Both embodiments report the same physical point, reached through the GoPro, so poses are directly comparable without a learned correction. The same constraint recurs at smaller scale: the training and inference image transforms are pinned to identical output digests across two OpenCV versions in two Python environments, and the audio path augments with background and robot-motor noise to close the acoustic gap.
-
-**5. Data organization and visualization are load-bearing infrastructure.** The catalog UI, Foxglove playback and livestream, and self-describing exports (each buffer records the calibration constants and preprocessing conventions it was built under) are what make the system inspectable. Symbolic reasoning tools handle a class of bugs well; system-level and physical-intuition debugging still depends on being able to see and hear what the system is doing.
-
-**Biggest takeaway.** A working UMI-based imitation learning policy requires substantial systems and infrastructure investment, and each added modality compounds it. The system has to perform well in a conventional engineering sense before model-side improvements can be evaluated at all.
-
-Timeline across five months: ~2 months hardware and systems bring-up, 1 month firmware and data organization (both in [Part 1](/projects/polyumi/)), then ~2 months preprocessing, ~2 months inference bring-up (half of it latency and control work), and ~1 month full-system iteration.
+My timeline (roughly):
+- 2months hardware + systems design & bringup (getting data signals in)
+- 1 month firmware + data organization
+- 2 months preprocessing
+- 2 months inference system bringup (1 month of which is latency + control optimizations to get to first near task success)
+- 1 month full-system iteration
 
 ## Next Steps
 
-- Wire the contact mic and finger camera into the live inference path; the data contract and exporter are done, the architecture and serving side are not.
-- Run the ablations and evaluation tasks above.
-- Continue on SLAM robustness.
-- Publish.
+- Publish paper in collaboration with TU Darmstadt.
+
+### Stuff I wish I could have done
+
+- mirror curvature optimization
 
 ---
 
