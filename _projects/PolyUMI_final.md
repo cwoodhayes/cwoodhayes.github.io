@@ -2,7 +2,7 @@
 name: PolyUMI Part II - Policy Training & Deployment
 tools: [Diffusion Policy, Imitation Learning, Docker, PyTorch, Cartesian Impedance Control, ROS 2, CycloneDDS, SLAM, Franka FR3, Python]
 category: personal
-preview_gif: /assets/msr/polyumi/final/redblock_deploy.mp4
+preview_gif: https://github.com/user-attachments/assets/d6d61dc4-970f-4882-bdf0-7bbc1f49b8cd
 description: Turning multimodal demonstrations into a trained diffusion policy running closed-loop on a real arm.
 permalink: /projects/polyumi-policy/
 date: 2026-08-30
