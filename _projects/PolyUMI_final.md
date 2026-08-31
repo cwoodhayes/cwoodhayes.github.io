@@ -2,7 +2,7 @@
 name: PolyUMI Part II - Policy Training & Deployment
 tools: [Diffusion Policy, Imitation Learning, Docker, PyTorch, Cartesian Impedance Control, ROS 2, CycloneDDS, SLAM, Franka FR3, Python]
 category: personal
-preview_gif: /assets/msr/polyumi/PLACEHOLDER_inference_demo.mp4
+preview_gif: /assets/msr/polyumi/final/redblock_deploy.mp4
 description: Turning multimodal demonstrations into a trained diffusion policy running closed-loop on a real arm.
 permalink: /projects/polyumi-policy/
 date: 2026-08-30
@@ -177,15 +177,23 @@ Neither modality is consumed by a policy yet; the data contract and exporter are
 
 ### Inference system overview
 
-Inference spans three machines:
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/inference_architecture.png" alt="Inference software/system architecture diagram" /></a>
+  <figcaption>Software & compute architecture for running a policy on our Franka Research 3 robotic arm.</figcaption>
+</figure>
 
-- **A laptop**, running the ROS 2 node that ingests the camera streams, assembles observations, and previews commanded motion in Foxglove.
-- **A NUC**, which owns the Franka control stack (`ros2_control`, the libfranka hardware interface) and runs the 1 kHz Cartesian impedance controller.
-- **A GPU workstation**, which serves the policy and also runs the ROS client, so the observation payload never crosses the link between them.
+Due to the modular software architecture (ROS2 nodes for control, docker container for model), pieces of the above diagram can be moved to different compute units, but we run as follows for performance.
 
-The gripper is a FAULHABER-actuated CANopen mechanism (Anunth Ramaswami's driver), replacing the stock Franka Hand. The Hand cannot be servoed: libfranka exposes only a blocking `move()` that cannot be pre-empted, costing 363 ms even at zero travel, against a 5 Hz state stream. That bounds it to roughly 0.7–1.7 Hz against a 10 Hz setpoint stream, and makes transients shorter than about a second unrepresentable. The FAULHABER driver is a 200 Hz cyclic-synchronous-position tracker.
+- **A NUC running RT Linux (Ubuntu)**, which owns the Franka control stack (`ros2_control`, the libfranka hardware interface) and runs the 1 kHz Cartesian impedance controller.
+- **A GPU workstation**, which runs the policy container *and* also runs the ROS2 client nodes. This minimizes network latency between model & ROS.
+- **The Raspberry Pi Zero 2W** mounted on the gripper publishes tactile & audio data to the GPU workstation's sensor client node over zmq (but does not run ROS itself due to resource constraints)
+- **A GoPro** is routed through an ELGATO HDMI Capture Card, then into ROS2 through v4l2 for live video streaming.
+- **A laptop**: only for visualization! Reads from Foxglove Bridge over websocket, so it doesn't need ROS and is not on the data path between sensors, model, and arm.
 
+All machines (except the laptop) are synchronized using NTP with `chrony`. 
 The three machines communicate over ROS 2, bridging a Kilted/Humble version gap through CycloneDDS on a dedicated link with unicast discovery. Each machine — including the gripper's Pi — stamps data on its own clock, and drift between them corrupts every derived latency silently and pushes NUC-stamped TF outside the laptop's buffer ("extrapolation into the past"). `chrony` on each machine, synced hierarchically to one reference host rather than to a public pool, holds them to sub-millisecond agreement.
+
+The arm's gripper is a Franka Hand modified for low latency & continuous position control, affectionately referred to as the FrankenHand (see repo maintained by Northwestern CRB [here](https://github.com/cwoodhayes/polyumi_diffusion_policy)). 
 
 > **PLACEHOLDER — diagram:** network and timing architecture across the four machines (Pi, laptop, NUC, GPU workstation), annotated with the chrony hierarchy and CycloneDDS domain boundaries.
 
@@ -236,7 +244,7 @@ The arm figure below is also the clearest measurement of what replacing MoveIt w
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_arm_moveit.png" alt="Arm latency probe through MoveIt" style="width: 100%; height: auto;" /></a>
     <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_arm_servo.png" alt="Arm latency probe against the streaming servo" style="width: 100%; height: auto;" /></a>
   </div>
-  <figcaption>Arm execution latency by cross-correlation, commanded pose against measured TCP. Left: routed through MoveIt — the measured trace is visibly stepped at the planner's cadence, and the peak sits at 498 ms. Right: the streaming impedance controller, 77 ms, tracking the commanded sinusoid smoothly.</figcaption>
+  <figcaption>Arm execution latency by cross-correlation, commanded pose against measured TCP. Left: routed through MoveIt — the measured trace is visibly stepped at the planner's cadence, and the peak sits at 498 ms. Right: the streaming impedance controller, 77 ms, tracking the commanded sinusoid smoothly. The 77ms delay is almost entirely due to the compliance of the controller.</figcaption>
 </figure>
 
 Gripper latency depends on which driver is running, and the two are not measured the same way. The FAULHABER tracker is a linear enough plant for cross-correlation against a chirp. The Franka Hand is not: its blocking moves are not a delayed linear echo of the command, and correlation against it returns phase lag rather than delay. The tell is that the estimate grows with how much of an accelerating sweep the probe sees (0.41 → 0.94 → 1.04 → 1.20 s), where a transport delay is invariant to that. The Hand path instead carries an explicit model of its trapezoidal move profile and schedules setpoints against it.
