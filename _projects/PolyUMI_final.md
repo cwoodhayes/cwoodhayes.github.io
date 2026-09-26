@@ -9,7 +9,7 @@ date: 2026-08-30
 mathjax: true
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Sa69GP3sHYM?si=Fu_ILmnGHV8FnWkp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qyAhQ5Dwf5c?si=TkwQsg6fQKXXUAX-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # PolyUMI (Part 2): Training and Deploying a Multimodal Manipulation Policy
 
@@ -24,7 +24,7 @@ mathjax: true
 
 > This article is Part 2 of 2 on PolyUMI; [Part 1](/projects/polyumi/) covers PolyUMI's hardware, firmware, and data collection system. Here we cover the rest of the pipeline: preprocessing, dataset creation, training, and real-time policy deployment on a Franka FR3.
 
-PolyUMI is a multimodal robot learning policy training, inference, and data collection platform, which enables rapid iteration on imitation learning policies beyond visuomotor. 
+PolyUMI is a multimodal robot learning policy training, inference, and data collection platform, which enables rapid iteration on imitation learning policies beyond visuomotor.
 
 The hardware platform includes a wireless UMI-style gripper with an optical tactile finger and a contact microphone (inspired by [PolyTouch](https://polytouch.alanz.info/)), plus a matching end-effector for a Franka arm. One button press records four synchronized streams — vision (GoPro), touch (finger camera), vibration (contact mic), and proprioception (SLAM/joint encoders+FK) — with no external PC required at collection time.
 
@@ -48,7 +48,7 @@ The training and inference platform is built from bottom-up as a distributed sys
 
 ### Working Data Format
 
-Recorded sessions are fetched and processed by `pingest`, PolyUMI's preprocessing CLI, into a zarr-based working format (`pzarr`). It is deliberately not a training format, but instead a lossless, incrementally-writable store which is mutated in place by each preprocessing pipeline step. 
+Recorded sessions are fetched and processed by `pingest`, PolyUMI's preprocessing CLI, into a zarr-based working format (`pzarr`). It is deliberately not a training format, but instead a lossless, incrementally-writable store which is mutated in place by each preprocessing pipeline step.
 
 - No resampling at storage time; every stream keeps its own native-rate timestamps.
 - Lossless data storage for maximum flexibility and fast runtime.
@@ -77,7 +77,7 @@ The finger camera and mic run on the Pi's clock, the GoPro on its own. At the st
 </figure>
 
 
-#### 2. Visual-inertial SLAM 
+#### 2. Visual-inertial SLAM
 Following UMI, GoPro video and IMU are run through monocular-inertial SLAM (using PolyUMI's fork of [ORB-SLAM3](https://github.com/cwoodhayes/ORB_SLAM3_PolyUMI)) to recover a 6-DoF gripper trajectory.
 
 The fork contains several notable changes relative to UMI's fork for improved performance:
@@ -190,10 +190,10 @@ Due to the modular software architecture (ROS2 nodes for control, docker contain
 - **A GoPro** is routed through an ELGATO HDMI Capture Card, then into ROS2 through v4l2 for live video streaming.
 - **A laptop**: only for visualization! Reads from Foxglove Bridge over websocket, so it doesn't need ROS and is not on the data path between sensors, model, and arm.
 
-All machines (except the laptop) are synchronized using NTP with `chrony`. 
+All machines (except the laptop) are synchronized using NTP with `chrony`.
 The three machines communicate over ROS 2, bridging a Kilted/Humble version gap through CycloneDDS on a dedicated link with unicast discovery. Each machine — including the gripper's Pi — stamps data on its own clock, and drift between them corrupts every derived latency silently and pushes NUC-stamped TF outside the laptop's buffer ("extrapolation into the past"). `chrony` on each machine, synced hierarchically to one reference host rather than to a public pool, holds them to sub-millisecond agreement.
 
-The arm's gripper is a Franka Hand modified for low latency & continuous position control, affectionately referred to as the FrankenHand (see repo maintained by Northwestern CRB [here](https://github.com/cwoodhayes/polyumi_diffusion_policy)). 
+The arm's gripper is a Franka Hand modified for low latency & continuous position control, affectionately referred to as the FrankenHand (see repo maintained by Northwestern CRB [here](https://github.com/cwoodhayes/polyumi_diffusion_policy)).
 
 > **PLACEHOLDER — diagram:** network and timing architecture across the four machines (Pi, laptop, NUC, GPU workstation), annotated with the chrony hierarchy and CycloneDDS domain boundaries.
 
@@ -277,24 +277,23 @@ Lessons learned from bringing up a UMI system (no particular order):
 		1. Measure what you can at runtime
 		2. Calibrate out what you can't using offline testing procedures
 		3. Try to reduce mean + stdev as much as possible
-2. Control architecture is the unpublished "secret sauce"
-	1. Arm:
-		1. well-tuned, fast cartesian impedance controller for soft handling
-		2. needs trajectory interpolation (+ smoothing for jittery policy outputs?)
-	2. Gripper:
-		1. real-time control required (note on Franka Hand)
-3. Naive data collection is an ideal, not a reality
+2. Naive data collection is an ideal, not a reality
 	1. There are tricks to collecting good UMI policies -- fully non-expert operators + fully embodiment-agnostic data collection isn't realistic (at this data scale + system performance)
 		1. Embodiment specific needs:
 			1. Collect trajectories that respect the kinematics of the arm (ie workspace limits, don't bottom out onto table, avoid joint singularities)
 		2. Need to move deliberately enough so that your policy's control frequency can capture the important moments for your task -- especially contact rich ones. Unlike teleop, a umi policy can collect *really fast trajectories* and deploy them onto the arm--this doesn't mean that you *should* do this, because these often perform worse
-		3. Good SLAM performance is essential & tricky (even with my SLAM improvements) -- you get the hang of it, but it takes trial and error 
+		3. Good SLAM performance is essential and very hard to achieve with existing open source tools. I made some minor tweaks to ORB-SLAM3 which helped, but still, this step fails quite often, making that data unusable. An open source alternative for UMI-type projects could achieve significantly improvement over existing options just by being non-causal from the start (since you don't need real-time results, it's mostly a SfM problem).
 	2. Limiting the operator's haptic & sensory feedback to what the gripper can record (even if just in imagination) is very helpful. Think through how the signals you have can help the model understand your task, and perform the task accordingly
-	3. Still much more expressive than teleop! 
+	3. Still much more expressive than teleop!
 		1. Stuff that gives you more expressiveness (given a policy & a set of modalities)
 			1. Improved hardware performance (mechanism design)
 			2. High system performance (low latency, high fidelity)
-			3. 
+3. Control architecture is the unpublished "secret sauce"
+	1. Arm:
+		1. well-tuned, fast cartesian impedance controller for soft handling
+		2. trajectory interpolation + merging scheme is very important (since action chunks will not always agree & they overlap). Temporal ensembling (added after the videos above were taken) improved the jitteriness of the trajectory significantly
+	2. Gripper:
+		1. real-time control required (note on Franka Hand -- we had to take apart the hand and modify it to work real-time)
 4. Need to think through how to decrease domain gap between gripper & end-effector from day one in design phase. Need to iterate full-stack to improve this
 	1. Examples:
 		1. Audio noise improvement -- embedded mic, gear tolerance tightening (show difference)
@@ -303,7 +302,7 @@ Lessons learned from bringing up a UMI system (no particular order):
 5. Data organization & visualization is key (ie catalog ui, foxglove, jupyter notebooks, etc)
 	1. You will need a way to prune out bad episodes from your dataset etc
 	2. Make data collection easy (good gripper design) pays dividends in policy & task development + performance (due to more expressive behavior capture). In-the-wild data, etc
-	3. Need to have an intuitive understanding of the system's performance, beyond just abstract. Your intuition is most powerful instrument for debugging, need to supply it with data. LLM's are incredible at symbolic reasoning and can help you with bugs of that nature; but they usually can't do this system-level thinking and physical intuition. Figure out a way to make your problems obvious visually, auditorially, use all your senses to understand the system and the problem. 
+	3. Need to have an intuitive understanding of the system's performance, beyond just abstract. Your intuition is most powerful instrument for debugging, need to supply it with data. LLM's are incredible at symbolic reasoning and can help you with bugs of that nature; but they usually can't do this system-level thinking and physical intuition. Figure out a way to make your problems obvious visually, auditorially, use all your senses to understand the system and the problem.
 
 Biggest takeaway:
 - Getting a UMI-based imitation learning policy working requires a significant investment in systems & infrastructure, and each modality makes it harder. Don't throw this away & don't understimate the effort. Need to get the system performing *really well* in a good old fashioned engineering sense before model improvements even make a difference.
@@ -314,6 +313,7 @@ My timeline (roughly):
 - 2 months preprocessing
 - 2 months inference system bringup (1 month of which is latency + control optimizations to get to first near task success)
 - 1 month full-system iteration
+
 
 ## Next Steps
 
