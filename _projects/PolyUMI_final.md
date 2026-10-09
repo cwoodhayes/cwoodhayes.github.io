@@ -14,15 +14,19 @@ mathjax: true
 # PolyUMI (Part 2): Training and Deploying a Multimodal Manipulation Policy
 
 <div class="project-button-row">
-	{% include github-button.html url="https://github.com/cwoodhayes/polyumi" %}
+  {% include github-button.html url="https://polyumi-vista.github.io/" label="Paper submission" icon="web" %}
+	{% include github-button.html url="https://github.com/PolyUMI-VisTA/PolyUMI-system" %}
   {% include github-button.html url="https://cad.onshape.com/documents/51445b7d15b8d189878323f1/w/358bf42f47b2b1f2a511decc/e/9a3e51ec7a29118eecf3283b" label="Gripper CAD" icon="onshape" %}
   {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
   {% include github-button.html url="https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing" label="Build Instructions" icon="web" %}
-  {% include github-button.html url="/assets/msr/polyumi/polyumi_icra2026_poster.pdf" label="ICRA 2026 Poster" icon="web" %}
 </div>
 
 
 > This article is Part 2 of 2 on PolyUMI; [Part 1](/projects/polyumi/) covers PolyUMI's hardware, firmware, and data collection system. Here we cover the rest of the pipeline: preprocessing, dataset creation, training, and real-time policy deployment on a Franka FR3.
+
+> Our project website for the research publication based on this system is [here](https://polyumi-vista.github.io/). For a more research-driven writeup, you should have a look there. This article is focused on the engineering details of bringing up the system, which is out of scope for an academic paper but I think very useful :)
+
+---
 
 PolyUMI is a multimodal robot learning policy training, inference, and data collection platform, which enables rapid iteration on imitation learning policies beyond visuomotor.
 
@@ -127,8 +131,8 @@ $$
 
 leaving a $$(R - I)x$$ term in the relative translation: roughly 4 cm of phantom motion for a 30° wrist rotation at the 7 cm GoPro-to-fingertip scale. Both sources are therefore re-expressed onto the fingertip midpoint via the GoPro, which is the only body the handheld gripper and the arm-mounted end-effector share.
 
-#### 6. Contact-mic audio blocking
-The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's timestamp. This enables sending the audio in the form of log-mel spectrogram images into the downstream model, so that it can be consumed using a vision transformer (i.e. the pretrained AST ViT).
+#### 6. Contact-mic audio processing
+The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's timestamp. This enables sending the audio in the form of log-mel spectrogram images into the downstream model, so that it can be consumed using a vision encoder (i.e. ViT)
 
 <figure class="project-figure">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
@@ -161,17 +165,7 @@ Episodes replay into [Foxglove](https://foxglove.dev/) through an MCAP export, a
 
 The first policy brought up end-to-end was visuomotor (vision and proprioception only), to validate the path from data through training and serving to the arm. The multimodal policy adding touch and audio is in development with a collaborator working on the model architecture; because the inference protocol is a separate library from the training code, integrating a model revision is a checkpoint swap rather than a system change.
 
-Adding the contact mic and finger camera as observations follows [ManiWAV](https://mani-wav.github.io/), with three deltas:
-
-- The export stores raw waveform, not a precomputed spectrogram. Mel parameters stay hyperparameters, and ManiWAV's waveform-domain augmentations (background and robot-motor noise) remain possible.
-- Audio blocks are causal — the frames *ending* at the observation instant. ManiWAV's forward convention would supply 33 ms of audio at our step rate that does not exist yet at inference.
-- The finger camera has no ManiWAV counterpart. It exports at native crop resolution, leaving the encoder input size to the training config.
-
-Neither modality is consumed by a policy yet; the data contract and exporter are complete, the architecture and training recipe are current work.
-
-> **PLACEHOLDER — figure/screenshot:** training loss curves (visuomotor baseline) from Weights & Biases.
-
-> **PLACEHOLDER — diagram:** model architecture — proprioception through an MLP, vision/touch/audio through pretrained ViT encoders (timm/AST), pooled and projected into a diffusion policy head predicting SE(3) EE pose + gripper width. (The ICRA poster figure covers this, if usable directly.)
+Full multimodal policy architecture was added by my fantastic collaborator [Rickmer Krohn](https://pearl-lab.com/people/rickmer-krohn/); see our [paper](https://polyumi-vista.github.io) for full details on that.
 
 ## Model Deployment
 
