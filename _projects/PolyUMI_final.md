@@ -309,22 +309,16 @@ My timeline (roughly):
 - 1 month full-system iteration
 
 
-## Next Steps
-
-- Publish paper in collaboration with TU Darmstadt.
-
-### Stuff I wish I could have done
-
-- mirror curvature optimization
-
 ---
 
 ## Citation
 
-{% include citation.html bibtex="@inproceedings{hayes2026polyumi,
-  title     = {PolyUMI: Visual + Auditory + Tactile Manipulation Platform for Imitation Learning},
-  author    = {Hayes, Conor Wood},
-  booktitle = {IEEE ICRA 2026 Workshop on Contact-Rich Robotic Manipulation (CR2)},
-  year      = {2026},
-  url       = {https://openreview.net/forum?id=Ou39QMiCMP}
+{% include citation.html bibtex="@misc{hayes2026polyumiaccessiblevisualtactileaudiodata,
+      title={PolyUMI: Accessible Visual-Tactile-Audio Data Collection for Object Inference and Manipulation},
+      author={Conor W. Hayes and Rickmer Krohn and Aravind Ramaswami and Anunth Ramaswami and Nils Dengler and Kevin M. Lynch and J. Edward Colgate and Georgia Chalvatzaki and Matthew L. Elwin},
+      year={2026},
+      eprint={2609.29760},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2609.29760},
 }" %}
