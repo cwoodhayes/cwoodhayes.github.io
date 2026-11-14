@@ -67,6 +67,10 @@ Training and visualization formats -- e.g. `diffusion_policy`-style `ReplayBuffe
   <figcaption>The <code>pzarr</code> schema: one store per scene, one subgroup per episode, per-stream timestamps at native rates, and pipeline steps writing annotations in place. Sidecars (raw MP4s, SLAM atlas) sit alongside rather than inside. <i>(click for full size)</i></figcaption>
 </figure>
 
+**Brief glossary for clarity:**
+- Episode -> A single recorded start-to-finish demonstration of a task.
+- Scene -> A collection of episodes which were recorded sequentially in a single physical environment. This environment must be consistent across all its episodes, because a single SLAM map is reused across all episodes in a scene.
+
 ### Pre-processing Pipeline
 
 <figure class="project-figure">
@@ -75,7 +79,8 @@ Training and visualization formats -- e.g. `diffusion_policy`-style `ReplayBuffe
 </figure>
 
 #### 1. Chirp-based time alignment
-The finger camera and mic run on the Pi's clock, the GoPro on its own. At the start of each recording the Pi emits a linear frequency sweep from a piezo buzzer, captured by both the finger's air mic and the GoPro's mic. A matched filter recovers the chirp onset in both tracks; their difference is the offset between the two clock domains. No hardware sync line is required.
+The finger camera and mic run on the Pi's clock, the GoPro on its own; we need to figure out how to align data collected across the two devices.
+To accomplish this, at the start of each recording the finger emits a linear frequency sweep from an onboard piezo buzzer, captured by acoustic mics on both the finger and the GoPro. A matched filter recovers the chirp onset in both tracks; their difference is the offset between the two clock domains. No hardware sync line is required.
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/chirp_time_sync.png" alt="Chirp onset detected in the finger and GoPro audio streams" /></a>
@@ -86,17 +91,13 @@ The finger camera and mic run on the Pi's clock, the GoPro on its own. At the st
 #### 2. Visual-inertial SLAM
 Following UMI, GoPro video and IMU are run through monocular-inertial SLAM (using PolyUMI's fork of [ORB-SLAM3](https://github.com/cwoodhayes/ORB_SLAM3_PolyUMI)) to recover a 6-DoF gripper trajectory.
 
-The fork contains several notable changes relative to UMI's fork for improved performance:
+The fork contains several small but important changes relative to UMI's fork. The most important of these are:
 
-- **Camera model and calibration.** New settings for the GoPro Hero 12 + Max Lens Mod 2.0, calibrated with [OpenImuCameraCalibrator](https://github.com/urbste/OpenImuCameraCalibrator); UMI's fork targets a Hero 9.
-- **Improved masking of the gripper hardware.** The bottom ~35% of the GoPro's view is the gripper itself. ORB-SLAM doesn't intrinsically know this, and will waste ORB features on the gripper (which provide zero parallax). We mask out the gripper at the pixel level using a PNG mask (see below) to exactly remove the hardware from the view. Unmasked on one sample scene: 498 of 506 two-view reconstructions failed while mapping, and 39 of 62 episodes fail to localize; after masking, 59 of 62 localized.
-- **Corrected `is_lost` on poseless rows.** `Track()`'s final branch fires both when tracking is lost and when the frame simply never got a pose — typically the frame right after initialization or relocalization — and in both cases republishes the previous frame's pose and timestamp. It was recording those rows as tracked, so a duplicated pose at a repeated timestamp claimed to be real. All five consumers already read the flag as "this row has no pose of its own", so `UpdateFrameIMU` had been rescaling duplicated poses as if they were measurements.
-- **Streaming decode and optional frame decimation.** The frame buffer was being filled even on the single-pass path the pipeline actually runs, costing ~0.8 GB on short episodes and ~7 GB for a minute of video at ~4.1 MB per decoded frame. Single-pass now streams with one frame in flight. A `POLYUMI_SLAM_FRAME_STRIDE` env var adds optional temporal decimation to both binaries, bit-identical to previous behaviour when unset.
-- **Robustness against the video decoder.** `CAP_PROP_POS_MSEC` is unreliable on the last decoded frame under this OpenCV/FFmpeg build, occasionally reporting zero or a non-increasing value; timestamps are repaired to strictly increasing by extrapolated spacing. `CAP_PROP_FPS` reporting 0 or NaN was separately turning the mapper's loop pacing into `inf`, hanging the run.
-- **ORB features raised to 2500**, and more diagnostic output on tracking failure.
+- **Camera model and calibration.** New settings for the GoPro Hero 12 + Max Lens Mod 2.0, calibrated with [OpenImuCameraCalibrator](https://github.com/urbste/OpenImuCameraCalibrator); UMI's fork targets a Hero 9, which is harder to buy these days.
+- **Improved masking of the gripper hardware.** The bottom ~35% of the GoPro's view is the gripper itself. ORB-SLAM doesn't intrinsically know this, and will waste ORB features on the gripper (which provide zero parallax). Our fork masks out the gripper at the pixel level using a PNG mask (see below) to exactly remove the hardware from the view (assuming the fingers stay open). For one example scene, without the improved masking, 498 of 506 two-view reconstructions failed while mapping and 39 of 62 episodes failed to localize; after masking, all but 3 succeeded.
+- **ORB features raised to 2500**, and more diagnostic output on tracking failure. Empirically I found this to work better than UMI's settings.
 
-As well as some important changes relative to the original ORB-SLAM shared with UMI:
-- **Split into a mapper and a localizer.** Two binaries: one builds a scene atlas, the other localizes against that prebuilt atlas. In pre-processing we perform one long mapping pass, then every demonstration episode is localized against that same map to ensure consistency (and save on runtime).
+Like UMI, but unlike the original ORB-SLAM3, **we split mapping and localization into 2 separate binaries**. In pre-processing we perform one long mapping pass, then every demonstration episode is localized against that same map to ensure consistency (and save on runtime).
 
 <figure class="project-figure">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
@@ -107,11 +108,18 @@ As well as some important changes relative to the original ORB-SLAM shared with 
 
 </figure>
 
+Similar to UMI, I found SLAM's fragility to be probably the biggest drag on my ability to train policies, but still a worthwhile one because by using GoPro SLAM PolyUMI can record data literally anywhere with a single button press, with zero additional hardware.
+
+I experimented with a variety of tweaks to SLAM (and my intern AKA Claude found some small bugs) in addition to the above that didn't make a big difference. One such rabbit hole was experimenting with downsampling to a lower FPS prior to SLAM. This helped a lot with preprocessing speed, but unfortunately I couldn't stop it from degrading performance. I also set up the pipeline to ingest poses from our Optitrack system to have a point of comparison.
+
+**There is a low-hanging fruit here which I did not attempt, but somebody should.** ORB-SLAM3 is causal because it's meant to be run online. We're not running online; we should be able to do a global optimization rather than an online + causal one and get much better performance. There's enough open source UMI projects that this would get a lot of love if somebody put together an acausal UMI slam pacakge.
+As a hacky nod to this, I messed around with running ORB-SLAM3 backwards and merging it with the forwards pass; the resulting data was too different for this to help (further supporting the need for an acausal version).
+
 
 #### 3. SLAM-to-OptiTrack alignment
 PolyUMI supports capturing pose data from an OptiTrack motion capture system. This functionality was added primarily to evaluate SLAM performance, but can also be configured to replace SLAM as the pose trajectory source in training datasets.
 
-To enable direct comparison of the SLAM and OptiTrack trajectories (if both are available), an SE(3) transform between the two frames is derived using Horn's method as follows:
+To enable direct comparison of the SLAM and OptiTrack trajectories (if both are available), an SE(3) transform between the two frames is derived using Horn's method, which is (intuitively speaking) an analytical method for finding optimal alignment between two point clouds:
 
 Given corresponding SLAM/OptiTrack positions $$\{p_i, q_i\}_{i=1}^N$$ with centroids $$\bar p, \bar q$$ and cross-covariance $$H = \sum_i (p_i-\bar p)(q_i-\bar q)^\top = U\Sigma V^\top$$, the rotation and translation minimizing $$\sum_i \|Rp_i + t - q_i\|^2$$ are given in closed form by
 
@@ -124,17 +132,23 @@ with the $$\det(VU^\top)$$ term correcting for reflections so that $$\det R = +1
 #### 4. ArUco gripper width
 Fiducials on the fingers are detected in the GoPro footage and solved via fisheye-undistorted PnP to give a per-frame width signal. This step follows UMI exactly.
 
-#### 5. Canonical end-effector pose
-SLAM reports the GoPro's optical frame; OptiTrack reports a marker rigid-body frame. Neither is a frame a policy can train on. Policies train on poses relative to the episode's first, $$T_0^{-1}T_k$$, from which a shared world frame cancels — but a body-frame offset $$X$$ does not:
+#### 5. Canonical end-effector pose (TCP)
+
+I selected an invisible point immediately between the two fingertips as the control point (TCP) for my policies.
+This has many downstream impacts:
+- The model predicts a pose trajectory relative to the TCP. Choosing the fingertips (I hope) makes it easy for the model to think about manipulating objects. For instance, say we're trying to grasp the handle of a coffee mug, but we're coming at it from the wrong side. Grabbing from the other side expressed in our TCP frame is nearly a pure rotation. Expressed in the GoPro frame, we'd have to swing along a big arc. **I didn't ablate this decision, and it'd be interesting if someobody did**.
+- The impedance controller for the arm places a virtual spring-mass-damper system with the TCP at origin.
+
+Anyhow, regardless of our selection of TCP, at this point in preprocessing, SLAM reports the GoPro's optical frame; OptiTrack reports a marker rigid-body frame. We must translate both into a shared TCP frame. Put another way, UMI policies predict poses relative to the current pose, $$T_0^{-1}T_k$$, from which a shared world frame cancels, but a body-frame offset $$X$$ does not:
 
 $$
 \left(T_0 X\right)^{-1}\left(T_k X\right) = X^{-1}\left(T_0^{-1} T_k\right) X
 $$
 
-leaving a $$(R - I)x$$ term in the relative translation: roughly 4 cm of phantom motion for a 30° wrist rotation at the 7 cm GoPro-to-fingertip scale. Both sources are therefore re-expressed onto the fingertip midpoint via the GoPro, which is the only body the handheld gripper and the arm-mounted end-effector share.
+leaving a $$(R - I)x$$ term in the relative translation.
 
 #### 6. Contact-mic audio processing
-The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's timestamp. This enables sending the audio in the form of log-mel spectrogram images into the downstream model, so that it can be consumed using a vision encoder (i.e. ViT)
+The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on each frame's timestamp. This enables sending the audio in the form of log-mel spectrogram images into the downstream model, so that it can be consumed using a vision encoder. This method follows [ManiWAV](https://mani-wav.github.io/).
 
 <figure class="project-figure">
   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
@@ -149,7 +163,7 @@ The 16 kHz piezo signal is sliced into one block per GoPro frame, anchored on ea
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/TYbPCeTTV2g?si=Dx986_gru-WjNoE0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-A local web UI (`polyumi-catalog`) indexes the recordings directory into SQLite and browses tasks, scenes, sessions, and exported datasets. It also fetches from the Pi, re-runs pipeline steps, and opens episodes in Foxglove. It is a thin layer over the pipeline scripts rather than part of them.
+A local web UI (`polyumi-catalog`) indexes the recordings directory into SQLite and browses tasks, scenes, sessions, and exported datasets. It also fetches from the Pi, re-runs pipeline steps, and opens episodes in Foxglove. It is a thin layer over the `pingest` CLI utility, which does the real pipeline work. This separation of concerns was great because it let me vibe-code the web app with only some light review, without worrying that I'd compromise the more important pipeline code.
 
 Episodes replay into [Foxglove](https://foxglove.dev/) through an MCAP export, and the end-effector streams live into the same layout during inference.
 
@@ -163,11 +177,10 @@ Episodes replay into [Foxglove](https://foxglove.dev/) through an MCAP export, a
 
 ## Model Training
 
-`pingest export` produces a UMI-compatible `ReplayBuffer` (`.zarr.zip`) that the training code reads directly. Training runs in Docker, since the training fork (built on [UMI's diffusion policy codebase](https://github.com/real-stanford/universal_manipulation_interface)) needs a conda/CUDA environment that conflicts with a host ROS install. The same image serves both training and inference: checkpoints are `dill`-pickled and unpickle only against the dependency tree they were trained under. The image builds in two cached stages — the base UMI environment, then the shared inference-protocol library — so editing the wire protocol does not rebuild the conda environment.
+`pingest export` produces a UMI-compatible `ReplayBuffer` (`.zarr.zip`) that the training code reads directly. Training runs in Docker, since our training environments (here's the baseline visual-only model, forked from [UMI's diffusion policy codebase](https://github.com/real-stanford/universal_manipulation_interface)) need conflicting dependencies vs our control stack in ROS2. The same docker image serves both training and inference: checkpoints are `dill`-pickled and unpickle only against the dependency tree they were trained under. The image builds in two cached stages — the base UMI environment, then the shared inference-protocol networking library — so editing the wire protocol does not rebuild the big training environment.
 
-The first policy brought up end-to-end was visuomotor (vision and proprioception only), to validate the path from data through training and serving to the arm. The multimodal policy adding touch and audio is in development with a collaborator working on the model architecture; because the inference protocol is a separate library from the training code, integrating a model revision is a checkpoint swap rather than a system change.
+The first policy brought up end-to-end was visuomotor (vision and proprioception only), to validate the path from data through training and serving to the arm. After the infra was in place, my fantastic collaborator [Rickmer Krohn](https://pearl-lab.com/people/rickmer-krohn/) in Germany was able to develop a variety of multimodal policies for us to try out; on our end, swapping policies was as simple as swapping containers. See our [paper](https://polyumi-vista.github.io) for full details on these models.
 
-Full multimodal policy architecture was added by my fantastic collaborator [Rickmer Krohn](https://pearl-lab.com/people/rickmer-krohn/); see our [paper](https://polyumi-vista.github.io) for full details on that.
 
 ## Model Deployment
 
@@ -187,23 +200,32 @@ Due to the modular software architecture (ROS2 nodes for control, docker contain
 - **A laptop**: only for visualization! Reads from Foxglove Bridge over websocket, so it doesn't need ROS and is not on the data path between sensors, model, and arm.
 
 All machines (except the laptop) are synchronized using NTP with `chrony`.
-The three machines communicate over ROS 2, bridging a Kilted/Humble version gap through CycloneDDS on a dedicated link with unicast discovery. Each machine — including the gripper's Pi — stamps data on its own clock, and drift between them corrupts every derived latency silently and pushes NUC-stamped TF outside the laptop's buffer ("extrapolation into the past"). `chrony` on each machine, synced hierarchically to one reference host rather than to a public pool, holds them to sub-millisecond agreement.
+The NUC and workstation communicate over ROS 2, and talk to the pi via zmq (since ROS is too heavyweight to run there). Each machine — including the gripper's Pi — stamps data on its own clock, and drift between them corrupts every derived latency which we use for control. Setting the pi and NUC to sync off of the GPU workstation keeps them in sub-ms agreement.
 
 The arm's gripper is a Franka Hand modified for low latency & continuous position control, affectionately referred to as the FrankenHand (see repo maintained by Northwestern CRB [here](https://github.com/cwoodhayes/polyumi_diffusion_policy)).
+
+TODO correctly link the Anunth's repo.
 
 > **PLACEHOLDER — diagram:** network and timing architecture across the four machines (Pi, laptop, NUC, GPU workstation), annotated with the chrony hierarchy and CycloneDDS domain boundaries.
 
 ### Control: the Cartesian impedance controller
 
-PolyUMI follows the two-layer hierarchy standard for this setting: the policy emits an action chunk of absolutely-timed end-effector waypoints at roughly 10 Hz, and a real-time controller tracks it at 1 kHz. The controller is a port of [SERL's Franka impedance controller](https://github.com/rail-berkeley/serl_franka_controllers) ([paper](https://arxiv.org/abs/2401.16013)), itself derived from `franka_ros`'s reference implementation, and closely related to the law polymetis runs for UMI.
+PolyUMI follows the two-layer hierarchy standard for this setting: the policy emits an action chunk of absolutely-timed end-effector waypoints at roughly 10 Hz, and a real-time controller tracks it at 1 kHz. The controller is a port of [SERL's Franka impedance controller](https://github.com/rail-berkeley/serl_franka_controllers) ([paper](https://arxiv.org/abs/2401.16013)), itself derived from `franka_ros`'s reference implementation, and closely related to the law UMI runs on its own stack.
 
-Given measured joint state $$(q, \dot{q})$$, the base-frame Jacobian $$J \in \mathbb{R}^{6\times7}$$, and a reference pose from the interpolator, the pose error $$e \in \mathbb{R}^6$$ stacks the translation error with the vector part of the difference quaternion, hemisphere-corrected and rotated into the base frame. The commanded torque is
+TODO link my own repo rather than theirs above^
+
+Given:
+- measured joint state $$(q, \dot{q})$$
+- base-frame Jacobian $$J \in \mathbb{R}^{6\times7}$$
+- and a reference pose from the interpolator,
+
+the pose error $$e \in \mathbb{R}^6$$ stacks the translation error with the vector part of the difference quaternion, hemisphere-corrected and rotated into the base frame. The commanded torque is
 
 $$
 \tau = J^\top\left(-K\bar{e} - D\,J\dot{q} - K_i e_I\right) + \left(I_7 - J^\top \left(J^\top\right)^{+}_{\lambda}\right)\left[K_n\left(q_n - q\right) - 2\sqrt{K_n}\,\dot{q}\right]
 $$
 
-where $$\bar{e}$$ is the per-axis clipped error and the second term resolves the arm's redundant seventh DOF through a damped pseudo-inverse ($$\lambda = 0.2$$). Joint 1 takes a stiffer nullspace tier (100 against 0.2) so base rotation is pinned while the elbow floats; $$K_i$$ is zero in our configuration. The result is rate-limited against the previous commanded torque at 1 Nm per cycle, which `libfranka` requires.
+where $$\bar{e}$$ is the per-axis clipped error and the second term resolves the arm's redundant seventh DOF through a damped pseudo-inverse ($$\lambda = 0.2$$). Joint 1 takes a stiffer nullspace tier (100 against 0.2) so elbow rotation is preferred over base rotation. $$K_i$$ is zero in our configuration, following SERL (and common sense, since integral terms can easily make your controller unstable). The result is rate-limited against the previous commanded torque at 1 Nm per cycle, which `libfranka` requires.
 
 | Parameter | Value | |
 |---|---|---|
@@ -212,11 +234,11 @@ where $$\bar{e}$$ is the per-axis clipped error and the second term resolves the
 | $$c_{\mathrm{trans}}$$ / $$c_{\mathrm{rot}}$$ | 0.01 m / 0.05 rad | error clip |
 | $$K_n$$ / $$K_{n,1}$$ | 0.2 / 100 | nullspace |
 
-Bounding interaction force is essential for contact-rich tasks, but lowering stiffness to achieve it costs tracking accuracy in free space. Following SERL, the error is instead clipped at the real-time layer, which caps commanded force at $$K_{\mathrm{trans}} c_{\mathrm{trans}} = 20$$ N regardless of how far the reference has run from the measured pose — a stalled chunk and a policy commanding a pose inside the table produce the same bounded push. UMI's spring is softer (750 N/m) but unbounded. $$c_{\mathrm{trans}}$$ is therefore the single knob for contact force, and the FR3's collision-reflex thresholds, which fire on estimated external force, must be raised alongside it.
+Bounding interaction force is extremely helpful for contact-rich tasks (so you don't crush stuff or smash through a table), but lowering stiffness to achieve it costs tracking accuracy in free space. Following SERL, the error is instead clipped at the real-time layer, which caps commanded force at $$K_{\mathrm{trans}} c_{\mathrm{trans}} = 20$$ N regardless of how far the reference has run from the measured pose — a stalled chunk and a policy commanding a pose inside the table produce the same bounded push. UMI's spring is softer (750 N/m) but unbounded. On a cobot that's at least still _safe_, but with a clip you can avoid firing the arm's collision thresholds and just be always gentle with the world instead.
 
-The interpolator is a C++ port of UMI's `PoseTrajectoryInterpolator`: piecewise-linear in position, slerp in orientation, over absolutely-timed waypoints. Its essential function is splicing — merging an arriving chunk into a trajectory already being consumed, without discontinuity at the current instant — which is what allows 10 Hz chunks to drive a loop that never stops between them. Waypoint speed is capped at 1.0 m/s and $$\pi$$ rad/s, stretching a segment rather than letting the reference outrun the arm, since that lead distance sets contact force alongside the clip.
+The interpolator is a C++ port of UMI's `PoseTrajectoryInterpolator`: piecewise-linear in position, slerp in orientation, over absolutely-timed waypoints. It merges an arriving chunk into the trajectory already being consumed, without discontinuity at the current instant — which is what allows 10 Hz chunks to drive a 1khz loop. Waypoint speed is capped at 1.0 m/s and $$\pi$$ rad/s.
 
-Finally, the policy's body frame is the fingertip midpoint, while the arm reports its Jacobian roughly 15 cm away at the hand frame. A spring anchored at the wrong point converts orientation error into fingertip translation, so the Jacobian is shifted onto the TCP column-wise, $$J_{v,i} \leftarrow J_{v,i} + J_{\omega,i} \times r$$, with the angular rows unchanged.
+Finally, the policy's body frame is the fingertip midpoint, while the arm reports its Jacobian roughly 15 cm away at the hand frame, so the Jacobian is shifted onto the TCP column-wise, $$J_{v,i} \leftarrow J_{v,i} + J_{\omega,i} \times r$$, with the angular rows unchanged.
 
 > **PLACEHOLDER — diagram:** control block diagram — action chunk → interpolator (with speed clamps) → pose error → clip → impedance law + nullspace projection → torque-rate saturation → FCI, with the 10 Hz / 1 kHz rate boundary marked.
 
