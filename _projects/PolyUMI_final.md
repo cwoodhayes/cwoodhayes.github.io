@@ -21,16 +21,25 @@ mathjax: true
   {% include github-button.html url="https://docs.google.com/document/d/1T0v_7H8YAJjOud9QWYlQct29a78YKvELPIpKTzajFs0/edit?usp=sharing" label="Build Instructions" icon="web" %}
 </div>
 
+<h3 style="text-align: center;">🤖 Winner of "Best Device" in the <a href="https://umi-arena.github.io/">UMI Arena Workshop</a> @ CoRL 2026 🤖</h3>
 
-> This article is Part 2 of 2 on PolyUMI; [Part 1](/projects/polyumi/) covers PolyUMI's hardware, firmware, and data collection system. Here we cover the rest of the pipeline: preprocessing, dataset creation, training, and real-time policy deployment on a Franka FR3.
+PolyUMI is a multimodal robot learning policy data collection, training, and inference platform, which enables **rapid iteration on imitation learning policies beyond visuomotor**.
 
-> Our project website for the research publication based on this system is [here](https://polyumi-vista.github.io/). For a more research-driven writeup, you should have a look there. This article is focused on the engineering details of bringing up the system, which is out of scope for an academic paper but I think very useful :)
+The system currently uses vision, proprioception, optical tactile, and contact mic signals to learn manipulation tasks, but can easily be adapted for additional exotic sensor inputs.
+
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/paper_figures/system.jpg" alt="PolyUMI software component diagram" /></a>
+</figure>
+
+> This article is Part 2 of 2 on PolyUMI. Part 1 covers the [hardware, firmware, and data collection system](/projects/polyumi/), and Part 2 covers the training pipeline and deployment journey on our lab's Franka FR3 arm. This is an engineering blog-shaped document focused on technical decisions which were non-obvious or difficult to implement. For a research-oriented view of the system (including lots of evals), you should [check out our preprint & project site!](https://polyumi-vista.github.io/)
 
 ---
 
-PolyUMI is a multimodal robot learning policy training, inference, and data collection platform, which enables rapid iteration on imitation learning policies beyond visuomotor.
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/high_level_overview.png" alt="PolyUMI software component diagram" /></a>
+</figure>
 
-The hardware platform includes a wireless UMI-style gripper with an optical tactile finger and a contact microphone (inspired by [PolyTouch](https://polytouch.alanz.info/)), plus a matching end-effector for a Franka arm. One button press records four synchronized streams — vision (GoPro), touch (finger camera), vibration (contact mic), and proprioception (SLAM/joint encoders+FK) — with no external PC required at collection time.
+The hardware platform includes a wireless UMI-style gripper with a novel optical tactile finger and a contact microphone (inspired by [PolyTouch](https://polytouch.alanz.info/)), plus a matching end-effector for a Franka arm. One button press records four synchronized streams — vision (GoPro), touch (finger camera), vibration (contact mic), and proprioception (SLAM/joint encoders+FK) — with no external PC required at collection time.
 
 The training and inference platform is built from bottom-up as a distributed system using ROS2, docker, and zmq, to support drop-in substitution of new models into the inference pipeline (just rebuild the training/inference docker container, and point its API server to your new model), and separation of concerns between machine learning and robot control for better performance. The system's ease-of-use has been proven in practice through a remote collaboration with [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/), in which we have trained and deployed models developed by them with only ~30 minutes of sit-down work.
 

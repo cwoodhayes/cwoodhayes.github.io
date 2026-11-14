@@ -54,6 +54,9 @@ Philosophically, my inspiration for this project comes from my belief that embod
 
 With the completion of this phase of the PolyUMI project, I'm now able to pursue multimodal imitation learning research on my own research platform built from the bottom-up; this means that my iteration on model performance will include iteration on the **full design**, including the hardware itself.
 
+---
+
+> Note: This article is Part 1 of 2 on PolyUMI, which covers the hardware, firmware, and data collection system. Part 2 covers the [training pipeline and deployment on our lab's Franka FR3 arm](/projects/polyumi-policy). To see our research work using the system, [check out our preprint & project site.](https://polyumi-vista.github.io/)
 
 ## System Overview
 
