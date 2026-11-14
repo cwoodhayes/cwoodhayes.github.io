@@ -14,7 +14,7 @@ mathjax: true
 # PolyUMI (Part 2): Training and Deploying a Multimodal Manipulation Policy
 
 <div class="project-button-row">
-  {% include github-button.html url="https://polyumi-vista.github.io/" label="Paper submission" icon="web" %}
+  {% include github-button.html url="https://polyumi-vista.github.io/" label="Academic project site" icon="web" %}
 	{% include github-button.html url="https://github.com/PolyUMI-VisTA/PolyUMI-system" %}
   {% include github-button.html url="https://cad.onshape.com/documents/51445b7d15b8d189878323f1/w/358bf42f47b2b1f2a511decc/e/9a3e51ec7a29118eecf3283b" label="Gripper CAD" icon="onshape" %}
   {% include github-button.html url="https://cad.onshape.com/documents/e674950e5409bace1adf9ce3/w/92b242e38e2c65427b8cb5db/e/0ded13219a9c097fb326bd02" label="Franka Mount CAD" icon="onshape" %}
@@ -31,7 +31,7 @@ The system currently uses vision, proprioception, optical tactile, and contact m
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/paper_figures/system.jpg" alt="PolyUMI software component diagram" /></a>
 </figure>
 
-> This article is Part 2 of 2 on PolyUMI. Part 1 covers the [hardware, firmware, and data collection system](/projects/polyumi/), and Part 2 covers the training pipeline and deployment journey on our lab's Franka FR3 arm. This is an engineering blog-shaped document focused on technical decisions which were non-obvious or difficult to implement. For a research-oriented view of the system (including lots of evals), you should [check out our preprint & project site!](https://polyumi-vista.github.io/)
+> This article is Part 2 of 2 on PolyUMI. Part 1 covers the [hardware, firmware, and data collection system](/projects/polyumi/), and Part 2 covers the training pipeline and deployment journey on our lab's Franka FR3 arm. This is an engineering blog/reference-shaped document focused on technical decisions which were non-obvious or difficult to implement. For a research-oriented view of the system (including lots of evals), you should [check out our preprint & project site!](https://polyumi-vista.github.io/)
 
 ---
 
@@ -39,35 +39,28 @@ The system currently uses vision, proprioception, optical tactile, and contact m
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/high_level_overview.png" alt="PolyUMI software component diagram" /></a>
 </figure>
 
-The hardware platform includes a wireless UMI-style gripper with a novel optical tactile finger and a contact microphone (inspired by [PolyTouch](https://polytouch.alanz.info/)), plus a matching end-effector for a Franka arm. One button press records four synchronized streams — vision (GoPro), touch (finger camera), vibration (contact mic), and proprioception (SLAM/joint encoders+FK) — with no external PC required at collection time.
+TODO high level systems diag
 
-The training and inference platform is built from bottom-up as a distributed system using ROS2, docker, and zmq, to support drop-in substitution of new models into the inference pipeline (just rebuild the training/inference docker container, and point its API server to your new model), and separation of concerns between machine learning and robot control for better performance. The system's ease-of-use has been proven in practice through a remote collaboration with [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/), in which we have trained and deployed models developed by them with only ~30 minutes of sit-down work.
+My goal during development was to sprint to a working end-to-end system that was nevertheless modular and well-designed enough to involve other people who could work in parallel. To that latter end, I adopted some architectural changes from prior open source systems. Most significantly, PolyUMI separates the training & inference environment from the robot control stack--policies train and run in a docker container which serves an inference API, while the robot control stack runs on ROS2.
+
+This ended up working out great! This approach not only simplified practical deployments on our lab's hardware (details below), but also made possible a fast-paced remote collaboration between Northwestern CRB and [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/) resulting in [this paper](https://polyumi-vista.github.io) after only 4 weeks of working together; they were free to iterate on model design without needing access to our hardware.
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/workflow.png" alt="pzarr working format schema" /></a>
-  <figcaption>Typical workflow for training & deploying a task-specific imitation learning policy with PolyUMI.</figcaption>
+  <figcaption>For the remainder of the article, we will walk through the engineering required to support this workflow for training & deploying a task-specific imitation learning policy with PolyUMI.</figcaption>
 </figure>
-
-<!-- <figure class="project-figure">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/both_irl.png" alt="Gripper + EE IRL" style="width: 100%; height: auto;" /></a>
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/high_level_overview.png" alt="High level overview" style="width: 100%; height: auto;" /></a>
-  </div>
-  <figcaption>See <a href="/projects/polyumi/">Part 1</a> for detailed write-up on PolyUMI's novel UMI-style data collection system.</figcaption>
-
-</figure> -->
 
 ## Data Pipeline: From Episode Recording to Training-Ready Dataset
 
 ### Working Data Format
 
-Recorded sessions are fetched and processed by `pingest`, PolyUMI's preprocessing CLI, into a zarr-based working format (`pzarr`). It is deliberately not a training format, but instead a lossless, incrementally-writable store which is mutated in place by each preprocessing pipeline step.
+Recorded sessions are fetched and processed by `pingest`, PolyUMI's preprocessing CLI, into a zarr-based working format (`pzarr`). *This is not a training format, and should not be one.* The needs of training are at-odds
+with the needs of preprocessing & dataset maintentance, even for a lightweight research system like this. Unlike a training format, we need our at-rest preprocessing format to be:
+- **lossless** (so we can change our model/training algos later & still get maximum use out of old data)
+- **incrementally-writable**, and even parallel-writable where possible (to support a multi-step preprocessing pipeline that caches intermediate results. This means we can iterate on one step without having to rerun prior steps, and also incrementally save to disk so a crash doesn't require a full restart)
+- **contain all concievable metadata** about what produced each piece of data when (hardware/sensors, preprocessing steps, code versions, etc)
 
-- No resampling at storage time; every stream keeps its own native-rate timestamps.
-- Lossless data storage for maximum flexibility and fast runtime.
-- Steps are tracked per scene and are independently re-runnable, for ease of re-processing and development.
-
-Training and visualization formats -- e.g. `diffusion_policy`-style `ReplayBuffer` subclasses, MCAP, and potentially others -- are lossy downstream artifacts of `pzarr`, and can be generated by `pingest` once preprocessing is complete.
+Training and visualization formats -- e.g. `diffusion_policy`-style `ReplayBuffer` subclasses, MCAP, and potentially others -- are lossy but compact downstream artifacts of `pzarr`, and can be generated by `pingest` once preprocessing is complete.
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/polyumi_working_format_schema.png" alt="pzarr working format schema" /></a>
