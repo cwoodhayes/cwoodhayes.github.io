@@ -244,9 +244,15 @@ Finally, the policy's body frame is the fingertip midpoint, while the arm report
 
 ### Latency and synchronization
 
-In training data, every observation in a sample comes from the same GoPro frame grid. On the robot nothing is naturally synchronized, so live streams are aligned to the oldest measurement in the set. The pipeline is structured to support multi-rate streaming instead, for slow-fast architectures that do not sample every modality onto a common tick.
+My feeling is that engineering difficulties posed by latency grow geometrically with number of sensory inputs. Maybe also with number of compute nodes.
 
-Latencies fall into three classes:
+You see, in our training data, we work hard to ensure that every datastream is synchronized to the GoPro frame grid by our preprocessing pipeline; in other words, an observation is a nice collection of measurements all taken at the same instant. On the robot nothing is naturally synchronized; all sensors have different latencies which vary at runtime and are measured on multiple different clocks, due to the distributed nature of the system. There's several approaches to dealing with this, but they all divide some responsibility between the system and the model to compensate for latency & unsynced signals.
+
+In our case, we took the approach of "use system tricks to convert misalignment to latency, then have the model learn to predict the future to compensate for the latency". We source each observation from the instant at which the oldest measurement in the sensor set was taken (interpolating samples from the history of the other sensors as necessary). This means we're basically stuck at the latency of the slowest sensor, which is a big motivator for speeding up the sensor processing pipelines, and it also means we have to build a good model of the latencies in the system to get good guesses as to when measurements were actually taken on a shared clock.
+
+To do this, we:
+1. measure as much as we can online, per inference call
+2. model what we can't measure online via offline experiments
 
 ```
 photon ──(latency.gopro)──> header.stamp ──(measured live)──> response ──(latency.arm_exec)──> motion
@@ -254,16 +260,6 @@ photon ──(latency.gopro)──> header.stamp ──(measured live)──> re
 ```
 
 `header.stamp` is the earliest instant the client can observe. Everything after it — color conversion, tick phasing, the POST, the network, the forward pass — is measured on every tick and converted directly into a count of leading actions to discard. Everything before it is calibrated offline: camera latency by filming a QR-encoded clock and differencing against the frame's stamp (UMI measures 0.125–0.17 s on the same GoPro-to-capture-card chain), arm execution latency by chirping the commanded pose and cross-correlating against where the TCP actually went. Proprioception latency is adopted rather than measured, at ~1 ms; isolating it would need external ground truth of the true pose, and UMI hardcodes the same constant for the same reason.
-
-The arm figure below is also the clearest measurement of what replacing MoveIt with the streaming impedance servo bought. Under MoveIt, the planner's cadence capped how fast the arm could be swept, quantizing the measured trace and putting the correlation peak at 498 ms; against the servo the same probe returns 77 ms with a much sharper peak. A result still in the hundreds of milliseconds is the signature of something routing through the planner.
-
-<figure class="project-figure">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;">
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_arm_moveit.png" alt="Arm latency probe through MoveIt" style="width: 100%; height: auto;" /></a>
-    <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/latency_arm_servo.png" alt="Arm latency probe against the streaming servo" style="width: 100%; height: auto;" /></a>
-  </div>
-  <figcaption>Arm execution latency by cross-correlation, commanded pose against measured TCP. Left: routed through MoveIt — the measured trace is visibly stepped at the planner's cadence, and the peak sits at 498 ms. Right: the streaming impedance controller, 77 ms, tracking the commanded sinusoid smoothly. The 77ms delay is almost entirely due to the compliance of the controller.</figcaption>
-</figure>
 
 Latency at inference time forces the model to predict further out into the future, since we handle the latency by skipping the first n steps from the action chunk s.t. `n/step_freq_hz == T_latency`.
 
