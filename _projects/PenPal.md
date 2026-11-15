@@ -38,7 +38,6 @@ The system integrates:
 - Frame-consistent spatial reasoning (TF trees and rigid-body transforms)
 - Text rendering in arbitrary fonts, projected onto arbitrarily positioned planes in 3D space (custom-built in numpy + fontTools)
 
-
 All perception, reasoning, and motion are performed dynamically at runtime, allowing the robot to adapt to changes in board position and orientation as they occur, such that the board can even be held by a human user as the robot writes.
 
 ## System Architecture

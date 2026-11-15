@@ -9,7 +9,7 @@ date: 2026-08-30
 mathjax: true
 ---
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qyAhQ5Dwf5c?si=TkwQsg6fQKXXUAX-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qyAhQ5Dwf5c?si=foG6MXPp3kfN3OID" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 # PolyUMI (Part 2): Training and Deploying a Multimodal Manipulation Policy
 
@@ -112,7 +112,7 @@ Similar to UMI, I found SLAM's fragility to be probably the biggest drag on my a
 
 I experimented with a variety of tweaks to SLAM (and my intern AKA Claude found some small bugs) in addition to the above that didn't make a big difference. One such rabbit hole was experimenting with downsampling to a lower FPS prior to SLAM. This helped a lot with preprocessing speed, but unfortunately I couldn't stop it from degrading performance. I also set up the pipeline to ingest poses from our Optitrack system to have a point of comparison.
 
-**There is a low-hanging fruit here which I did not attempt, but somebody should.** ORB-SLAM3 is causal because it's meant to be run online. We're not running online; we should be able to do a global optimization rather than an online + causal one and get much better performance. There's enough open source UMI projects that this would get a lot of love if somebody put together an acausal UMI slam pacakge.
+**There is an obvious improvement possible here which I did not attempt, but somebody should.** ORB-SLAM3 is causal because it's meant to be run online. We're not running online; we should be able to do a global optimization rather than an online + causal one and get much better performance. There's enough open source UMI projects that this would get a lot of love if somebody put together an acausal UMI slam pacakge.
 As a hacky nod to this, I messed around with running ORB-SLAM3 backwards and merging it with the forwards pass; the resulting data was too different for this to help (further supporting the need for an acausal version).
 
 
@@ -277,9 +277,7 @@ If it does not hold, every action has already elapsed on arrival and the arm doe
 
 ## Evaluation
 
-Evaluation is in progress and is the subject of an upcoming publication. Planned ablations target which modalities contribute under which conditions — in particular whether the contact mic supplies only a binary contact signal or also discriminates materials and state changes. The evaluation tasks are chosen to stress what camera-only imitation struggles with: contact-rich dexterous tasks (pipetting, threading a lid), dynamic tasks infeasible to teleoperate (tossing an object into a bin), and conditions that degrade one modality, such as lighting changes during a rollout.
-
-> **PLACEHOLDER:** evaluation results — success rates per task and per ablation.
+See our [paper](https://polyumi-vista.github.io) :)
 
 ## Lessons Learned
 
