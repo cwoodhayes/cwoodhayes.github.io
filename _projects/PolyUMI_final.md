@@ -25,7 +25,9 @@ mathjax: true
 
 PolyUMI is a multimodal robot learning policy data collection, training, and inference platform, which enables **rapid iteration on imitation learning policies beyond visuomotor**.
 
-The system currently uses vision, proprioception, optical tactile, and contact mic signals to learn manipulation tasks, but can easily be adapted for additional exotic sensor inputs.
+The system currently uses vision, proprioception, optical tactile, and contact mic signals to learn manipulation tasks, and can easily be adapted for other sensor inputs as well.
+
+The entire system is open source, and can be built in less than a day given materials common to robotics labs (3d printer, laser cutter, and supplies ordered from Amazon + DigiKey). For labs who have built UMI before, you can build PolyUMI for <$250 by reusing UMI materials, since the additional sensors are on a self-contained sensor finger which is a drop-in replacement for the original UMI fin-ray.
 
 <figure class="project-figure">
   <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/paper_figures/system.jpg" alt="PolyUMI software component diagram" /></a>
@@ -41,7 +43,8 @@ The system currently uses vision, proprioception, optical tactile, and contact m
 
 TODO high level systems diag
 
-My goal during development was to sprint to a working end-to-end system that was nevertheless modular and well-designed enough to involve other people who could work in parallel. To that latter end, I adopted some architectural changes from prior open source systems. Most significantly, PolyUMI separates the training & inference environment from the robot control stack--policies train and run in a docker container which serves an inference API, while the robot control stack runs on ROS2.
+My goal during this stage of development was to sprint to a working end-to-end system that was nevertheless modular and well-designed enough to involve other people who could work in parallel. To that latter end, I adopted some architectural changes which diverge from prior open source imitation learning systems (ie UMI, LeRobot, etc). Most significantly, PolyUMI separates the training & inference environment from the robot control stack--policies train and run in a docker container which serves an inference API, while the robot control stack runs on ROS2.
+Also of course, PolyUMI also includes the Raspberry Pi on the gripper itself as an additional compute node, which communicates over zmq.
 
 This ended up working out great! This approach not only simplified practical deployments on our lab's hardware (details below), but also made possible a fast-paced remote collaboration between Northwestern CRB and [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/) resulting in [this paper](https://polyumi-vista.github.io) after only 4 weeks of working together; they were free to iterate on model design without needing access to our hardware.
 
@@ -281,7 +284,7 @@ See our [paper](https://polyumi-vista.github.io) :)
 
 ## Lessons Learned
 
-Lessons learned from bringing up a UMI system (no particular order):
+Lessons learned from bringing up a multimodal UMI system (no particular order):
 1. Latency is perhaps the hardest problem to solve at inference. the lower the total latency, the less the model has to predict the future. difficulty scales with:
 	1. number of modalities (i have 4)
 	2. number of compute nodes (at inference, I have 4, simplified down from 3. At data collection time, I have 4)
