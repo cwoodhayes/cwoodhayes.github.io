@@ -241,7 +241,10 @@ The interpolator started as a C++ port of UMI's `PoseTrajectoryInterpolator`; th
 
 Finally, the policy's body frame is the fingertip midpoint, while the arm reports its Jacobian roughly 15 cm away at the hand frame, so the Jacobian is shifted onto the TCP column-wise, $$J_{v,i} \leftarrow J_{v,i} + J_{\omega,i} \times r$$, with the angular rows unchanged.
 
-> **PLACEHOLDER — diagram:** control block diagram — action chunk → interpolator (with speed clamps) → pose error → clip → impedance law + nullspace projection → torque-rate saturation → FCI, with the 10 Hz / 1 kHz rate boundary marked.
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/control_loop.png" alt="Action chunks update a trajectory sampled by a 1 kHz loop with pose-error clipping, impedance control, torque-rate limiting, and feedback from the Franka FR3" /></a>
+  <figcaption>Asynchronous action chunks update the trajectory sampled by the 1 kHz torque loop. Robot-state feedback closes the controller.</figcaption>
+</figure>
 
 ### Latency and synchronization
 
@@ -255,24 +258,15 @@ To do this, we:
 1. measure as much as we can online, per inference call
 2. model what we can't measure online via offline experiments
 
-```
-photon ──(latency.gopro)──> header.stamp ──(measured live)──> response ──(latency.arm_exec)──> motion
-        CALIBRATE                          nothing to do                 CALIBRATE
-```
+Latency at inference time forces the model to predict further out into the future, and we handle this by discarding the first `n` poses in the action chunk. If we estimate a total latency larger than the total timespan of the action chunk, we throw up our hands and don't move the arm. Much engineering effort was dedicated towards driving this latency far enough down to enable the model to work. Examples include:
+- Moving the ROS2 nodes into the inference computer (originally they were on my PC), and connecting it directly to the NUC with an ethernet cable.
+- optimizing the inference API / wire protocol so image size isn't killing us
+- implementing & tuning the impedance controller rather than using a planner (OMPL), which is what I did in my hacky first pass
 
-`header.stamp` is the earliest instant the client can observe. Everything after it — color conversion, tick phasing, the POST, the network, the forward pass — is measured on every tick and converted directly into a count of leading actions to discard. Everything before it is calibrated offline: camera latency by filming a QR-encoded clock and differencing against the frame's stamp (UMI measures 0.125–0.17 s on the same GoPro-to-capture-card chain), arm execution latency by chirping the commanded pose and cross-correlating against where the TCP actually went. Proprioception latency is adopted rather than measured, at ~1 ms; isolating it would need external ground truth of the true pose, and UMI hardcodes the same constant for the same reason.
-
-Latency at inference time forces the model to predict further out into the future, since we handle the latency by skipping the first n steps from the action chunk s.t. `n/step_freq_hz == T_latency`.
-
-The binding constraint is that the chunk must outlast the latency budget:
-
-$$
-t_{\mathrm{obs\ age}} + t_{\mathrm{exec}} < n_{\mathrm{action\ steps}} \cdot \Delta t_{\mathrm{action}}
-$$
-
-If it does not hold, every action has already elapsed on arrival and the arm does not move at all, while every other indicator reads healthy.
-
-> **PLACEHOLDER — diagram:** end-to-end latency diagram, photon to motion, with each calibrated/measured/adopted segment labeled.
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/latency_budget.png" alt="Latency compensation across the GoPro, finger camera, contact microphone, and robot state, followed by observation alignment, model inference, and arm motion" /></a>
+  <figcaption>We systematically estimate latencies in the system by measuring online what we can, calibrating offline what we can't, and when all else fails making a good guess then tuning. Then this latency model is used to align the sensor streams before each forward pass, such that all of an observation's sensor measurements were taken at the same instant.</figcaption>
+</figure>
 
 ## Evaluation
 
@@ -283,7 +277,7 @@ See our [paper](https://polyumi-vista.github.io) :)
 Lessons learned from bringing up a multimodal UMI system (no particular order):
 1. Latency is perhaps the hardest problem to solve at inference. the lower the total latency, the less the model has to predict the future. difficulty scales with:
 	1. number of modalities (i have 4)
-	2. number of compute nodes (at inference, I have 4, simplified down from 3. At data collection time, I have 4)
+	2. number of compute nodes. At inference, I have 4 (including the arm control box). At data collection time, I have 1-2 (depending on if Optitrack is used).
 	3. nondeterminism (use wired connections where possible, etc)
 		1. Measure what you can at runtime
 		2. Calibrate out what you can't using offline testing procedures
@@ -307,7 +301,7 @@ Lessons learned from bringing up a multimodal UMI system (no particular order):
 		1. real-time control required (note on Franka Hand -- we had to take apart the hand and modify it to work real-time)
 4. Need to think through how to decrease domain gap between gripper & end-effector from day one in design phase. Need to iterate full-stack to improve this
 	1. Examples:
-		1. Audio noise improvement -- embedded mic, gear tolerance tightening (show difference)
+		1. Audio noise -- tightened mechanical tolerances on UMI's internal gears + experimented with mic placement; data augmentation strategy similar to ManiWAV would probably have helped us but we did not explore it here.
 		2. Side window vs no side window
 		3. Sensing surface improvement
 5. Data organization & visualization is key (ie catalog ui, foxglove, jupyter notebooks, etc)
