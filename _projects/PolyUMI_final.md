@@ -213,20 +213,20 @@ All machines (except the laptop) are synchronized using NTP with `chrony`, to en
 
 ### Control: the Cartesian impedance controller
 
-PolyUMI follows the two-layer hierarchy standard for this setting: the policy emits an action chunk of absolutely-timed end-effector waypoints at roughly 10 Hz, and a real-time controller tracks it at 1 kHz. I have released [the impedance controller](https://github.com/cwoodhayes/franka_streaming_impedance_controller) as open source, which is adapted from [SERL's Franka impedance controller](https://github.com/rail-berkeley/serl_franka_controllers) ([paper](https://arxiv.org/abs/2401.16013)), itself derived from `franka_ros`'s reference implementation, and closely related to the law UMI runs on its own stack.
+PolyUMI follows the two-layer hierarchy standard for this setting: the policy produces chunks of absolutely-timed end-effector waypoints on a roughly 10 Hz time grid, and a real-time controller samples the interpolated reference at 1 kHz. New chunks arrive asynchronously. I have released [the impedance controller](https://github.com/cwoodhayes/franka_streaming_impedance_controller) as open source, which is adapted from [SERL's Franka impedance controller](https://github.com/rail-berkeley/serl_franka_controllers) ([paper](https://arxiv.org/abs/2401.16013)), itself derived from `franka_ros`'s reference implementation, and closely related to the law UMI runs on its own stack.
 
 Given:
 - measured joint state $$(q, \dot{q})$$
 - base-frame Jacobian $$J \in \mathbb{R}^{6\times7}$$
 - and a reference pose from the interpolator,
 
-the pose error $$e \in \mathbb{R}^6$$ stacks the translation error with the vector part of the difference quaternion, hemisphere-corrected and rotated into the base frame. The commanded torque is
+the pose error $$e \in \mathbb{R}^6$$ stacks the translation error with the vector part of the difference quaternion, hemisphere-corrected and rotated into the base frame. Before rate limiting, the torque is
 
 $$
-\tau = J^\top\left(-K\bar{e} - D\,J\dot{q} - K_i e_I\right) + \left(I_7 - J^\top \left(J^\top\right)^{+}_{\lambda}\right)\left[K_n\left(q_n - q\right) - 2\sqrt{K_n}\,\dot{q}\right]
+\tau = J^\top\left(-K\bar{e} - D\,J\dot{q} - K_i e_I\right) + \left(I_7 - J^\top \left(J^\top\right)^{+}_{\lambda}\right)\left[K_n\left(q_n - q\right) - 2\sqrt{K_n}\,\dot{q}\right] + \tau_{\mathrm{Coriolis}}
 $$
 
-where $$\bar{e}$$ is the per-axis clipped error and the second term resolves the arm's redundant seventh DOF through a damped pseudo-inverse ($$\lambda = 0.2$$). Joint 1 takes a stiffer nullspace tier (100 against 0.2) so elbow rotation is preferred over base rotation. $$K_i$$ is zero in our configuration, following SERL (and common sense, since integral terms can easily make your controller unstable). The result is rate-limited against the previous commanded torque at 1 Nm per cycle, which `libfranka` requires.
+where $$\bar{e}$$ is the per-axis clipped error, the second term resolves the arm's redundant seventh DOF through a damped pseudo-inverse ($$\lambda = 0.2$$), and $$\tau_{\mathrm{Coriolis}}$$ is the model's Coriolis compensation. Joint 1 takes a stiffer nullspace tier (100 against 0.2) so elbow rotation is preferred over base rotation. $$K_i$$ is zero in our configuration, following SERL (and common sense, since integral terms can easily make your controller unstable). The result is rate-limited against the previous commanded torque at 1 Nm per cycle, which `libfranka` requires.
 
 | Parameter | Value | |
 |---|---|---|
@@ -235,9 +235,9 @@ where $$\bar{e}$$ is the per-axis clipped error and the second term resolves the
 | $$c_{\mathrm{trans}}$$ / $$c_{\mathrm{rot}}$$ | 0.01 m / 0.05 rad | error clip |
 | $$K_n$$ / $$K_{n,1}$$ | 0.2 / 100 | nullspace |
 
-Bounding interaction force is extremely helpful for contact-rich tasks (so you don't crush stuff or smash through a table), but lowering stiffness to achieve it costs tracking accuracy in free space. Following SERL, the error is instead clipped at the real-time layer, which caps commanded force at $$K_{\mathrm{trans}} c_{\mathrm{trans}} = 20$$ N regardless of how far the reference has run from the measured pose — a stalled chunk and a policy commanding a pose inside the table produce the same bounded push. UMI's spring is softer (750 N/m) but unbounded. On a cobot that's at least still _safe_, but with a clip you can avoid firing the arm's collision thresholds and just be always gentle with the world instead.
+Limiting the spring force is helpful for contact-rich tasks, but lowering stiffness to achieve it costs tracking accuracy in free space. Following SERL, the controller instead clips the pose error, limiting each component of the proportional translational spring term to $$K_{\mathrm{trans}} c_{\mathrm{trans}} = 20$$ N regardless of how far the reference has run from the measured pose. Total contact force also depends on damping, nullspace torques, and the robot's dynamics.
 
-The interpolator is a C++ port of UMI's `PoseTrajectoryInterpolator`: piecewise-linear in position, slerp in orientation, over absolutely-timed waypoints. It merges an arriving chunk into the trajectory already being consumed, without discontinuity at the current instant — which is what allows 10 Hz chunks to drive a 1khz loop. Waypoint speed is capped at 1.0 m/s and $$\pi$$ rad/s.
+The interpolator started as a C++ port of UMI's `PoseTrajectoryInterpolator`; the deployed version uses cubic Hermite interpolation for position and quaternion SLERP for orientation, over absolutely-timed waypoints. Incoming chunks update the trajectory sampled by the 1 kHz controller.
 
 Finally, the policy's body frame is the fingertip midpoint, while the arm reports its Jacobian roughly 15 cm away at the hand frame, so the Jacobian is shifted onto the TCP column-wise, $$J_{v,i} \leftarrow J_{v,i} + J_{\omega,i} \times r$$, with the angular rows unchanged.
 
