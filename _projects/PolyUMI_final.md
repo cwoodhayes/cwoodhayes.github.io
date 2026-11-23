@@ -38,13 +38,11 @@ The entire system is open source, and can be built in less than a day given mate
 ---
 
 <figure class="project-figure">
-  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/high_level_overview.png" alt="PolyUMI software component diagram" /></a>
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/inference_architecture.png" alt="PolyUMI software component diagram" /></a>
 </figure>
 
-TODO high level systems diag
-
 My goal during this stage of development was to sprint to a working end-to-end system that was nevertheless modular and well-designed enough to involve other people who could work in parallel. To that latter end, I adopted some architectural changes which diverge from prior open source imitation learning systems (ie UMI, LeRobot, etc). Most significantly, PolyUMI separates the training & inference environment from the robot control stack--policies train and run in a docker container which serves an inference API, while the robot control stack runs on ROS2.
-Also of course, PolyUMI also includes the Raspberry Pi on the gripper itself as an additional compute node, which communicates over zmq.
+Also of course, PolyUMI also includes the Raspberry Pi on the gripper itself as an additional compute node, which communicates to the rest of the system over zmq.
 
 This ended up working out great! This approach not only simplified practical deployments on our lab's hardware (details below), but also made possible a fast-paced remote collaboration between Northwestern CRB and [Pearl Lab (TU Darmstadt)](https://pearl-lab.com/) resulting in [this paper](https://polyumi-vista.github.io) after only 4 weeks of working together; they were free to iterate on model design without needing access to our hardware.
 
@@ -202,20 +200,20 @@ Due to the modular software architecture (ROS2 nodes for control, docker contain
 - **A GoPro** is routed through an ELGATO HDMI Capture Card, then into ROS2 through v4l2 for live video streaming.
 - **A laptop**: only for visualization! Reads from Foxglove Bridge over websocket, so it doesn't need ROS and is not on the data path between sensors, model, and arm.
 
-All machines (except the laptop) are synchronized using NTP with `chrony`.
 The NUC and workstation communicate over ROS 2, and talk to the pi via zmq (since ROS is too heavyweight to run there). Each machine — including the gripper's Pi — stamps data on its own clock, and drift between them corrupts every derived latency which we use for control. Setting the pi and NUC to sync off of the GPU workstation keeps them in sub-ms agreement.
 
-The arm's gripper is a Franka Hand modified for low latency & continuous position control, affectionately referred to as the FrankenHand (see repo maintained by Northwestern CRB [here](https://github.com/cwoodhayes/polyumi_diffusion_policy)).
+The arm's gripper is a Franka Hand modified for low latency & continuous position control, affectionately referred to as the [FrankenHand](https://github.com/anunthramaswami2030/franka_gripper_control).
 
-TODO correctly link the Anunth's repo.
+All machines (except the laptop) are synchronized using NTP with `chrony`, to ensure timestamps recorded on different systems derive from a shared clock.
 
-> **PLACEHOLDER — diagram:** network and timing architecture across the four machines (Pi, laptop, NUC, GPU workstation), annotated with the chrony hierarchy and CycloneDDS domain boundaries.
+<figure class="project-figure">
+  <a href="#" class="lightbox-img"><img src="/assets/msr/polyumi/final/chrony_hierarchy.png" alt="Internet time servers synchronize the GPU workstation and user PC; the GPU workstation synchronizes the Raspberry Pi and NUC" /></a>
+  <figcaption>Clock synchronization hierarchy. Dotted arrows show synchronization with Internet time servers.</figcaption>
+</figure>
 
 ### Control: the Cartesian impedance controller
 
-PolyUMI follows the two-layer hierarchy standard for this setting: the policy emits an action chunk of absolutely-timed end-effector waypoints at roughly 10 Hz, and a real-time controller tracks it at 1 kHz. The controller is a port of [SERL's Franka impedance controller](https://github.com/rail-berkeley/serl_franka_controllers) ([paper](https://arxiv.org/abs/2401.16013)), itself derived from `franka_ros`'s reference implementation, and closely related to the law UMI runs on its own stack.
-
-TODO link my own repo rather than theirs above^
+PolyUMI follows the two-layer hierarchy standard for this setting: the policy emits an action chunk of absolutely-timed end-effector waypoints at roughly 10 Hz, and a real-time controller tracks it at 1 kHz. I have released [the impedance controller](https://github.com/cwoodhayes/franka_streaming_impedance_controller) as open source, which is adapted from [SERL's Franka impedance controller](https://github.com/rail-berkeley/serl_franka_controllers) ([paper](https://arxiv.org/abs/2401.16013)), itself derived from `franka_ros`'s reference implementation, and closely related to the law UMI runs on its own stack.
 
 Given:
 - measured joint state $$(q, \dot{q})$$
@@ -275,8 +273,6 @@ $$
 If it does not hold, every action has already elapsed on arrival and the arm does not move at all, while every other indicator reads healthy.
 
 > **PLACEHOLDER — diagram:** end-to-end latency diagram, photon to motion, with each calibrated/measured/adopted segment labeled.
-
-> **PLACEHOLDER — screenshot:** Foxglove latency-monitor plot during a live rollout.
 
 ## Evaluation
 
